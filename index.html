@@ -1,0 +1,937 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Inkubator Idealistów</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700;800;900&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --black: black;
+      --white: white;
+      --light-grey: #f4f4f4;
+      --orange-red: #ff5f1b;
+      --purple: #533341;
+      --medium-slate-blue: #6a6ef5;
+    }
+
+    * { -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background-color: #f0f0f0;
+      font-family: Poppins, sans-serif;
+      color: var(--black);
+      font-size: 1rem;
+      line-height: 1.5;
+      overflow-x: hidden;
+    }
+
+    h1,h2,h3,h4,h5,h6 { margin: 0; }
+    p { margin: 0; }
+    a { color: var(--black); text-decoration: underline; }
+    img { max-width: 100%; display: block; }
+
+    /* ── PAGE LOAD OVERLAY ── */
+    .page-load-overlay {
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      z-index: 9999;
+      display: flex;
+      background: #f0f0f0;
+      pointer-events: none;
+      animation: overlayFade 0.5s 1.8s forwards;
+    }
+
+    @keyframes overlayFade {
+      to { opacity: 0; visibility: hidden; }
+    }
+
+    .overlay-left {
+      flex: 1;
+      display: flex;
+      align-items: flex-end;
+      padding: 4vw 3vw;
+    }
+    .overlay-right {
+      flex: 1;
+      display: flex;
+      align-items: flex-start;
+      justify-content: flex-end;
+      padding: 4vw 3vw;
+    }
+
+    .overlay-left .letters {
+      display: flex;
+      flex-direction: column;
+      line-height: 1;
+      overflow: hidden;
+    }
+    .overlay-left .letter-row {
+      overflow: hidden;
+      height: 1em;
+    }
+    .overlay-left .letter-row span {
+      display: block;
+      font-size: clamp(3rem, 8vw, 7rem);
+      font-weight: 900;
+      color: var(--medium-slate-blue);
+      transform: translateY(120%);
+      animation: letterUp 0.5s cubic-bezier(.16,1,.3,1) forwards;
+    }
+    .letter-row:nth-child(1) span { animation-delay: 0.05s; }
+    .letter-row:nth-child(2) span { animation-delay: 0.15s; }
+    .letter-row:nth-child(3) span { animation-delay: 0.25s; }
+    .letter-row:nth-child(4) span { animation-delay: 0.35s; }
+
+    @keyframes letterUp {
+      to { transform: translateY(0); }
+    }
+
+    .overlay-right .right-text {
+      overflow: hidden;
+      height: 1em;
+      display: flex;
+      align-items: center;
+    }
+    .overlay-right .right-text span {
+      display: block;
+      font-size: clamp(2rem, 5vw, 4.5rem);
+      font-weight: 900;
+      color: var(--medium-slate-blue);
+      transform: translateY(76px);
+      animation: letterUp 0.6s 0.5s cubic-bezier(.16,1,.3,1) forwards;
+    }
+
+    .overlay-rings {
+      position: absolute;
+      right: 50%;
+      bottom: 50%;
+      transform: translate(50%, 50%);
+      width: clamp(100px, 20vw, 200px);
+      opacity: 0;
+      animation: ringsIn 0.8s 0.2s forwards;
+    }
+    @keyframes ringsIn {
+      to { opacity: 1; }
+    }
+
+    /* ── NAVBAR ── */
+    .navbar {
+      z-index: 10001;
+      background-color: rgba(240, 240, 240, 0.7);
+      backdrop-filter: blur(5px);
+      -webkit-backdrop-filter: blur(5px);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 100%;
+      min-height: 4.5rem;
+      padding: 1% 5%;
+      position: sticky;
+      top: 0;
+    }
+
+    .navbar-logo {
+      display: block;
+      text-decoration: none;
+    }
+    .navbar-logo img {
+      height: 48px;
+      width: auto;
+    }
+
+    .navbar-menu {
+      display: flex;
+      align-items: center;
+      gap: 0;
+    }
+
+    .navbar-link {
+      color: #6a6ef5;
+      padding: 0.5rem 40px;
+      font-size: 18px;
+      font-weight: 400;
+      text-decoration: none;
+      display: inline-block;
+      transition: opacity 0.2s;
+    }
+    .navbar-link:hover { opacity: 0.7; }
+
+    .navbar-cta {
+      color: var(--white);
+      background-color: #ff5f1b;
+      padding: 15px 25px;
+      font-size: 18px;
+      font-weight: 600;
+      text-transform: uppercase;
+      text-decoration: none;
+      display: inline-block;
+      transition: background-color 0.2s;
+      font-family: Poppins, sans-serif;
+    }
+    .navbar-cta:hover { background-color: #e04e0a; }
+
+    .navbar-hamburger {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      cursor: pointer;
+      padding: 8px;
+    }
+    .hamburger-line {
+      width: 24px; height: 2px;
+      background: #6a6ef5;
+      transition: all 0.3s;
+    }
+
+    /* ── CALOSC (full-width images) ── */
+    .calosc img {
+      width: 100%;
+      display: block;
+    }
+
+    /* ── FORMULARZ SECTION ── */
+    .formularz {
+      background-color: var(--orange-red);
+      padding: 0;
+    }
+
+    .padding-global {
+      padding-left: 5%;
+      padding-right: 5%;
+      padding-bottom: 1%;
+      position: relative;
+      z-index: 0;
+    }
+
+    .padding-section-large {
+      padding-top: 4rem;
+      padding-bottom: 4rem;
+    }
+
+    .contact5-component {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      grid-column-gap: 2.5rem;
+      grid-row-gap: 4rem;
+      align-items: start;
+    }
+
+    .heading-3 {
+      color: var(--white);
+      font-size: 38px;
+      font-weight: 700;
+      line-height: 1.2;
+      margin-bottom: 0;
+    }
+
+    .text-size-medium-desc {
+      color: var(--white);
+      font-size: 21px;
+      font-weight: 400;
+      line-height: 1.6;
+      margin-top: 2rem;
+    }
+
+    /* Form */
+    .contact5-form-block {
+      margin-bottom: 0;
+    }
+
+    .contact5-form {
+      display: grid;
+      grid-template-columns: 1fr;
+      grid-row-gap: 1.5rem;
+      background-color: var(--light-grey);
+      margin-bottom: 0;
+      padding: 0; /* fields have own margin */
+    }
+
+    .form-field-wrapper {
+      margin: 0 25px;
+      position: relative;
+    }
+
+    .form-field-wrapper.first {
+      margin-top: 20px;
+    }
+    .form-field-wrapper.last {
+      margin-bottom: 20px;
+    }
+
+    .form-input {
+      border: 1px solid var(--orange-red);
+      background-color: var(--white);
+      color: var(--black);
+      width: 100%;
+      min-height: 2.75rem;
+      padding: 0.5rem 0.75rem;
+      font-size: 1rem;
+      font-family: Poppins, sans-serif;
+      line-height: 1.6;
+      display: block;
+      outline: none;
+    }
+    .form-input:focus { border-color: #000; }
+    .form-input::placeholder { color: rgba(0,0,0,0.6); }
+    .form-input.textarea {
+      min-height: 11.25rem;
+      padding-top: 0.75rem;
+      padding-bottom: 0.75rem;
+      resize: vertical;
+    }
+
+    .form-checkbox-wrapper {
+      display: flex;
+      align-items: center;
+      margin: 0 25px;
+      padding-left: 0;
+    }
+
+    .form-checkbox-icon {
+      border: 1px solid var(--black);
+      border-radius: 0;
+      width: 1.125rem;
+      min-width: 1.125rem;
+      height: 1.125rem;
+      min-height: 1.125rem;
+      margin-left: 0;
+      margin-right: 0.5rem;
+      cursor: pointer;
+      flex-shrink: 0;
+      position: relative;
+      transition: all 0.2s;
+    }
+    .form-checkbox-icon.checked {
+      background-color: #000;
+      border-color: #000;
+    }
+    .form-checkbox-icon.checked::after {
+      content: '';
+      position: absolute;
+      top: 1px; left: 3px;
+      width: 8px; height: 5px;
+      border-left: 2px solid white;
+      border-bottom: 2px solid white;
+      transform: rotate(-45deg);
+    }
+
+    .form-checkbox-label {
+      color: var(--purple);
+      font-size: 0.875rem;
+      margin: 0;
+      cursor: pointer;
+    }
+    .form-checkbox-label a { color: var(--purple); }
+
+    .btn-submit {
+      border: none;
+      background-color: var(--orange-red);
+      color: var(--white);
+      text-align: center;
+      padding: 0.75rem 1.5rem;
+      font-size: 1rem;
+      font-family: Poppins, sans-serif;
+      font-weight: 600;
+      cursor: pointer;
+      margin: 0 30px 37px 25px;
+      display: block;
+      width: calc(100% - 55px);
+      transition: background-color 0.2s;
+    }
+    .btn-submit:hover { background-color: #e04e0a; }
+
+    .success-message {
+      display: none;
+      background-color: var(--light-grey);
+      padding: 1.5rem;
+    }
+    .success-text { font-weight: 600; }
+    .error-message {
+      display: none;
+      margin-top: 1.5rem;
+      padding: 0.875rem 1rem;
+    }
+    .error-text { color: #e23939; }
+
+    /* ── TESTIMONIALS ── */
+    .section-testimonial {
+      background: #f0f0f0;
+      overflow: hidden;
+    }
+
+    .padding-section-large-5 {
+      padding-top: 3rem;
+      padding-bottom: 1rem;
+    }
+
+    .text-block-12 {
+      color: #6a6ef5;
+      font-size: 38px;
+      font-weight: 700;
+      margin-bottom: 2rem;
+      padding-left: 5%;
+    }
+
+    .testimonial-loop {
+      display: flex;
+      width: max-content;
+      animation: marquee 35s linear infinite;
+    }
+    .testimonial-loop:hover { animation-play-state: paused; }
+
+    @keyframes marquee {
+      0%   { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
+    }
+
+    .testimonial-card {
+      border: 1px solid var(--orange-red);
+      background: white;
+      min-width: 320px;
+      max-width: 380px;
+      padding: 2rem;
+      margin-right: 1.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+
+    .testimonial-arrow {
+      width: 32px;
+      margin-bottom: 1rem;
+    }
+
+    .testimonial-quote {
+      color: #6a6ef5;
+      font-size: 21px;
+      font-style: italic;
+      font-weight: 200;
+      margin-bottom: 1rem;
+      line-height: 1.5;
+    }
+
+    .testimonial-name {
+      color: var(--medium-slate-blue);
+      font-weight: 700;
+      text-align: center;
+      padding-bottom: 5px;
+    }
+
+    .testimonial-org {
+      color: var(--purple);
+      font-size: 0.875rem;
+      opacity: 0.6;
+      text-align: center;
+    }
+
+    /* ── LOGOS ── */
+    .image-wrapper {
+      padding: 0 2rem 2rem;
+    }
+    .image-wrapper img { width: 100%; }
+
+    /* ── KONTAKT ── */
+    .kontakt {
+      background-color: var(--medium-slate-blue);
+    }
+
+    .padding-section-large-3 {
+      padding-top: 2rem;
+      padding-bottom: 1rem;
+    }
+
+    .text-block-13 {
+      margin-bottom: 2rem;
+      font-size: 28px;
+      font-weight: 700;
+      color: white;
+    }
+
+    .layout232-component {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      grid-column-gap: 1.5rem;
+      grid-row-gap: 1rem;
+      align-items: start;
+    }
+
+    .layout232-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width: 100%;
+      text-align: center;
+    }
+
+    .heading-style-h5 {
+      font-size: 1.5rem;
+      font-weight: 700;
+      line-height: 1.4;
+      color: var(--white);
+      margin-bottom: 0.25rem;
+    }
+
+    .heading-style-h5._1 {
+      color: var(--white);
+      font-size: 1.5rem;
+    }
+
+    .contact-role {
+      color: var(--white);
+      font-size: 1rem;
+    }
+
+    .link-contact {
+      color: var(--white);
+      font-size: 1rem;
+    }
+
+    /* ── FOOTER ── */
+    .footer {
+      background-color: var(--medium-slate-blue);
+    }
+
+    .footer-bottom-wrapper {
+      display: flex;
+      justify-content: center;
+      padding: 0 0 2rem;
+    }
+
+    .footer-legal-link {
+      font-size: 0.875rem;
+      text-decoration: underline;
+      color: var(--black);
+    }
+
+    .footer-credit {
+      font-size: 0.875rem;
+      margin-left: 50px;
+      color: var(--black);
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 991px) {
+      .contact5-component { grid-template-columns: 1fr; }
+      .layout232-component { grid-template-columns: 1fr 1fr; }
+      .navbar-menu { display: none; }
+      .navbar-menu.open { display: flex; flex-direction: column; align-items: flex-start; position: fixed; top: 4.5rem; left: 0; right: 0; background: rgba(240,240,240,0.97); padding: 1rem 5%; gap: 8px; }
+      .navbar-hamburger { display: flex; }
+      .heading-3 { font-size: 28px; }
+      .text-block-12 { font-size: 28px; }
+    }
+
+    @media (max-width: 479px) {
+      .layout232-component { grid-template-columns: 1fr; }
+      .testimonial-card { min-width: 280px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- PAGE LOAD OVERLAY -->
+<div class="page-load-overlay" id="pageOverlay">
+  <div class="overlay-left">
+    <div class="letters">
+      <div class="letter-row"><span>IN</span></div>
+      <div class="letter-row"><span>KU</span></div>
+      <div class="letter-row"><span>BA</span></div>
+      <div class="letter-row"><span>TOR</span></div>
+    </div>
+  </div>
+  <div class="overlay-right">
+    <div class="right-text"><span>IDEALISTÓW</span></div>
+  </div>
+  <img src="https://cdn.prod.website-files.com/64d24e4e2a64a9d93d86c2c0/64d24e4e2a64a9d93d86c2cf_Rings%20blue.svg" alt="" class="overlay-rings"/>
+</div>
+
+<!-- NAVBAR -->
+<nav class="navbar" id="navbar">
+  <a href="#" class="navbar-logo">
+    <img src="https://cdn.prod.website-files.com/64d24e4e2a64a9d93d86c2c0/64d24e4e2a64a9d93d86c2e5_inkubator%20idealisto%CC%81w.svg" alt="Inkubator Idealistów" style="height:48px;width:auto;"/>
+  </a>
+  <nav class="navbar-menu" id="navMenu">
+    <a href="#o-nas" class="navbar-link">O nas</a>
+    <a href="#oferta" class="navbar-link">Oferta</a>
+    <a href="#formularz" class="navbar-cta">Porozmawiajmy</a>
+  </nav>
+  <div class="navbar-hamburger" id="hamburger" onclick="toggleMenu()">
+    <div class="hamburger-line"></div>
+    <div class="hamburger-line"></div>
+    <div class="hamburger-line"></div>
+  </div>
+</nav>
+
+<!-- MAIN CONTENT -->
+<div style="overflow:hidden;">
+
+  <!-- FULL-WIDTH IMAGES (Hero, O nas, Co nas wyróżnia, Liczby, Oferta) -->
+  <section class="calosc" id="o-nas">
+    <!-- Hero -->
+    <img
+      src="https://cdn.prod.website-files.com/64d24e4e2a64a9d93d86c2c0/650c08ca41fecbcd742de351_Hero%20wysokosc%20XS%20(1).webp"
+      srcset="https://assets-global.website-files.com/64d24e4e2a64a9d93d86c2c0/650c08ca41fecbcd742de351_Hero%20wysokosc%20XS%20(1)-p-800.webp 800w, https://assets-global.website-files.com/64d24e4e2a64a9d93d86c2c0/650c08ca41fecbcd742de351_Hero%20wysokosc%20XS%20(1)-p-1080.webp 1080w, https://assets-global.website-files.com/64d24e4e2a64a9d93d86c2c0/650c08ca41fecbcd742de351_Hero%20wysokosc%20XS%20(1).webp 1755w"
+      sizes="100vw"
+      loading="eager"
+      alt=""
+      style="width:100%;display:block;"
+    />
+    <!-- O nas -->
+    <img
+      src="https://cdn.prod.website-files.com/64d24e4e2a64a9d93d86c2c0/650bff9bc7f35d08aa2bb0e2_O%20nas%20(1).webp"
+      srcset="https://assets-global.website-files.com/64d24e4e2a64a9d93d86c2c0/650bff9bc7f35d08aa2bb0e2_O%20nas%20(1)-p-800.webp 800w, https://assets-global.website-files.com/64d24e4e2a64a9d93d86c2c0/650bff9bc7f35d08aa2bb0e2_O%20nas%20(1)-p-1080.webp 1080w, https://assets-global.website-files.com/64d24e4e2a64a9d93d86c2c0/650bff9bc7f35d08aa2bb0e2_O%20nas%20(1).webp 1755w"
+      sizes="100vw"
+      alt=""
+      style="width:100%;display:block;"
+    />
+    <!-- Co nas wyróżnia -->
+    <img
+      src="https://cdn.prod.website-files.com/64d24e4e2a64a9d93d86c2c0/650bff9beeae6af74a5d5f82_Co%20nas%20wyroznia.webp"
+      srcset="https://assets-global.website-files.com/64d24e4e2a64a9d93d86c2c0/650bff9beeae6af74a5d5f82_Co%20nas%20wyroznia-p-800.webp 800w, https://assets-global.website-files.com/64d24e4e2a64a9d93d86c2c0/650bff9beeae6af74a5d5f82_Co%20nas%20wyroznia-p-1080.webp 1080w, https://assets-global.website-files.com/64d24e4e2a64a9d93d86c2c0/650bff9beeae6af74a5d5f82_Co%20nas%20wyroznia.webp 1755w"
+      sizes="100vw"
+      alt=""
+      style="width:100%;display:block;"
+    />
+    <!-- Liczby -->
+    <img
+      src="https://cdn.prod.website-files.com/64d24e4e2a64a9d93d86c2c0/6605b5ecbea28105920d4d34_Liczby_update%2027.03.2024.png"
+      srcset="https://assets-global.website-files.com/64d24e4e2a64a9d93d86c2c0/6605b5ecbea28105920d4d34_Liczby_update%2027.03.2024-p-800.png 800w, https://assets-global.website-files.com/64d24e4e2a64a9d93d86c2c0/6605b5ecbea28105920d4d34_Liczby_update%2027.03.2024-p-1080.png 1080w, https://assets-global.website-files.com/64d24e4e2a64a9d93d86c2c0/6605b5ecbea28105920d4d34_Liczby_update%2027.03.2024.png 1755w"
+      sizes="100vw"
+      alt=""
+      style="width:100%;display:block;"
+    />
+    <!-- Oferta -->
+    <img
+      id="oferta"
+      src="https://cdn.prod.website-files.com/64d24e4e2a64a9d93d86c2c0/650bff9b1aabe7e6a8288de9_Oferta.webp"
+      srcset="https://assets-global.website-files.com/64d24e4e2a64a9d93d86c2c0/650bff9b1aabe7e6a8288de9_Oferta-p-800.webp 800w, https://assets-global.website-files.com/64d24e4e2a64a9d93d86c2c0/650bff9b1aabe7e6a8288de9_Oferta-p-1080.webp 1080w, https://assets-global.website-files.com/64d24e4e2a64a9d93d86c2c0/650bff9b1aabe7e6a8288de9_Oferta.webp 1755w"
+      sizes="100vw"
+      alt=""
+      style="width:100%;display:block;"
+    />
+  </section>
+
+  <!-- FORMULARZ -->
+  <section class="formularz" id="formularz">
+    <div class="padding-global">
+      <div class="padding-section-large">
+        <div class="contact5-component">
+          <!-- Left: heading + description -->
+          <div>
+            <div style="margin-bottom:2rem;">
+              <div style="margin-bottom:1.5rem;">
+                <h2 class="heading-3">Porozmawiajmy o tym <br/>jak wspierać osoby starsze!</h2>
+              </div>
+              <p class="text-size-medium-desc">
+                Napisz do nas jeśli potrzebujesz dofinansowania <br/>
+                dla swoich działań, pomysłów na rozwój<br/>
+                lub kontynuację projektów.<br/><br/>
+                Lubimy dzielić się naszą wiedzą i doświadczeniem.
+              </p>
+            </div>
+          </div>
+
+          <!-- Right: form -->
+          <div class="contact5-form-block">
+            <form id="contactForm" novalidate>
+              <div class="contact5-form">
+                <div class="form-field-wrapper first">
+                  <input class="form-input" type="text" name="imie" placeholder="IMIĘ" required maxlength="256"/>
+                </div>
+                <div class="form-field-wrapper">
+                  <input class="form-input" type="text" name="organizacja" placeholder="NAZWA INSTYTUCJI" required maxlength="256"/>
+                </div>
+                <div class="form-field-wrapper">
+                  <input class="form-input" type="email" name="email" placeholder="E-MAIL" required maxlength="256"/>
+                </div>
+                <div class="form-field-wrapper">
+                  <textarea class="form-input textarea" name="wiadomosc" placeholder="WIADOMOŚĆ" required maxlength="5000"></textarea>
+                </div>
+                <div style="margin: 0 25px 0;">
+                  <label class="form-checkbox-wrapper" id="checkboxWrapper">
+                    <div class="form-checkbox-icon" id="checkboxIcon"></div>
+                    <input type="checkbox" name="rodo" id="rodoCheckbox" required style="opacity:0;position:absolute;z-index:-1;"/>
+                    <span class="form-checkbox-label">
+                      <a href="https://app.easy.tools/policies/inkubator-idealistow-2" target="_blank">Akceptuję Politykę Prywatności</a>
+                    </span>
+                  </label>
+                </div>
+                <button type="submit" class="btn-submit">WYŚLIJ WIADOMOŚĆ</button>
+              </div>
+            </form>
+            <div class="success-message" id="successMsg">
+              <div class="success-text">Dziękujemy za wiadomość! Odpowiemy jak najszybciej ;)</div>
+            </div>
+            <div class="error-message" id="errorMsg">
+              <div class="error-text">Oops! Coś poszło nie tak :(</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TESTIMONIALS -->
+  <section class="section-testimonial">
+    <div class="padding-section-large-5">
+      <div class="padding-global" style="padding-bottom:0;">
+        <div>
+          <div class="text-block-12" style="padding-left:0;">Zaufali nam</div>
+        </div>
+      </div>
+      <!-- Infinite scrolling marquee -->
+      <div style="overflow:hidden;padding-bottom:3rem;">
+        <div class="testimonial-loop" id="marquee">
+          <!-- Set 1 -->
+          <div class="testimonial-card">
+            <img src="https://cdn.prod.website-files.com/64d24e4e2a64a9d93d86c2c0/64d77a8204a893ff7e703c4c_Ornament%20Arow.svg" alt="" class="testimonial-arrow"/>
+            <p class="testimonial-quote">Jestem wdzięczna za wszystko, co Pani dla mnie zrobiła i robi.</p>
+            <p class="testimonial-name">Wioletta P.</p>
+            <p class="testimonial-org">NZOZ Max Med</p>
+          </div>
+          <div class="testimonial-card">
+            <img src="https://cdn.prod.website-files.com/64d24e4e2a64a9d93d86c2c0/64d77a8204a893ff7e703c4c_Ornament%20Arow.svg" alt="" class="testimonial-arrow"/>
+            <p class="testimonial-quote">Dzięki indywidualnemu podejściu do naszej firmy oraz profesjonalizmowi pozyskaliśmy 4 projekty unijne.</p>
+            <p class="testimonial-name">Małgorzata A.</p>
+            <p class="testimonial-org">DPS MECENAT</p>
+          </div>
+          <div class="testimonial-card">
+            <img src="https://cdn.prod.website-files.com/64d24e4e2a64a9d93d86c2c0/64d77a8204a893ff7e703c4c_Ornament%20Arow.svg" alt="" class="testimonial-arrow"/>
+            <p class="testimonial-quote">Jeszcze raz dziękuję Paniom za wspaniałą pracę</p>
+            <p class="testimonial-name">Paweł R.</p>
+            <p class="testimonial-org">Fundacja "Dom z Sercem"</p>
+          </div>
+          <div class="testimonial-card">
+            <img src="https://cdn.prod.website-files.com/64d24e4e2a64a9d93d86c2c0/64d77a8204a893ff7e703c4c_Ornament%20Arow.svg" alt="" class="testimonial-arrow"/>
+            <p class="testimonial-quote">Dzięki partnerskiej współpracy projekty zostały zakończone, a poniesione wydatki – w całości rozliczone i zatwierdzone przez instytucję finansującą.</p>
+            <p class="testimonial-name">Adrian B.</p>
+            <p class="testimonial-org">SZPZLO Warszawa - Wawer</p>
+          </div>
+          <div class="testimonial-card">
+            <img src="https://cdn.prod.website-files.com/64d24e4e2a64a9d93d86c2c0/64d77a8204a893ff7e703c4c_Ornament%20Arow.svg" alt="" class="testimonial-arrow"/>
+            <p class="testimonial-quote">Cieszę się, że panie mam.</p>
+            <p class="testimonial-name">Iwona K.</p>
+            <p class="testimonial-org">Fundacja „Leśne Zacisze"</p>
+          </div>
+          <div class="testimonial-card">
+            <img src="https://cdn.prod.website-files.com/64d24e4e2a64a9d93d86c2c0/64d77a8204a893ff7e703c4c_Ornament%20Arow.svg" alt="" class="testimonial-arrow"/>
+            <p class="testimonial-quote">Bardzo doceniam współpracę z Panią, dyspozycyjność i pomoc w każdej zgłoszonej kwestii.</p>
+            <p class="testimonial-name">Wioletta P.</p>
+            <p class="testimonial-org">NZOZ Max Med</p>
+          </div>
+          <div class="testimonial-card">
+            <img src="https://cdn.prod.website-files.com/64d24e4e2a64a9d93d86c2c0/64d77a8204a893ff7e703c4c_Ornament%20Arow.svg" alt="" class="testimonial-arrow"/>
+            <p class="testimonial-quote">Jak zwykle jesteście NAJLEPSZE!</p>
+            <p class="testimonial-name">Paweł R.</p>
+            <p class="testimonial-org">Fundacja "Dom z Sercem"</p>
+          </div>
+          <div class="testimonial-card">
+            <img src="https://cdn.prod.website-files.com/64d24e4e2a64a9d93d86c2c0/64d77a8204a893ff7e703c4c_Ornament%20Arow.svg" alt="" class="testimonial-arrow"/>
+            <p class="testimonial-quote">Super! Bardzo się cieszę z dotacji. To był trudny konkurs. Dziękuję w imieniu brzozowskich seniorów!</p>
+            <p class="testimonial-name">Jolanta L.</p>
+            <p class="testimonial-org">Fundacja „W Trosce o Życie"</p>
+          </div>
+          <div class="testimonial-card">
+            <img src="https://cdn.prod.website-files.com/64d24e4e2a64a9d93d86c2c0/64d77a8204a893ff7e703c4c_Ornament%20Arow.svg" alt="" class="testimonial-arrow"/>
+            <p class="testimonial-quote">Jest Pani Wielka.</p>
+            <p class="testimonial-name">Iwona K.</p>
+            <p class="testimonial-org">Fundacja „Leśne Zacisze"</p>
+          </div>
+          <!-- Set 2 (duplicate for seamless loop) -->
+          <div class="testimonial-card">
+            <img src="https://cdn.prod.website-files.com/64d24e4e2a64a9d93d86c2c0/64d77a8204a893ff7e703c4c_Ornament%20Arow.svg" alt="" class="testimonial-arrow"/>
+            <p class="testimonial-quote">Jestem wdzięczna za wszystko, co Pani dla mnie zrobiła i robi.</p>
+            <p class="testimonial-name">Wioletta P.</p>
+            <p class="testimonial-org">NZOZ Max Med</p>
+          </div>
+          <div class="testimonial-card">
+            <img src="https://cdn.prod.website-files.com/64d24e4e2a64a9d93d86c2c0/64d77a8204a893ff7e703c4c_Ornament%20Arow.svg" alt="" class="testimonial-arrow"/>
+            <p class="testimonial-quote">Dzięki indywidualnemu podejściu do naszej firmy oraz profesjonalizmowi pozyskaliśmy 4 projekty unijne.</p>
+            <p class="testimonial-name">Małgorzata A.</p>
+            <p class="testimonial-org">DPS MECENAT</p>
+          </div>
+          <div class="testimonial-card">
+            <img src="https://cdn.prod.website-files.com/64d24e4e2a64a9d93d86c2c0/64d77a8204a893ff7e703c4c_Ornament%20Arow.svg" alt="" class="testimonial-arrow"/>
+            <p class="testimonial-quote">Jeszcze raz dziękuję Paniom za wspaniałą pracę</p>
+            <p class="testimonial-name">Paweł R.</p>
+            <p class="testimonial-org">Fundacja "Dom z Sercem"</p>
+          </div>
+          <div class="testimonial-card">
+            <img src="https://cdn.prod.website-files.com/64d24e4e2a64a9d93d86c2c0/64d77a8204a893ff7e703c4c_Ornament%20Arow.svg" alt="" class="testimonial-arrow"/>
+            <p class="testimonial-quote">Dzięki partnerskiej współpracy projekty zostały zakończone, a poniesione wydatki – w całości rozliczone i zatwierdzone przez instytucję finansującą.</p>
+            <p class="testimonial-name">Adrian B.</p>
+            <p class="testimonial-org">SZPZLO Warszawa - Wawer</p>
+          </div>
+          <div class="testimonial-card">
+            <img src="https://cdn.prod.website-files.com/64d24e4e2a64a9d93d86c2c0/64d77a8204a893ff7e703c4c_Ornament%20Arow.svg" alt="" class="testimonial-arrow"/>
+            <p class="testimonial-quote">Cieszę się, że panie mam.</p>
+            <p class="testimonial-name">Iwona K.</p>
+            <p class="testimonial-org">Fundacja „Leśne Zacisze"</p>
+          </div>
+          <div class="testimonial-card">
+            <img src="https://cdn.prod.website-files.com/64d24e4e2a64a9d93d86c2c0/64d77a8204a893ff7e703c4c_Ornament%20Arow.svg" alt="" class="testimonial-arrow"/>
+            <p class="testimonial-quote">Bardzo doceniam współpracę z Panią, dyspozycyjność i pomoc w każdej zgłoszonej kwestii.</p>
+            <p class="testimonial-name">Wioletta P.</p>
+            <p class="testimonial-org">NZOZ Max Med</p>
+          </div>
+          <div class="testimonial-card">
+            <img src="https://cdn.prod.website-files.com/64d24e4e2a64a9d93d86c2c0/64d77a8204a893ff7e703c4c_Ornament%20Arow.svg" alt="" class="testimonial-arrow"/>
+            <p class="testimonial-quote">Jak zwykle jesteście NAJLEPSZE!</p>
+            <p class="testimonial-name">Paweł R.</p>
+            <p class="testimonial-org">Fundacja "Dom z Sercem"</p>
+          </div>
+          <div class="testimonial-card">
+            <img src="https://cdn.prod.website-files.com/64d24e4e2a64a9d93d86c2c0/64d77a8204a893ff7e703c4c_Ornament%20Arow.svg" alt="" class="testimonial-arrow"/>
+            <p class="testimonial-quote">Super! Bardzo się cieszę z dotacji. To był trudny konkurs. Dziękuję w imieniu brzozowskich seniorów!</p>
+            <p class="testimonial-name">Jolanta L.</p>
+            <p class="testimonial-org">Fundacja „W Trosce o Życie"</p>
+          </div>
+          <div class="testimonial-card">
+            <img src="https://cdn.prod.website-files.com/64d24e4e2a64a9d93d86c2c0/64d77a8204a893ff7e703c4c_Ornament%20Arow.svg" alt="" class="testimonial-arrow"/>
+            <p class="testimonial-quote">Jest Pani Wielka.</p>
+            <p class="testimonial-name">Iwona K.</p>
+            <p class="testimonial-org">Fundacja „Leśne Zacisze"</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Logos -->
+    <div class="image-wrapper">
+      <img src="https://cdn.prod.website-files.com/64d24e4e2a64a9d93d86c2c0/64d24e4e2a64a9d93d86c2ff_Loga.svg" alt="" loading="lazy"/>
+    </div>
+  </section>
+
+  <!-- KONTAKT -->
+  <section class="kontakt">
+    <div class="padding-global">
+      <div class="padding-section-large-3">
+        <div>
+          <div class="text-block-13">Kontakt</div>
+        </div>
+        <div class="layout232-component">
+          <!-- Row 1: names -->
+          <div class="layout232-item">
+            <div style="margin-bottom:0.25rem;">
+              <h3 class="heading-style-h5">Ewa Fedor – Destrebecq</h3>
+            </div>
+            <p class="contact-role">rozwój pomysłów/projektów</p>
+          </div>
+          <div class="layout232-item">
+            <div style="margin-bottom:0.25rem;">
+              <h3 class="heading-style-h5">Anna Latusek</h3>
+            </div>
+            <p class="contact-role">nadzór nad rozliczaniem projektów</p>
+          </div>
+          <div class="layout232-item">
+            <div style="margin-bottom:0.25rem;">
+              <h3 class="heading-style-h5">Katarzyna Kąkol</h3>
+            </div>
+            <p class="contact-role">rozwój pomysłów/projektów</p>
+          </div>
+          <!-- Row 2: phones + emails -->
+          <div class="layout232-item">
+            <div style="margin-bottom:0.25rem;">
+              <h3 class="heading-style-h5 _1">691 380 714</h3>
+            </div>
+            <p class="contact-role"><a href="mailto:e.fedor@inkubatoridealistow.org.pl?subject=Formularz" class="link-contact">e.fedor@inkubatoridealistow.org.pl</a></p>
+          </div>
+          <div class="layout232-item">
+            <div style="margin-bottom:0.25rem;">
+              <h3 class="heading-style-h5 _1">609 966 215</h3>
+            </div>
+            <p class="contact-role"><a href="mailto:a.latusek@inkubatoridealistow.org.pl?subject=Formularz" class="link-contact">a.latusek@inkubatoridealistow.org.pl</a></p>
+          </div>
+          <div class="layout232-item">
+            <div style="margin-bottom:0.25rem;">
+              <h3 class="heading-style-h5 _1">501 077 931</h3>
+            </div>
+            <p class="contact-role"><a href="mailto:k.kakol@inkubatoridealistow.org.pl?subject=Formularz" class="link-contact">k.kakol@inkubatoridealistow.org.pl</a></p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="padding-global _2" style="padding-left:5%;padding-right:5%;">
+      <div>
+        <div style="padding:0 0 2rem;">
+          <div class="footer-bottom-wrapper">
+            <a href="https://app.easy.tools/policies/inkubator-idealistow-2" target="_blank" class="footer-legal-link">Polityka Prywatności</a>
+            <div class="footer-credit">Copyright © 2023 Inkubator Idealistów. All rights reserved.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+</div><!-- /main -->
+
+<script>
+  // Hide overlay after animation
+  window.addEventListener('load', function() {
+    setTimeout(function() {
+      var overlay = document.getElementById('pageOverlay');
+      if (overlay) overlay.style.display = 'none';
+    }, 2400);
+  });
+
+  // Mobile menu
+  function toggleMenu() {
+    var menu = document.getElementById('navMenu');
+    menu.classList.toggle('open');
+  }
+
+  // Custom checkbox
+  var checkboxIcon = document.getElementById('checkboxIcon');
+  var rodoCheckbox = document.getElementById('rodoCheckbox');
+  checkboxIcon.addEventListener('click', function() {
+    rodoCheckbox.checked = !rodoCheckbox.checked;
+    checkboxIcon.classList.toggle('checked', rodoCheckbox.checked);
+  });
+
+  // Form submit
+  document.getElementById('contactForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+
+    var imie = this.querySelector('[name="imie"]').value.trim();
+    var org  = this.querySelector('[name="organizacja"]').value.trim();
+    var mail = this.querySelector('[name="email"]').value.trim();
+    var msg  = this.querySelector('[name="wiadomosc"]').value.trim();
+    var rodo = rodoCheckbox.checked;
+
+    if (!imie || !org || !mail || !msg || !rodo) {
+      document.getElementById('errorMsg').style.display = 'block';
+      document.getElementById('successMsg').style.display = 'none';
+      return;
+    }
+
+    // Simulate send
+    var btn = this.querySelector('.btn-submit');
+    btn.textContent = 'Proszę czekać...';
+    btn.disabled = true;
+
+    setTimeout(function() {
+      document.getElementById('contactForm').style.display = 'none';
+      document.getElementById('successMsg').style.display = 'block';
+      document.getElementById('errorMsg').style.display = 'none';
+    }, 1000);
+  });
+
+  // Clear error on input
+  document.querySelectorAll('.form-input').forEach(function(el) {
+    el.addEventListener('input', function() {
+      document.getElementById('errorMsg').style.display = 'none';
+    });
+  });
+</script>
+</body>
+</html>
