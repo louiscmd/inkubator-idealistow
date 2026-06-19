@@ -167,68 +167,56 @@
     /* ─── HERO ─── */
     #hero {
       min-height: 88vh;
-      display: flex;
-      align-items: center;
-      padding-top: 60px;
-      padding-bottom: 60px;
+      position: relative;
+      overflow: hidden;
+      padding: 0;
     }
-    .hero-inner { position: relative; z-index: 1; max-width: 600px; }
+    /* Blob: left-center, large — mirrors original */
+    .hero-blob {
+      position: absolute; left: 4%; top: 3%;
+      width: 44%; height: 94%;
+      z-index: 0; opacity: 0.75;
+    }
+    .hero-blob svg { width: 100%; height: 100%; }
+    /* Orange box overlaid on top of blob */
     .hero-box {
+      position: absolute;
+      left: 17%; top: 38%;
+      z-index: 2;
       background: var(--orange);
       padding: 36px 44px;
-      display: inline-block;
+      width: 46%;
     }
     .hero-box h1 {
       color: var(--white);
-      font-size: clamp(1.6rem, 3vw, 2.2rem);
+      font-size: clamp(1.4rem, 2.4vw, 2rem);
       font-weight: 800;
-      line-height: 1.2;
+      line-height: 1.25;
     }
-    .hero-arrow {
-      position: absolute; bottom: -48px; left: 50%;
-      transform: translateX(-50%);
-      color: var(--orange); font-size: 1.4rem;
-    }
-    /* hero decorations */
-    .hero-blob {
-      position: absolute; right: -2%; top: 50%;
-      transform: translateY(-50%);
-      width: 48%; max-width: 700px; z-index: 0;
-      opacity: 0.7;
-    }
-    .hero-dots-tr { grid-template-columns: repeat(5,1fr); top: 12%; right: 34%; }
-    .hero-dots-tr .dot { background: var(--orange); }
-    .hero-vdots { display: flex; flex-direction: column; gap: 10px; position: absolute; right: 32%; bottom: 12%; }
-    .hero-vdot { width: 5px; height: 5px; border-radius: 50%; background: var(--orange); opacity: 0.5; }
-    .hero-circle-lg { width: 28px; height: 28px; top: 36%; right: 31%; }
-    .hero-circle-sm1 { width: 8px; height: 8px; bottom: 26%; right: 30%; }
-    .hero-circle-sm2 { width: 8px; height: 8px; bottom: 19%; right: 33%; }
-    .hero-circle-sm3 { width: 8px; height: 8px; bottom: 26%; right: 36%; }
 
     /* ─── O NAS ─── */
     #o-nas {
       background: var(--bg);
-      padding-top: 80px; padding-bottom: 80px;
-    }
-    .o-nas-grid {
-      display: grid; grid-template-columns: 1fr 1fr; gap: 60px;
-      align-items: start; position: relative; z-index: 1;
+      padding: 80px 5% 80px calc(5% + 30px);
+      position: relative; overflow: hidden;
     }
     .o-nas-heading {
-      font-size: clamp(1.5rem, 2.5vw, 2rem);
+      font-size: clamp(1.6rem, 2.6vw, 2.1rem);
       font-weight: 700; font-style: italic;
       color: var(--purple); line-height: 1.3;
       margin-bottom: 28px;
+      max-width: 52%;
     }
     .o-nas-text {
       font-size: 1rem; color: var(--dark-purple);
       line-height: 1.75; margin-bottom: 20px;
+      max-width: 52%;
     }
     .o-nas-blob {
-      position: absolute; right: -4%; top: 50%;
-      transform: translateY(-50%);
-      width: 46%; z-index: 0; opacity: 0.55;
+      position: absolute; right: -3%; top: 5%;
+      width: 46%; height: 90%; z-index: 0; opacity: 0.55;
     }
+    .o-nas-blob svg { width: 100%; height: 100%; }
 
     /* ─── CO NAS WYRÓŻNIA ─── */
     #wyroznia {
@@ -617,89 +605,86 @@
 </nav>
 
 <!-- ═══════════ HERO ═══════════ -->
-<section class="section" id="hero">
-  <div class="sidebar-line"></div>
+<section id="hero">
+  <!-- Left sidebar line -->
+  <div class="sidebar-line" style="position:absolute;left:5%;top:0;bottom:0;width:1px;background:var(--orange);pointer-events:none;z-index:1;"></div>
+  <div style="position:absolute;left:5%;top:30%;width:13px;height:1px;background:var(--orange);z-index:1;"></div>
+  <div style="position:absolute;left:5%;top:60%;width:13px;height:1px;background:var(--orange);z-index:1;"></div>
 
-  <!-- Topographic blob (right) -->
+  <!-- Topographic blob: LEFT/CENTER (the dominant background element) -->
   <div class="hero-blob">
-    <svg viewBox="0 0 600 580" fill="none" xmlns="http://www.w3.org/2000/svg" class="blob-svg">
-      <path d="M300,50 C420,50 520,130 540,250 C560,370 480,470 360,510 C240,550 120,490 70,380 C20,270 70,130 160,80 C210,55 255,50 300,50Z" stroke="#6a6ef5" stroke-width="1.2" fill="none"/>
-      <path d="M300,75 C410,75 505,148 522,258 C539,368 463,460 348,498 C233,536 121,479 75,374 C29,269 77,137 162,89 C209,67 256,75 300,75Z" stroke="#6a6ef5" stroke-width="1" fill="none"/>
-      <path d="M300,100 C400,100 490,165 505,265 C520,365 448,450 338,485 C228,520 124,467 81,368 C38,269 84,145 163,99 C207,79 257,100 300,100Z" stroke="#6a6ef5" stroke-width="1" fill="none"/>
-      <path d="M300,125 C388,125 474,183 487,272 C500,361 432,440 327,472 C222,504 126,455 87,362 C48,269 92,153 165,109 C206,91 257,125 300,125Z" stroke="#6a6ef5" stroke-width="0.9" fill="none"/>
-      <path d="M300,150 C376,150 458,200 469,279 C480,358 416,430 316,459 C216,488 128,443 92,356 C56,269 99,162 167,120 C206,103 257,150 300,150Z" stroke="#6a6ef5" stroke-width="0.9" fill="none"/>
-      <path d="M300,175 C365,175 442,217 451,286 C460,355 400,420 305,446 C210,472 130,431 97,350 C64,269 106,170 169,130 C206,115 258,175 300,175Z" stroke="#6a6ef5" stroke-width="0.8" fill="none"/>
-      <path d="M300,200 C354,200 426,234 433,293 C440,352 384,410 294,433 C204,456 132,419 102,344 C72,269 113,178 171,140 C206,127 259,200 300,200Z" stroke="#6a6ef5" stroke-width="0.8" fill="none"/>
-      <path d="M300,220 C344,220 412,249 417,301 C422,353 368,402 284,422 C200,442 134,408 106,339 C78,270 119,185 173,148 C207,137 260,220 300,220Z" stroke="#6a6ef5" stroke-width="0.7" fill="none"/>
-      <path d="M300,240 C335,240 398,264 401,309 C404,354 353,394 275,411 C197,428 135,397 110,334 C85,271 124,192 174,157 C208,146 261,240 300,240Z" stroke="#6a6ef5" stroke-width="0.7" fill="none"/>
-      <path d="M300,260 C326,260 383,279 385,317 C387,355 338,386 265,400 C192,414 137,386 114,329 C91,272 130,199 176,166 C209,156 262,260 300,260Z" stroke="#6a6ef5" stroke-width="0.6" fill="none"/>
-      <path d="M300,278 C318,278 369,293 370,324 C371,355 325,378 257,390 C189,402 138,376 117,324 C96,272 135,206 177,175 C210,165 263,278 300,278Z" stroke="#6a6ef5" stroke-width="0.6" fill="none"/>
-      <path d="M300,294 C311,294 355,307 354,332 C353,357 313,370 249,380 C185,390 138,366 120,319 C102,272 139,213 178,183 C210,174 264,294 300,294Z" stroke="#6a6ef5" stroke-width="0.5" fill="none"/>
-      <!-- diagonal line decoration -->
-      <line x1="200" y1="520" x2="500" y2="100" stroke="#6a6ef5" stroke-width="0.8" opacity="0.4"/>
-      <line x1="50"  y1="400" x2="300" y2="80"  stroke="#6a6ef5" stroke-width="0.6" opacity="0.3"/>
+    <svg viewBox="0 0 560 700" fill="none" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet">
+      <path d="M260,30 C360,20 460,80 490,180 C520,280 490,390 410,460 C330,530 200,540 120,480 C40,420 10,300 30,200 C50,100 160,40 260,30Z" stroke="#6a6ef5" stroke-width="1.4" fill="none"/>
+      <path d="M260,55 C352,46 445,102 474,195 C503,288 473,392 397,459 C321,526 196,536 118,477 C40,418 13,303 33,207 C53,111 168,64 260,55Z" stroke="#6a6ef5" stroke-width="1.2" fill="none"/>
+      <path d="M260,80 C344,72 430,123 457,210 C484,297 456,393 384,458 C312,523 192,532 117,474 C42,416 17,305 37,213 C57,121 176,88 260,80Z" stroke="#6a6ef5" stroke-width="1.1" fill="none"/>
+      <path d="M260,104 C336,97 415,144 440,224 C465,304 440,393 371,456 C302,519 188,528 116,471 C44,414 21,308 41,220 C61,132 184,111 260,104Z" stroke="#6a6ef5" stroke-width="1" fill="none"/>
+      <path d="M260,128 C328,122 400,164 423,237 C446,310 424,393 358,453 C292,513 184,522 115,467 C46,412 25,311 45,227 C65,143 192,134 260,128Z" stroke="#6a6ef5" stroke-width="0.9" fill="none"/>
+      <path d="M260,150 C321,145 385,183 406,250 C427,317 407,393 345,450 C283,507 180,516 114,463 C48,410 29,313 49,234 C69,155 199,155 260,150Z" stroke="#6a6ef5" stroke-width="0.9" fill="none"/>
+      <path d="M260,172 C314,168 370,202 389,263 C408,324 391,393 332,447 C273,501 176,510 113,459 C50,408 33,315 53,240 C73,165 206,176 260,172Z" stroke="#6a6ef5" stroke-width="0.8" fill="none"/>
+      <path d="M260,193 C307,189 356,220 373,275 C390,330 375,393 319,445 C263,497 172,505 112,455 C52,405 37,317 57,246 C77,175 213,197 260,193Z" stroke="#6a6ef5" stroke-width="0.7" fill="none"/>
+      <path d="M260,213 C300,210 342,237 357,286 C372,335 360,393 307,442 C254,491 168,499 111,451 C54,403 41,318 61,252 C81,186 220,216 260,213Z" stroke="#6a6ef5" stroke-width="0.7" fill="none"/>
+      <path d="M260,232 C294,229 329,253 342,297 C355,341 345,392 295,439 C245,486 164,493 111,447 C58,401 45,319 65,258 C85,197 226,235 260,232Z" stroke="#6a6ef5" stroke-width="0.6" fill="none"/>
+      <path d="M260,250 C288,248 316,268 327,307 C338,346 330,392 283,436 C236,480 160,487 110,443 C60,399 49,321 69,264 C89,207 232,252 260,250Z" stroke="#6a6ef5" stroke-width="0.55" fill="none"/>
+      <path d="M260,267 C282,265 303,282 312,317 C321,352 315,392 271,432 C227,472 156,479 109,438 C62,397 53,322 73,270 C93,218 238,269 260,267Z" stroke="#6a6ef5" stroke-width="0.5" fill="none"/>
+      <!-- diagonal lines going through blob -->
+      <line x1="30"  y1="590" x2="440" y2="80"  stroke="#6a6ef5" stroke-width="0.9" opacity="0.35"/>
+      <line x1="80"  y1="650" x2="530" y2="100" stroke="#6a6ef5" stroke-width="0.7" opacity="0.25"/>
     </svg>
   </div>
 
-  <!-- Dot grid top-right -->
-  <div class="dot-grid hero-dots-tr" style="grid-template-columns: repeat(5,1fr); top:10%; right:32%;">
-    <div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div>
-    <div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div>
-    <div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div>
+  <!-- Right-side decorations (dot grid, circles) -->
+  <!-- 3×4 dot grid ~55% from left, ~24% from top -->
+  <div class="dot-grid" style="grid-template-columns:repeat(4,1fr);top:24%;left:57%;gap:9px;">
+    <div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div>
+    <div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div>
+    <div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div>
   </div>
-
-  <!-- Circle decorations -->
-  <div class="circle-deco" style="width:28px;height:28px;top:37%;right:31%;"></div>
-  <div class="circle-deco" style="width:8px;height:8px;bottom:28%;right:30%;"></div>
-  <div class="circle-deco" style="width:8px;height:8px;bottom:21%;right:33%;"></div>
-  <div class="circle-deco" style="width:8px;height:8px;bottom:28%;right:37%;"></div>
-
-  <!-- Vertical dot column bottom-right -->
-  <div style="position:absolute;right:31%;bottom:18%;display:flex;flex-direction:column;gap:10px;">
-    <div style="width:5px;height:5px;border-radius:50%;background:var(--orange);opacity:.5;"></div>
-    <div style="width:5px;height:5px;border-radius:50%;background:var(--orange);opacity:.5;"></div>
-    <div style="width:5px;height:5px;border-radius:50%;background:var(--orange);opacity:.5;"></div>
+  <!-- Large hollow circle ~70%, 36% -->
+  <div class="circle-deco" style="width:26px;height:26px;top:36%;left:70%;"></div>
+  <!-- Stacked small right-side dots ~70%, 70% -->
+  <div style="position:absolute;top:69%;left:70%;display:flex;flex-direction:column;gap:9px;">
+    <div class="circle-deco" style="width:7px;height:7px;position:static;border-radius:50%;border:1.5px solid var(--orange);"></div>
+    <div class="circle-deco" style="width:7px;height:7px;position:static;border-radius:50%;border:1.5px solid var(--orange);"></div>
+    <div class="circle-deco" style="width:7px;height:7px;position:static;border-radius:50%;border:1.5px solid var(--orange);"></div>
   </div>
+  <!-- Single small circle ~70%, 80% -->
+  <div class="circle-deco" style="width:8px;height:8px;top:80%;left:70%;"></div>
 
-  <!-- Orange down-arrow -->
-  <div style="position:absolute;bottom:28px;left:50%;transform:translateX(-50%);color:var(--orange);font-size:1.3rem;opacity:.8;">↓</div>
+  <!-- Tiny orange circle bottom-left area -->
+  <div class="circle-deco" style="width:14px;height:14px;bottom:18%;left:10%;"></div>
 
-  <!-- Hero text box -->
-  <div class="hero-inner">
-    <div class="hero-box">
-      <h1>Pomagamy organizacjom społecznym w działaniu na rzecz poprawy jakości życia osób starszych i ich opiekunów</h1>
-    </div>
+  <!-- Orange down-arrow bottom-center -->
+  <div style="position:absolute;bottom:24px;left:41%;color:var(--orange);font-size:1.2rem;z-index:2;">↓</div>
+
+  <!-- Orange box overlaid on blob, lower-left of blob -->
+  <div class="hero-box">
+    <h1>Pomagamy organizacjom społecznym w działaniu na rzecz poprawy jakości życia osób starszych i ich opiekunów</h1>
   </div>
 </section>
 
 <!-- ═══════════ O NAS ═══════════ -->
-<section class="section" id="o-nas">
+<section id="o-nas">
   <div class="sidebar-line"></div>
 
-  <!-- blob right -->
+  <!-- Blob: right side -->
   <div class="o-nas-blob">
-    <svg viewBox="0 0 600 580" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <path d="M300,50 C420,50 520,130 540,250 C560,370 480,470 360,510 C240,550 120,490 70,380 C20,270 70,130 160,80 C210,55 255,50 300,50Z" stroke="#6a6ef5" stroke-width="1.2" fill="none"/>
-      <path d="M300,80 C405,80 500,153 518,258 C536,363 462,455 348,492 C234,529 123,473 78,371 C33,269 80,140 162,92 C208,70 257,80 300,80Z" stroke="#6a6ef5" stroke-width="1" fill="none"/>
-      <path d="M300,110 C390,110 480,176 496,267 C512,358 442,443 333,477 C224,511 124,459 83,363 C42,267 87,148 163,103 C207,83 257,110 300,110Z" stroke="#6a6ef5" stroke-width="1" fill="none"/>
-      <path d="M300,140 C375,140 460,199 474,275 C488,351 422,430 318,461 C214,492 125,445 88,355 C51,265 94,155 165,113 C206,94 258,140 300,140Z" stroke="#6a6ef5" stroke-width="0.9" fill="none"/>
-      <path d="M300,168 C362,168 441,215 453,283 C465,351 402,418 304,446 C206,474 126,431 92,347 C58,263 99,161 166,122 C205,104 258,168 300,168Z" stroke="#6a6ef5" stroke-width="0.8" fill="none"/>
-      <path d="M300,195 C350,195 422,231 432,291 C442,351 383,407 291,432 C199,457 127,418 96,340 C65,262 103,166 167,131 C205,114 258,195 300,195Z" stroke="#6a6ef5" stroke-width="0.8" fill="none"/>
-      <path d="M300,220 C339,220 404,248 412,299 C420,350 364,398 278,420 C192,442 128,406 100,333 C72,260 108,171 168,139 C205,124 259,220 300,220Z" stroke="#6a6ef5" stroke-width="0.7" fill="none"/>
-      <path d="M300,244 C328,244 386,264 392,307 C398,350 346,389 265,408 C184,427 129,394 103,327 C77,260 112,177 169,147 C205,134 259,244 300,244Z" stroke="#6a6ef5" stroke-width="0.6" fill="none"/>
-      <line x1="100" y1="520" x2="450" y2="80"  stroke="#6a6ef5" stroke-width="0.7" opacity="0.35"/>
-      <line x1="60"  y1="360" x2="320" y2="60"  stroke="#6a6ef5" stroke-width="0.5" opacity="0.25"/>
+    <svg viewBox="0 0 560 600" fill="none" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet">
+      <path d="M280,30 C390,20 490,90 510,200 C530,310 480,420 380,470 C280,520 160,500 90,410 C20,320 30,180 100,100 C160,30 220,38 280,30Z" stroke="#6a6ef5" stroke-width="1.3" fill="none"/>
+      <path d="M280,58 C382,49 476,114 495,217 C514,320 466,424 370,472 C274,520 158,500 91,413 C24,326 35,191 102,113 C161,44 224,65 280,58Z" stroke="#6a6ef5" stroke-width="1.1" fill="none"/>
+      <path d="M280,85 C374,77 462,137 479,233 C496,329 452,427 360,473 C268,519 157,500 92,415 C27,330 40,201 104,126 C162,60 228,92 280,85Z" stroke="#6a6ef5" stroke-width="1" fill="none"/>
+      <path d="M280,111 C366,104 448,160 463,249 C478,338 438,430 350,474 C262,518 156,499 93,417 C30,335 44,211 106,139 C163,75 232,118 280,111Z" stroke="#6a6ef5" stroke-width="0.9" fill="none"/>
+      <path d="M280,136 C358,130 434,182 447,264 C460,346 424,431 340,473 C256,515 156,497 94,418 C32,339 48,221 108,152 C164,91 236,142 280,136Z" stroke="#6a6ef5" stroke-width="0.8" fill="none"/>
+      <path d="M280,159 C350,154 420,202 431,278 C442,354 410,432 330,472 C250,512 156,495 95,419 C34,343 52,230 110,164 C165,106 240,164 280,159Z" stroke="#6a6ef5" stroke-width="0.75" fill="none"/>
+      <path d="M280,181 C342,177 405,221 414,291 C423,361 396,432 320,470 C244,508 156,492 96,420 C36,348 56,239 112,177 C166,122 244,185 280,181Z" stroke="#6a6ef5" stroke-width="0.7" fill="none"/>
+      <path d="M280,202 C335,198 391,239 398,304 C405,369 382,432 310,468 C238,504 156,489 97,420 C38,351 60,248 114,189 C167,137 248,206 280,202Z" stroke="#6a6ef5" stroke-width="0.6" fill="none"/>
+      <line x1="80"  y1="550" x2="430" y2="60"  stroke="#6a6ef5" stroke-width="0.8" opacity="0.3"/>
+      <line x1="30"  y1="400" x2="320" y2="40"  stroke="#6a6ef5" stroke-width="0.6" opacity="0.2"/>
     </svg>
   </div>
 
-  <div class="o-nas-grid">
-    <div>
-      <p class="o-nas-heading">Jesteśmy ekspertami<br/>do wspierania organizacji<br/>działających na rzecz<br/>osób starszych.</p>
-      <p class="o-nas-text">Znamy potrzeby i wyzwania, z jakimi zmagają się organizacje funkcjonujące w tym obszarze. Dlatego oprócz pozyskania dotacji służymy radą, pomocą i dzielimy się pomysłami.</p>
-      <p class="o-nas-text">Największą nagrodą dla nas są przedsięwzięcia, które przy wspólnym działaniu skutkują długofalową poprawą jakości życia osób starszych.</p>
-    </div>
-    <div></div><!-- blob takes this space -->
-  </div>
+  <p class="o-nas-heading">Jesteśmy ekspertami<br/>do wspierania organizacji<br/>działających na rzecz<br/>osób starszych.</p>
+  <p class="o-nas-text">Znamy potrzeby i wyzwania, z jakimi zmagają się organizacje funkcjonujące w tym obszarze. Dlatego oprócz pozyskania dotacji służymy radą, pomocą i dzielimy się pomysłami.</p>
+  <p class="o-nas-text">Największą nagrodą dla nas są przedsięwzięcia, które przy wspólnym działaniu skutkują długofalową poprawą jakości życia osób starszych.</p>
 </section>
 
 <!-- ═══════════ CO NAS WYRÓŻNIA ═══════════ -->
