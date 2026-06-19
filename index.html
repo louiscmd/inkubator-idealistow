@@ -6,25 +6,24 @@
   <title>Inkubator Idealistów</title>
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700;800;900&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,300;1,400;1,600;1,700;1,800&display=swap" rel="stylesheet"/>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    * { -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
 
     :root {
-      --black: black;
-      --white: white;
-      --light-grey: #f4f4f4;
-      --orange-red: #ff5f1b;
-      --purple: #533341;
-      --medium-slate-blue: #6a6ef5;
+      --orange: #ff5f1b;
+      --purple: #6a6ef5;
+      --dark-purple: #533341;
+      --bg: #f0f0f0;
+      --white: #ffffff;
+      --black: #000000;
     }
-
-    * { -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
 
     html { scroll-behavior: smooth; }
 
     body {
-      background-color: #f0f0f0;
+      background: var(--bg);
       font-family: Poppins, sans-serif;
       color: var(--black);
       font-size: 1rem;
@@ -32,905 +31,1093 @@
       overflow-x: hidden;
     }
 
-    h1,h2,h3,h4,h5,h6 { margin: 0; }
     p { margin: 0; }
-    a { color: var(--black); text-decoration: underline; }
+    a { color: inherit; text-decoration: underline; }
     img { max-width: 100%; display: block; }
 
-    /* ── PAGE LOAD OVERLAY ── */
-    .page-load-overlay {
-      position: fixed;
-      top: 0; left: 0; right: 0; bottom: 0;
+    /* ─── PAGE LOAD OVERLAY ─── */
+    .overlay {
+      position: fixed; inset: 0;
       z-index: 9999;
       display: flex;
-      background: #f0f0f0;
+      background: var(--bg);
       pointer-events: none;
-      animation: overlayFade 0.5s 1.8s forwards;
+      animation: overlayOut 0.4s 2s forwards;
     }
-
-    @keyframes overlayFade {
-      to { opacity: 0; visibility: hidden; }
-    }
+    @keyframes overlayOut { to { opacity: 0; visibility: hidden; } }
 
     .overlay-left {
-      flex: 1;
-      display: flex;
-      align-items: flex-end;
-      padding: 4vw 3vw;
+      flex: 1; display: flex; align-items: flex-end; padding: 5vw 4vw;
     }
     .overlay-right {
-      flex: 1;
-      display: flex;
-      align-items: flex-start;
-      justify-content: flex-end;
-      padding: 4vw 3vw;
+      flex: 1; display: flex; align-items: flex-start; justify-content: flex-end; padding: 5vw 4vw;
     }
-
-    .overlay-left .letters {
-      display: flex;
-      flex-direction: column;
-      line-height: 1;
-      overflow: hidden;
-    }
-    .overlay-left .letter-row {
-      overflow: hidden;
-      height: 1em;
-    }
-    .overlay-left .letter-row span {
+    .overlay-letters { display: flex; flex-direction: column; line-height: 1; }
+    .overlay-row { overflow: hidden; }
+    .overlay-row span {
       display: block;
-      font-size: clamp(3rem, 8vw, 7rem);
+      font-size: clamp(3.5rem, 9vw, 8rem);
       font-weight: 900;
-      color: var(--medium-slate-blue);
+      color: var(--purple);
       transform: translateY(120%);
-      animation: letterUp 0.5s cubic-bezier(.16,1,.3,1) forwards;
+      animation: slideUp 0.55s cubic-bezier(.16,1,.3,1) forwards;
     }
-    .letter-row:nth-child(1) span { animation-delay: 0.05s; }
-    .letter-row:nth-child(2) span { animation-delay: 0.15s; }
-    .letter-row:nth-child(3) span { animation-delay: 0.25s; }
-    .letter-row:nth-child(4) span { animation-delay: 0.35s; }
-
-    @keyframes letterUp {
-      to { transform: translateY(0); }
-    }
-
-    .overlay-right .right-text {
-      overflow: hidden;
-      height: 1em;
-      display: flex;
-      align-items: center;
-    }
-    .overlay-right .right-text span {
+    .overlay-row:nth-child(1) span { animation-delay: 0.05s; }
+    .overlay-row:nth-child(2) span { animation-delay: 0.15s; }
+    .overlay-row:nth-child(3) span { animation-delay: 0.25s; }
+    .overlay-row:nth-child(4) span { animation-delay: 0.35s; }
+    .overlay-right-text { overflow: hidden; }
+    .overlay-right-text span {
       display: block;
-      font-size: clamp(2rem, 5vw, 4.5rem);
+      font-size: clamp(2rem, 5vw, 5rem);
       font-weight: 900;
-      color: var(--medium-slate-blue);
-      transform: translateY(76px);
-      animation: letterUp 0.6s 0.5s cubic-bezier(.16,1,.3,1) forwards;
+      color: var(--purple);
+      transform: translateY(80px);
+      animation: slideUp 0.6s 0.5s cubic-bezier(.16,1,.3,1) forwards;
     }
-
     .overlay-rings {
-      position: absolute;
-      right: 50%;
-      bottom: 50%;
-      transform: translate(50%, 50%);
-      width: clamp(100px, 20vw, 200px);
+      position: absolute; left: 50%; top: 50%; transform: translate(-50%,-50%);
+      width: clamp(100px, 18vw, 220px);
       opacity: 0;
-      animation: ringsIn 0.8s 0.2s forwards;
+      animation: fadeIn 0.8s 0.15s forwards;
     }
-    @keyframes ringsIn {
-      to { opacity: 1; }
-    }
+    @keyframes slideUp { to { transform: translateY(0); } }
+    @keyframes fadeIn  { to { opacity: 1; } }
 
-    /* ── NAVBAR ── */
+    /* ─── NAVBAR ─── */
     .navbar {
-      z-index: 10001;
-      background-color: rgba(240, 240, 240, 0.7);
-      backdrop-filter: blur(5px);
-      -webkit-backdrop-filter: blur(5px);
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      width: 100%;
-      min-height: 4.5rem;
-      padding: 1% 5%;
-      position: sticky;
-      top: 0;
+      position: sticky; top: 0; z-index: 1000;
+      display: flex; align-items: center; justify-content: space-between;
+      background: rgba(240,240,240,0.75);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      padding: 0 5%;
+      min-height: 72px;
     }
-
-    .navbar-logo {
-      display: block;
-      text-decoration: none;
+    .nav-logo {
+      font-size: 0.8rem; font-weight: 800; letter-spacing: 0.15em;
+      text-transform: uppercase; color: var(--orange); text-decoration: none;
+      line-height: 1.2;
     }
-    .navbar-logo img {
-      height: 48px;
-      width: auto;
-    }
-
-    .navbar-menu {
-      display: flex;
-      align-items: center;
-      gap: 0;
-    }
-
-    .navbar-link {
-      color: #6a6ef5;
-      padding: 0.5rem 40px;
-      font-size: 18px;
-      font-weight: 400;
-      text-decoration: none;
-      display: inline-block;
+    .nav-logo img { height: 44px; width: auto; }
+    .nav-links { display: flex; align-items: center; gap: 0; }
+    .nav-link {
+      color: var(--purple); font-size: 18px; font-weight: 400;
+      text-decoration: none; padding: 0.5rem 40px;
       transition: opacity 0.2s;
     }
-    .navbar-link:hover { opacity: 0.7; }
+    .nav-link:hover { opacity: 0.7; }
+    .nav-cta {
+      background: var(--orange); color: var(--white);
+      font-size: 18px; font-weight: 600; text-transform: uppercase;
+      padding: 15px 25px; text-decoration: none;
+      transition: background 0.2s;
+    }
+    .nav-cta:hover { background: #e04e0a; }
+    .nav-burger { display: none; flex-direction: column; gap: 5px; cursor: pointer; }
+    .burger-line { width: 24px; height: 2px; background: var(--purple); }
 
-    .navbar-cta {
-      color: var(--white);
-      background-color: #ff5f1b;
-      padding: 15px 25px;
-      font-size: 18px;
-      font-weight: 600;
-      text-transform: uppercase;
-      text-decoration: none;
-      display: inline-block;
-      transition: background-color 0.2s;
-      font-family: Poppins, sans-serif;
+    /* ─── LEFT SIDEBAR LINE ─── */
+    .sidebar-line {
+      position: absolute; left: 5%; top: 0; bottom: 0;
+      width: 1px; background: var(--orange); pointer-events: none;
     }
-    .navbar-cta:hover { background-color: #e04e0a; }
-
-    .navbar-hamburger {
-      display: none;
-      flex-direction: column;
-      gap: 5px;
-      cursor: pointer;
-      padding: 8px;
-    }
-    .hamburger-line {
-      width: 24px; height: 2px;
-      background: #6a6ef5;
-      transition: all 0.3s;
-    }
-
-    /* ── CALOSC (full-width images) ── */
-    .calosc img {
-      width: 100%;
-      display: block;
-    }
-
-    /* ── FORMULARZ SECTION ── */
-    .formularz {
-      background-color: var(--orange-red);
-      padding: 0;
-    }
-
-    .padding-global {
-      padding-left: 5%;
-      padding-right: 5%;
-      padding-bottom: 1%;
-      position: relative;
-      z-index: 0;
-    }
-
-    .padding-section-large {
-      padding-top: 4rem;
-      padding-bottom: 4rem;
-    }
-
-    .contact5-component {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      grid-column-gap: 2.5rem;
-      grid-row-gap: 4rem;
-      align-items: start;
-    }
-
-    .heading-3 {
-      color: var(--white);
-      font-size: 38px;
-      font-weight: 700;
-      line-height: 1.2;
-      margin-bottom: 0;
-    }
-
-    .text-size-medium-desc {
-      color: var(--white);
-      font-size: 21px;
-      font-weight: 400;
-      line-height: 1.6;
-      margin-top: 2rem;
-    }
-
-    /* Form */
-    .contact5-form-block {
-      margin-bottom: 0;
-    }
-
-    .contact5-form {
-      display: grid;
-      grid-template-columns: 1fr;
-      grid-row-gap: 1.5rem;
-      background-color: var(--light-grey);
-      margin-bottom: 0;
-      padding: 0; /* fields have own margin */
-    }
-
-    .form-field-wrapper {
-      margin: 0 25px;
-      position: relative;
-    }
-
-    .form-field-wrapper.first {
-      margin-top: 20px;
-    }
-    .form-field-wrapper.last {
-      margin-bottom: 20px;
-    }
-
-    .form-input {
-      border: 1px solid var(--orange-red);
-      background-color: var(--white);
-      color: var(--black);
-      width: 100%;
-      min-height: 2.75rem;
-      padding: 0.5rem 0.75rem;
-      font-size: 1rem;
-      font-family: Poppins, sans-serif;
-      line-height: 1.6;
-      display: block;
-      outline: none;
-    }
-    .form-input:focus { border-color: #000; }
-    .form-input::placeholder { color: rgba(0,0,0,0.6); }
-    .form-input.textarea {
-      min-height: 11.25rem;
-      padding-top: 0.75rem;
-      padding-bottom: 0.75rem;
-      resize: vertical;
-    }
-
-    .form-checkbox-wrapper {
-      display: flex;
-      align-items: center;
-      margin: 0 25px;
-      padding-left: 0;
-    }
-
-    .form-checkbox-icon {
-      border: 1px solid var(--black);
-      border-radius: 0;
-      width: 1.125rem;
-      min-width: 1.125rem;
-      height: 1.125rem;
-      min-height: 1.125rem;
-      margin-left: 0;
-      margin-right: 0.5rem;
-      cursor: pointer;
-      flex-shrink: 0;
-      position: relative;
-      transition: all 0.2s;
-    }
-    .form-checkbox-icon.checked {
-      background-color: #000;
-      border-color: #000;
-    }
-    .form-checkbox-icon.checked::after {
+    .sidebar-line::before,
+    .sidebar-line::after {
       content: '';
+      position: absolute; left: -6px;
+      width: 13px; height: 1px; background: var(--orange);
+    }
+    .sidebar-line::before { top: 30%; }
+    .sidebar-line::after  { top: 60%; }
+
+    /* ─── TOPOGRAPHIC BLOB SVG (reusable) ─── */
+    .blob-svg { overflow: visible; }
+
+    /* ─── DOT GRID ─── */
+    .dot-grid {
+      display: grid;
+      gap: 8px;
       position: absolute;
-      top: 1px; left: 3px;
-      width: 8px; height: 5px;
-      border-left: 2px solid white;
-      border-bottom: 2px solid white;
-      transform: rotate(-45deg);
+      pointer-events: none;
     }
+    .dot {
+      width: 5px; height: 5px;
+      border-radius: 50%;
+      background: var(--orange);
+      opacity: 0.5;
+    }
+    .dot.purple { background: var(--purple); opacity: 0.4; }
 
-    .form-checkbox-label {
-      color: var(--purple);
-      font-size: 0.875rem;
-      margin: 0;
-      cursor: pointer;
+    /* ─── CIRCLE DECO ─── */
+    .circle-deco {
+      border-radius: 50%;
+      border: 1.5px solid var(--orange);
+      position: absolute; pointer-events: none;
     }
-    .form-checkbox-label a { color: var(--purple); }
+    .circle-deco.purple { border-color: var(--purple); }
 
-    .btn-submit {
-      border: none;
-      background-color: var(--orange-red);
-      color: var(--white);
-      text-align: center;
-      padding: 0.75rem 1.5rem;
-      font-size: 1rem;
-      font-family: Poppins, sans-serif;
-      font-weight: 600;
-      cursor: pointer;
-      margin: 0 30px 37px 25px;
-      display: block;
-      width: calc(100% - 55px);
-      transition: background-color 0.2s;
-    }
-    .btn-submit:hover { background-color: #e04e0a; }
-
-    .success-message {
-      display: none;
-      background-color: var(--light-grey);
-      padding: 1.5rem;
-    }
-    .success-text { font-weight: 600; }
-    .error-message {
-      display: none;
-      margin-top: 1.5rem;
-      padding: 0.875rem 1rem;
-    }
-    .error-text { color: #e23939; }
-
-    /* ── TESTIMONIALS ── */
-    .section-testimonial {
-      background: #f0f0f0;
+    /* ─── SECTION SHARED ─── */
+    .section {
+      position: relative;
+      padding: 80px 5% 80px calc(5% + 30px);
       overflow: hidden;
     }
 
-    .padding-section-large-5 {
-      padding-top: 3rem;
-      padding-bottom: 1rem;
-    }
-
-    .text-block-12 {
-      color: #6a6ef5;
-      font-size: 38px;
-      font-weight: 700;
-      margin-bottom: 2rem;
-      padding-left: 5%;
-    }
-
-    .testimonial-loop {
+    /* ─── HERO ─── */
+    #hero {
+      min-height: 88vh;
       display: flex;
-      width: max-content;
-      animation: marquee 35s linear infinite;
-    }
-    .testimonial-loop:hover { animation-play-state: paused; }
-
-    @keyframes marquee {
-      0%   { transform: translateX(0); }
-      100% { transform: translateX(-50%); }
-    }
-
-    .testimonial-card {
-      border: 1px solid var(--orange-red);
-      background: white;
-      min-width: 320px;
-      max-width: 380px;
-      padding: 2rem;
-      margin-right: 1.5rem;
-      display: flex;
-      flex-direction: column;
-      gap: 0;
-    }
-
-    .testimonial-arrow {
-      width: 32px;
-      margin-bottom: 1rem;
-    }
-
-    .testimonial-quote {
-      color: #6a6ef5;
-      font-size: 21px;
-      font-style: italic;
-      font-weight: 200;
-      margin-bottom: 1rem;
-      line-height: 1.5;
-    }
-
-    .testimonial-name {
-      color: var(--medium-slate-blue);
-      font-weight: 700;
-      text-align: center;
-      padding-bottom: 5px;
-    }
-
-    .testimonial-org {
-      color: var(--purple);
-      font-size: 0.875rem;
-      opacity: 0.6;
-      text-align: center;
-    }
-
-    /* ── LOGOS ── */
-    .image-wrapper {
-      padding: 0 2rem 2rem;
-    }
-    .image-wrapper img { width: 100%; }
-
-    /* ── KONTAKT ── */
-    .kontakt {
-      background-color: var(--medium-slate-blue);
-    }
-
-    .padding-section-large-3 {
-      padding-top: 2rem;
-      padding-bottom: 1rem;
-    }
-
-    .text-block-13 {
-      margin-bottom: 2rem;
-      font-size: 28px;
-      font-weight: 700;
-      color: white;
-    }
-
-    .layout232-component {
-      display: grid;
-      grid-template-columns: 1fr 1fr 1fr;
-      grid-column-gap: 1.5rem;
-      grid-row-gap: 1rem;
-      align-items: start;
-    }
-
-    .layout232-item {
-      display: flex;
-      flex-direction: column;
       align-items: center;
-      width: 100%;
+      padding-top: 60px;
+      padding-bottom: 60px;
+    }
+    .hero-inner { position: relative; z-index: 1; max-width: 600px; }
+    .hero-box {
+      background: var(--orange);
+      padding: 36px 44px;
+      display: inline-block;
+    }
+    .hero-box h1 {
+      color: var(--white);
+      font-size: clamp(1.6rem, 3vw, 2.2rem);
+      font-weight: 800;
+      line-height: 1.2;
+    }
+    .hero-arrow {
+      position: absolute; bottom: -48px; left: 50%;
+      transform: translateX(-50%);
+      color: var(--orange); font-size: 1.4rem;
+    }
+    /* hero decorations */
+    .hero-blob {
+      position: absolute; right: -2%; top: 50%;
+      transform: translateY(-50%);
+      width: 48%; max-width: 700px; z-index: 0;
+      opacity: 0.7;
+    }
+    .hero-dots-tr { grid-template-columns: repeat(5,1fr); top: 12%; right: 34%; }
+    .hero-dots-tr .dot { background: var(--orange); }
+    .hero-vdots { display: flex; flex-direction: column; gap: 10px; position: absolute; right: 32%; bottom: 12%; }
+    .hero-vdot { width: 5px; height: 5px; border-radius: 50%; background: var(--orange); opacity: 0.5; }
+    .hero-circle-lg { width: 28px; height: 28px; top: 36%; right: 31%; }
+    .hero-circle-sm1 { width: 8px; height: 8px; bottom: 26%; right: 30%; }
+    .hero-circle-sm2 { width: 8px; height: 8px; bottom: 19%; right: 33%; }
+    .hero-circle-sm3 { width: 8px; height: 8px; bottom: 26%; right: 36%; }
+
+    /* ─── O NAS ─── */
+    #o-nas {
+      background: var(--bg);
+      padding-top: 80px; padding-bottom: 80px;
+    }
+    .o-nas-grid {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 60px;
+      align-items: start; position: relative; z-index: 1;
+    }
+    .o-nas-heading {
+      font-size: clamp(1.5rem, 2.5vw, 2rem);
+      font-weight: 700; font-style: italic;
+      color: var(--purple); line-height: 1.3;
+      margin-bottom: 28px;
+    }
+    .o-nas-text {
+      font-size: 1rem; color: var(--dark-purple);
+      line-height: 1.75; margin-bottom: 20px;
+    }
+    .o-nas-blob {
+      position: absolute; right: -4%; top: 50%;
+      transform: translateY(-50%);
+      width: 46%; z-index: 0; opacity: 0.55;
+    }
+
+    /* ─── CO NAS WYRÓŻNIA ─── */
+    #wyroznia {
+      padding-top: 80px; padding-bottom: 80px;
+    }
+    .wyroznia-title {
+      font-size: clamp(2.5rem, 6vw, 5rem);
+      font-weight: 800; color: var(--orange);
+      line-height: 1; margin-bottom: 56px;
+      position: relative; z-index: 1;
+    }
+    .wyroznia-grid {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 16px 60px; position: relative; z-index: 1;
+    }
+    .wyroznia-item { margin-bottom: 32px; }
+    .wyroznia-item h3 {
+      color: var(--orange); font-size: 1.15rem;
+      font-weight: 700; margin-bottom: 8px;
+    }
+    .wyroznia-item p {
+      font-size: 0.95rem; color: var(--dark-purple); line-height: 1.7;
+    }
+    .wyroznia-blob {
+      position: absolute; right: -6%; top: 0;
+      width: 42%; z-index: 0; opacity: 0.5;
+    }
+    /* dots bottom-left of wyroznia */
+    .wyroznia-circles {
+      position: absolute; bottom: 8%; left: 3%;
+      display: flex; gap: 12px; z-index: 1;
+    }
+    .wyroznia-circ {
+      width: 8px; height: 8px; border-radius: 50%;
+      border: 1.5px solid var(--orange);
+    }
+
+    /* ─── LICZBY ─── */
+    #liczby {
+      padding-top: 80px; padding-bottom: 80px;
+    }
+    .liczby-title {
+      font-size: clamp(2rem, 4.5vw, 3.5rem);
+      font-weight: 800; color: var(--orange);
+      margin-bottom: 56px; position: relative; z-index: 1;
+    }
+    .liczby-grid {
+      display: grid;
+      grid-template-columns: 340px 1fr 1fr;
+      gap: 40px; align-items: start;
+      position: relative; z-index: 1;
+    }
+    /* left blob + big number */
+    .liczby-blob-wrap {
+      position: relative; display: flex;
+      align-items: center; justify-content: center;
+      width: 340px; height: 340px; flex-shrink: 0;
+    }
+    .liczby-blob-svg { position: absolute; inset: 0; width: 100%; height: 100%; }
+    .liczby-main-num {
+      font-size: clamp(4rem, 8vw, 7rem);
+      font-weight: 800; color: var(--orange);
+      line-height: 1; position: relative; z-index: 1;
       text-align: center;
     }
-
-    .heading-style-h5 {
-      font-size: 1.5rem;
-      font-weight: 700;
-      line-height: 1.4;
-      color: var(--white);
-      margin-bottom: 0.25rem;
+    .liczby-main-label {
+      background: var(--orange); color: var(--white);
+      font-size: 1.1rem; font-weight: 700;
+      padding: 10px 20px; text-align: center;
+      position: relative; z-index: 1;
+      margin-top: 8px;
+    }
+    .liczby-main-inner {
+      display: flex; flex-direction: column; align-items: center;
+      position: relative; z-index: 2;
     }
 
-    .heading-style-h5._1 {
-      color: var(--white);
-      font-size: 1.5rem;
+    /* stat groups */
+    .liczby-col { display: flex; flex-direction: column; gap: 32px; }
+    .liczby-group-label {
+      font-size: 0.85rem; font-weight: 700;
+      letter-spacing: 0.05em; text-transform: uppercase;
+      color: var(--purple); margin-bottom: 12px;
+    }
+    .liczby-stat { display: flex; align-items: baseline; gap: 8px; }
+    .liczby-big {
+      font-size: clamp(3rem, 5vw, 4.5rem);
+      font-weight: 200; color: var(--purple);
+      line-height: 1;
+    }
+    .liczby-unit {
+      font-size: 1.1rem; font-weight: 300;
+      color: var(--purple); line-height: 1;
+    }
+    .liczby-row {
+      display: flex; align-items: baseline; gap: 16px;
+      margin-top: 12px;
+    }
+    .liczby-row-label {
+      font-size: 0.85rem; font-weight: 700;
+      text-transform: uppercase; color: var(--purple);
+    }
+    .liczby-desc { font-size: 1rem; color: var(--dark-purple); line-height: 1.4; }
+
+    /* bottom row */
+    .liczby-bottom {
+      grid-column: 1 / -1;
+      display: flex; flex-direction: column; gap: 16px;
+      border-top: 1px solid rgba(106,110,245,0.2);
+      padding-top: 28px; margin-top: 8px;
+      position: relative; z-index: 1;
+    }
+    .liczby-bottom-row {
+      display: flex; align-items: baseline; gap: 16px;
     }
 
-    .contact-role {
-      color: var(--white);
-      font-size: 1rem;
+    /* ─── OFERTA ─── */
+    #oferta {
+      padding-top: 80px; padding-bottom: 100px;
+    }
+    .oferta-title {
+      font-size: clamp(3rem, 7vw, 6rem);
+      font-weight: 800; color: var(--orange);
+      line-height: 1; margin-bottom: 48px;
+      position: relative; z-index: 1;
+    }
+    .oferta-list {
+      list-style: none; position: relative; z-index: 1;
+    }
+    .oferta-list li {
+      display: flex; align-items: center;
+      font-size: clamp(1.1rem, 2.2vw, 1.6rem);
+      color: var(--purple); font-weight: 300;
+      line-height: 1;
+      padding: 18px 0;
+      border-bottom: 1px solid rgba(106,110,245,0.15);
+    }
+    .oferta-list li:first-child { border-top: 1px solid rgba(106,110,245,0.15); }
+    .oferta-list li strong { font-weight: 700; margin-right: 6px; }
+    .oferta-bullet {
+      display: flex; gap: 4px; margin-right: 24px; flex-shrink: 0;
+      align-items: center;
+    }
+    .oferta-dot {
+      width: 5px; height: 5px; border-radius: 50%;
+      border: 1.5px solid var(--purple); flex-shrink: 0;
+    }
+    /* wavy bg on oferta */
+    .oferta-bg-blob {
+      position: absolute; right: -5%; top: 50%;
+      transform: translateY(-50%);
+      width: 50%; opacity: 0.12; z-index: 0;
     }
 
-    .link-contact {
-      color: var(--white);
-      font-size: 1rem;
+    /* ─── FORMULARZ ─── */
+    #formularz {
+      background: var(--orange);
+      padding: 64px 5%;
+    }
+    .form-grid {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 40px; align-items: start;
+    }
+    .form-heading {
+      color: var(--white); font-size: clamp(1.5rem, 2.5vw, 2.2rem);
+      font-weight: 700; line-height: 1.2; margin-bottom: 24px;
+    }
+    .form-desc {
+      color: var(--white); font-size: 1.1rem;
+      font-weight: 400; line-height: 1.7;
+    }
+    .form-block { background: #f4f4f4; }
+    .form-fields {
+      display: flex; flex-direction: column; gap: 0;
+    }
+    .form-field {
+      margin: 0 25px;
+    }
+    .form-field:first-child { margin-top: 20px; }
+    .form-field + .form-field { margin-top: 24px; }
+    .form-input {
+      width: 100%; border: 1px solid var(--orange);
+      background: var(--white); color: var(--black);
+      font-family: Poppins, sans-serif; font-size: 1rem;
+      padding: 10px 12px; outline: none;
+      transition: border-color 0.2s;
+    }
+    .form-input:focus { border-color: #000; }
+    .form-input::placeholder { color: rgba(0,0,0,0.5); }
+    textarea.form-input {
+      min-height: 160px; resize: vertical;
+      padding-top: 12px; padding-bottom: 12px;
+    }
+    .form-check-wrap {
+      display: flex; align-items: center; gap: 10px;
+      margin: 20px 25px 0;
+    }
+    .check-box {
+      width: 18px; height: 18px; border: 1px solid #000;
+      flex-shrink: 0; cursor: pointer; position: relative;
+      transition: background 0.15s;
+    }
+    .check-box.checked { background: #000; }
+    .check-box.checked::after {
+      content: '';
+      position: absolute; top: 2px; left: 4px;
+      width: 8px; height: 5px;
+      border-left: 2px solid #fff;
+      border-bottom: 2px solid #fff;
+      transform: rotate(-45deg);
+    }
+    .check-label {
+      font-size: 0.8rem; color: var(--dark-purple); cursor: pointer;
+    }
+    .check-label a { color: var(--dark-purple); }
+    .form-submit {
+      display: block; width: calc(100% - 55px);
+      margin: 20px 30px 30px 25px;
+      background: var(--orange); color: var(--white);
+      border: none; font-family: Poppins, sans-serif;
+      font-size: 1rem; font-weight: 600;
+      padding: 14px; cursor: pointer;
+      transition: background 0.2s;
+    }
+    .form-submit:hover { background: #e04e0a; }
+    .form-success {
+      display: none; background: #f4f4f4;
+      padding: 24px; font-weight: 600;
+    }
+    .form-error {
+      display: none; padding: 14px 16px;
+      color: #e23939; font-size: 0.9rem;
     }
 
-    /* ── FOOTER ── */
-    .footer {
-      background-color: var(--medium-slate-blue);
+    /* ─── TESTIMONIALS ─── */
+    #testimonials {
+      background: var(--bg);
+      padding-top: 48px; padding-bottom: 48px;
+      overflow: hidden;
+    }
+    .t-label {
+      color: var(--purple); font-size: clamp(1.5rem, 3vw, 2.4rem);
+      font-weight: 700; margin-bottom: 32px; padding: 0 5%;
+    }
+    .t-track-wrap { overflow: hidden; }
+    .t-track {
+      display: flex; gap: 24px;
+      width: max-content;
+      animation: marquee 38s linear infinite;
+    }
+    .t-track:hover { animation-play-state: paused; }
+    @keyframes marquee {
+      from { transform: translateX(0); }
+      to   { transform: translateX(-50%); }
+    }
+    .t-card {
+      flex-shrink: 0; width: 340px;
+      border: 1px solid var(--orange);
+      background: var(--white);
+      padding: 28px 28px 24px;
+    }
+    .t-arrow { width: 28px; margin-bottom: 16px; }
+    .t-quote {
+      color: var(--purple); font-size: 1.05rem;
+      font-style: italic; font-weight: 200;
+      line-height: 1.6; margin-bottom: 16px;
+    }
+    .t-name {
+      color: var(--purple); font-weight: 700;
+      text-align: center; padding-bottom: 4px; font-size: 0.95rem;
+    }
+    .t-org {
+      color: var(--dark-purple); font-size: 0.8rem;
+      opacity: 0.6; text-align: center;
     }
 
-    .footer-bottom-wrapper {
-      display: flex;
-      justify-content: center;
-      padding: 0 0 2rem;
+    /* ─── LOGOS ─── */
+    .logos-wrap {
+      padding: 0 2rem 2rem;
+      background: var(--bg);
     }
+    .logos-wrap img { width: 100%; }
 
-    .footer-legal-link {
-      font-size: 0.875rem;
+    /* ─── KONTAKT ─── */
+    #kontakt {
+      background: var(--purple);
+      padding: 40px 5% 32px;
+    }
+    .k-label {
+      color: var(--white); font-size: 1.75rem;
+      font-weight: 700; margin-bottom: 28px;
+    }
+    .k-grid {
+      display: grid; grid-template-columns: 1fr 1fr 1fr;
+      gap: 8px 24px;
+    }
+    .k-item { text-align: center; padding: 12px 0; }
+    .k-name {
+      color: var(--white); font-size: 1.1rem;
+      font-weight: 700; line-height: 1.3; margin-bottom: 4px;
+    }
+    .k-role { color: var(--white); font-size: 0.9rem; }
+    .k-phone {
+      color: var(--white); font-size: 1.1rem;
+      font-weight: 700; margin-bottom: 4px;
+    }
+    .k-email a {
+      color: var(--white); font-size: 0.9rem;
       text-decoration: underline;
-      color: var(--black);
     }
 
-    .footer-credit {
-      font-size: 0.875rem;
-      margin-left: 50px;
-      color: var(--black);
+    /* ─── FOOTER ─── */
+    footer {
+      background: var(--purple);
+      padding: 0 5% 28px;
+      display: flex; justify-content: center;
+      align-items: center; gap: 48px;
+      flex-wrap: wrap;
     }
+    footer a { color: #000; font-size: 0.875rem; text-decoration: underline; }
+    .footer-copy { font-size: 0.875rem; color: #000; }
 
-    /* ── RESPONSIVE ── */
-    @media (max-width: 991px) {
-      .contact5-component { grid-template-columns: 1fr; }
-      .layout232-component { grid-template-columns: 1fr 1fr; }
-      .navbar-menu { display: none; }
-      .navbar-menu.open { display: flex; flex-direction: column; align-items: flex-start; position: fixed; top: 4.5rem; left: 0; right: 0; background: rgba(240,240,240,0.97); padding: 1rem 5%; gap: 8px; }
-      .navbar-hamburger { display: flex; }
-      .heading-3 { font-size: 28px; }
-      .text-block-12 { font-size: 28px; }
+    /* ─── RESPONSIVE ─── */
+    @media (max-width: 900px) {
+      .form-grid { grid-template-columns: 1fr; }
+      .o-nas-grid { grid-template-columns: 1fr; }
+      .wyroznia-grid { grid-template-columns: 1fr; }
+      .liczby-grid { grid-template-columns: 1fr; }
+      .liczby-blob-wrap { width: 240px; height: 240px; margin: 0 auto; }
+      .k-grid { grid-template-columns: 1fr 1fr; }
+      .nav-links { display: none; }
+      .nav-burger { display: flex; }
+      .nav-links.open {
+        display: flex; flex-direction: column;
+        position: fixed; top: 72px; left: 0; right: 0;
+        background: rgba(240,240,240,0.97);
+        padding: 16px 5%; gap: 4px; align-items: flex-start;
+      }
+      .hero-blob { width: 70%; right: -10%; opacity: 0.3; }
+      .o-nas-blob { display: none; }
+      .wyroznia-blob { display: none; }
+      .oferta-bg-blob { display: none; }
     }
-
-    @media (max-width: 479px) {
-      .layout232-component { grid-template-columns: 1fr; }
-      .testimonial-card { min-width: 280px; }
+    @media (max-width: 560px) {
+      .k-grid { grid-template-columns: 1fr; }
+      .liczby-grid { grid-template-columns: 1fr; }
+      .t-card { width: 280px; }
     }
   </style>
 </head>
 <body>
 
 <!-- PAGE LOAD OVERLAY -->
-<div class="page-load-overlay" id="pageOverlay">
+<div class="overlay" id="overlay">
   <div class="overlay-left">
-    <div class="letters">
-      <div class="letter-row"><span>IN</span></div>
-      <div class="letter-row"><span>KU</span></div>
-      <div class="letter-row"><span>BA</span></div>
-      <div class="letter-row"><span>TOR</span></div>
+    <div class="overlay-letters">
+      <div class="overlay-row"><span>IN</span></div>
+      <div class="overlay-row"><span>KU</span></div>
+      <div class="overlay-row"><span>BA</span></div>
+      <div class="overlay-row"><span>TOR</span></div>
     </div>
   </div>
   <div class="overlay-right">
-    <div class="right-text"><span>IDEALISTÓW</span></div>
+    <div class="overlay-right-text"><span>IDEALISTÓW</span></div>
   </div>
-  <img src="https://cdn.prod.website-files.com/64d24e4e2a64a9d93d86c2c0/64d24e4e2a64a9d93d86c2cf_Rings%20blue.svg" alt="" class="overlay-rings"/>
+  <img src="https://cdn.prod.website-files.com/64d24e4e2a64a9d93d86c2c0/64d24e4e2a64a9d93d86c2cf_Rings%20blue.svg"
+       alt="" class="overlay-rings"/>
 </div>
 
 <!-- NAVBAR -->
-<nav class="navbar" id="navbar">
-  <a href="#" class="navbar-logo">
-    <img src="https://cdn.prod.website-files.com/64d24e4e2a64a9d93d86c2c0/64d24e4e2a64a9d93d86c2e5_inkubator%20idealisto%CC%81w.svg" alt="Inkubator Idealistów" style="height:48px;width:auto;"/>
+<nav class="navbar">
+  <a href="#hero" class="nav-logo">
+    <img src="https://cdn.prod.website-files.com/64d24e4e2a64a9d93d86c2c0/64d24e4e2a64a9d93d86c2e5_inkubator%20idealisto%CC%81w.svg"
+         alt="Inkubator Idealistów"/>
   </a>
-  <nav class="navbar-menu" id="navMenu">
-    <a href="#o-nas" class="navbar-link">O nas</a>
-    <a href="#oferta" class="navbar-link">Oferta</a>
-    <a href="#formularz" class="navbar-cta">Porozmawiajmy</a>
-  </nav>
-  <div class="navbar-hamburger" id="hamburger" onclick="toggleMenu()">
-    <div class="hamburger-line"></div>
-    <div class="hamburger-line"></div>
-    <div class="hamburger-line"></div>
+  <div class="nav-links" id="navLinks">
+    <a href="#o-nas"   class="nav-link">O nas</a>
+    <a href="#oferta"  class="nav-link">Oferta</a>
+    <a href="#formularz" class="nav-cta">Porozmawiajmy</a>
+  </div>
+  <div class="nav-burger" id="burger" onclick="toggleNav()">
+    <div class="burger-line"></div>
+    <div class="burger-line"></div>
+    <div class="burger-line"></div>
   </div>
 </nav>
 
-<!-- MAIN CONTENT -->
-<div style="overflow:hidden;">
+<!-- ═══════════ HERO ═══════════ -->
+<section class="section" id="hero">
+  <div class="sidebar-line"></div>
 
-  <!-- FULL-WIDTH IMAGES (Hero, O nas, Co nas wyróżnia, Liczby, Oferta) -->
-  <section class="calosc" id="o-nas">
-    <!-- Hero -->
-    <img
-      src="https://cdn.prod.website-files.com/64d24e4e2a64a9d93d86c2c0/650c08ca41fecbcd742de351_Hero%20wysokosc%20XS%20(1).webp"
-      srcset="https://assets-global.website-files.com/64d24e4e2a64a9d93d86c2c0/650c08ca41fecbcd742de351_Hero%20wysokosc%20XS%20(1)-p-800.webp 800w, https://assets-global.website-files.com/64d24e4e2a64a9d93d86c2c0/650c08ca41fecbcd742de351_Hero%20wysokosc%20XS%20(1)-p-1080.webp 1080w, https://assets-global.website-files.com/64d24e4e2a64a9d93d86c2c0/650c08ca41fecbcd742de351_Hero%20wysokosc%20XS%20(1).webp 1755w"
-      sizes="100vw"
-      loading="eager"
-      alt=""
-      style="width:100%;display:block;"
-    />
-    <!-- O nas -->
-    <img
-      src="https://cdn.prod.website-files.com/64d24e4e2a64a9d93d86c2c0/650bff9bc7f35d08aa2bb0e2_O%20nas%20(1).webp"
-      srcset="https://assets-global.website-files.com/64d24e4e2a64a9d93d86c2c0/650bff9bc7f35d08aa2bb0e2_O%20nas%20(1)-p-800.webp 800w, https://assets-global.website-files.com/64d24e4e2a64a9d93d86c2c0/650bff9bc7f35d08aa2bb0e2_O%20nas%20(1)-p-1080.webp 1080w, https://assets-global.website-files.com/64d24e4e2a64a9d93d86c2c0/650bff9bc7f35d08aa2bb0e2_O%20nas%20(1).webp 1755w"
-      sizes="100vw"
-      alt=""
-      style="width:100%;display:block;"
-    />
-    <!-- Co nas wyróżnia -->
-    <img
-      src="https://cdn.prod.website-files.com/64d24e4e2a64a9d93d86c2c0/650bff9beeae6af74a5d5f82_Co%20nas%20wyroznia.webp"
-      srcset="https://assets-global.website-files.com/64d24e4e2a64a9d93d86c2c0/650bff9beeae6af74a5d5f82_Co%20nas%20wyroznia-p-800.webp 800w, https://assets-global.website-files.com/64d24e4e2a64a9d93d86c2c0/650bff9beeae6af74a5d5f82_Co%20nas%20wyroznia-p-1080.webp 1080w, https://assets-global.website-files.com/64d24e4e2a64a9d93d86c2c0/650bff9beeae6af74a5d5f82_Co%20nas%20wyroznia.webp 1755w"
-      sizes="100vw"
-      alt=""
-      style="width:100%;display:block;"
-    />
-    <!-- Liczby -->
-    <img
-      src="https://cdn.prod.website-files.com/64d24e4e2a64a9d93d86c2c0/6605b5ecbea28105920d4d34_Liczby_update%2027.03.2024.png"
-      srcset="https://assets-global.website-files.com/64d24e4e2a64a9d93d86c2c0/6605b5ecbea28105920d4d34_Liczby_update%2027.03.2024-p-800.png 800w, https://assets-global.website-files.com/64d24e4e2a64a9d93d86c2c0/6605b5ecbea28105920d4d34_Liczby_update%2027.03.2024-p-1080.png 1080w, https://assets-global.website-files.com/64d24e4e2a64a9d93d86c2c0/6605b5ecbea28105920d4d34_Liczby_update%2027.03.2024.png 1755w"
-      sizes="100vw"
-      alt=""
-      style="width:100%;display:block;"
-    />
-    <!-- Oferta -->
-    <img
-      id="oferta"
-      src="https://cdn.prod.website-files.com/64d24e4e2a64a9d93d86c2c0/650bff9b1aabe7e6a8288de9_Oferta.webp"
-      srcset="https://assets-global.website-files.com/64d24e4e2a64a9d93d86c2c0/650bff9b1aabe7e6a8288de9_Oferta-p-800.webp 800w, https://assets-global.website-files.com/64d24e4e2a64a9d93d86c2c0/650bff9b1aabe7e6a8288de9_Oferta-p-1080.webp 1080w, https://assets-global.website-files.com/64d24e4e2a64a9d93d86c2c0/650bff9b1aabe7e6a8288de9_Oferta.webp 1755w"
-      sizes="100vw"
-      alt=""
-      style="width:100%;display:block;"
-    />
-  </section>
+  <!-- Topographic blob (right) -->
+  <div class="hero-blob">
+    <svg viewBox="0 0 600 580" fill="none" xmlns="http://www.w3.org/2000/svg" class="blob-svg">
+      <path d="M300,50 C420,50 520,130 540,250 C560,370 480,470 360,510 C240,550 120,490 70,380 C20,270 70,130 160,80 C210,55 255,50 300,50Z" stroke="#6a6ef5" stroke-width="1.2" fill="none"/>
+      <path d="M300,75 C410,75 505,148 522,258 C539,368 463,460 348,498 C233,536 121,479 75,374 C29,269 77,137 162,89 C209,67 256,75 300,75Z" stroke="#6a6ef5" stroke-width="1" fill="none"/>
+      <path d="M300,100 C400,100 490,165 505,265 C520,365 448,450 338,485 C228,520 124,467 81,368 C38,269 84,145 163,99 C207,79 257,100 300,100Z" stroke="#6a6ef5" stroke-width="1" fill="none"/>
+      <path d="M300,125 C388,125 474,183 487,272 C500,361 432,440 327,472 C222,504 126,455 87,362 C48,269 92,153 165,109 C206,91 257,125 300,125Z" stroke="#6a6ef5" stroke-width="0.9" fill="none"/>
+      <path d="M300,150 C376,150 458,200 469,279 C480,358 416,430 316,459 C216,488 128,443 92,356 C56,269 99,162 167,120 C206,103 257,150 300,150Z" stroke="#6a6ef5" stroke-width="0.9" fill="none"/>
+      <path d="M300,175 C365,175 442,217 451,286 C460,355 400,420 305,446 C210,472 130,431 97,350 C64,269 106,170 169,130 C206,115 258,175 300,175Z" stroke="#6a6ef5" stroke-width="0.8" fill="none"/>
+      <path d="M300,200 C354,200 426,234 433,293 C440,352 384,410 294,433 C204,456 132,419 102,344 C72,269 113,178 171,140 C206,127 259,200 300,200Z" stroke="#6a6ef5" stroke-width="0.8" fill="none"/>
+      <path d="M300,220 C344,220 412,249 417,301 C422,353 368,402 284,422 C200,442 134,408 106,339 C78,270 119,185 173,148 C207,137 260,220 300,220Z" stroke="#6a6ef5" stroke-width="0.7" fill="none"/>
+      <path d="M300,240 C335,240 398,264 401,309 C404,354 353,394 275,411 C197,428 135,397 110,334 C85,271 124,192 174,157 C208,146 261,240 300,240Z" stroke="#6a6ef5" stroke-width="0.7" fill="none"/>
+      <path d="M300,260 C326,260 383,279 385,317 C387,355 338,386 265,400 C192,414 137,386 114,329 C91,272 130,199 176,166 C209,156 262,260 300,260Z" stroke="#6a6ef5" stroke-width="0.6" fill="none"/>
+      <path d="M300,278 C318,278 369,293 370,324 C371,355 325,378 257,390 C189,402 138,376 117,324 C96,272 135,206 177,175 C210,165 263,278 300,278Z" stroke="#6a6ef5" stroke-width="0.6" fill="none"/>
+      <path d="M300,294 C311,294 355,307 354,332 C353,357 313,370 249,380 C185,390 138,366 120,319 C102,272 139,213 178,183 C210,174 264,294 300,294Z" stroke="#6a6ef5" stroke-width="0.5" fill="none"/>
+      <!-- diagonal line decoration -->
+      <line x1="200" y1="520" x2="500" y2="100" stroke="#6a6ef5" stroke-width="0.8" opacity="0.4"/>
+      <line x1="50"  y1="400" x2="300" y2="80"  stroke="#6a6ef5" stroke-width="0.6" opacity="0.3"/>
+    </svg>
+  </div>
 
-  <!-- FORMULARZ -->
-  <section class="formularz" id="formularz">
-    <div class="padding-global">
-      <div class="padding-section-large">
-        <div class="contact5-component">
-          <!-- Left: heading + description -->
-          <div>
-            <div style="margin-bottom:2rem;">
-              <div style="margin-bottom:1.5rem;">
-                <h2 class="heading-3">Porozmawiajmy o tym <br/>jak wspierać osoby starsze!</h2>
-              </div>
-              <p class="text-size-medium-desc">
-                Napisz do nas jeśli potrzebujesz dofinansowania <br/>
-                dla swoich działań, pomysłów na rozwój<br/>
-                lub kontynuację projektów.<br/><br/>
-                Lubimy dzielić się naszą wiedzą i doświadczeniem.
-              </p>
-            </div>
-          </div>
+  <!-- Dot grid top-right -->
+  <div class="dot-grid hero-dots-tr" style="grid-template-columns: repeat(5,1fr); top:10%; right:32%;">
+    <div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div>
+    <div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div>
+    <div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div>
+  </div>
 
-          <!-- Right: form -->
-          <div class="contact5-form-block">
-            <form id="contactForm" novalidate>
-              <div class="contact5-form">
-                <div class="form-field-wrapper first">
-                  <input class="form-input" type="text" name="imie" placeholder="IMIĘ" required maxlength="256"/>
-                </div>
-                <div class="form-field-wrapper">
-                  <input class="form-input" type="text" name="organizacja" placeholder="NAZWA INSTYTUCJI" required maxlength="256"/>
-                </div>
-                <div class="form-field-wrapper">
-                  <input class="form-input" type="email" name="email" placeholder="E-MAIL" required maxlength="256"/>
-                </div>
-                <div class="form-field-wrapper">
-                  <textarea class="form-input textarea" name="wiadomosc" placeholder="WIADOMOŚĆ" required maxlength="5000"></textarea>
-                </div>
-                <div style="margin: 0 25px 0;">
-                  <label class="form-checkbox-wrapper" id="checkboxWrapper">
-                    <div class="form-checkbox-icon" id="checkboxIcon"></div>
-                    <input type="checkbox" name="rodo" id="rodoCheckbox" required style="opacity:0;position:absolute;z-index:-1;"/>
-                    <span class="form-checkbox-label">
-                      <a href="https://app.easy.tools/policies/inkubator-idealistow-2" target="_blank">Akceptuję Politykę Prywatności</a>
-                    </span>
-                  </label>
-                </div>
-                <button type="submit" class="btn-submit">WYŚLIJ WIADOMOŚĆ</button>
-              </div>
-            </form>
-            <div class="success-message" id="successMsg">
-              <div class="success-text">Dziękujemy za wiadomość! Odpowiemy jak najszybciej ;)</div>
-            </div>
-            <div class="error-message" id="errorMsg">
-              <div class="error-text">Oops! Coś poszło nie tak :(</div>
-            </div>
-          </div>
-        </div>
+  <!-- Circle decorations -->
+  <div class="circle-deco" style="width:28px;height:28px;top:37%;right:31%;"></div>
+  <div class="circle-deco" style="width:8px;height:8px;bottom:28%;right:30%;"></div>
+  <div class="circle-deco" style="width:8px;height:8px;bottom:21%;right:33%;"></div>
+  <div class="circle-deco" style="width:8px;height:8px;bottom:28%;right:37%;"></div>
+
+  <!-- Vertical dot column bottom-right -->
+  <div style="position:absolute;right:31%;bottom:18%;display:flex;flex-direction:column;gap:10px;">
+    <div style="width:5px;height:5px;border-radius:50%;background:var(--orange);opacity:.5;"></div>
+    <div style="width:5px;height:5px;border-radius:50%;background:var(--orange);opacity:.5;"></div>
+    <div style="width:5px;height:5px;border-radius:50%;background:var(--orange);opacity:.5;"></div>
+  </div>
+
+  <!-- Orange down-arrow -->
+  <div style="position:absolute;bottom:28px;left:50%;transform:translateX(-50%);color:var(--orange);font-size:1.3rem;opacity:.8;">↓</div>
+
+  <!-- Hero text box -->
+  <div class="hero-inner">
+    <div class="hero-box">
+      <h1>Pomagamy organizacjom społecznym w działaniu na rzecz poprawy jakości życia osób starszych i ich opiekunów</h1>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ O NAS ═══════════ -->
+<section class="section" id="o-nas">
+  <div class="sidebar-line"></div>
+
+  <!-- blob right -->
+  <div class="o-nas-blob">
+    <svg viewBox="0 0 600 580" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M300,50 C420,50 520,130 540,250 C560,370 480,470 360,510 C240,550 120,490 70,380 C20,270 70,130 160,80 C210,55 255,50 300,50Z" stroke="#6a6ef5" stroke-width="1.2" fill="none"/>
+      <path d="M300,80 C405,80 500,153 518,258 C536,363 462,455 348,492 C234,529 123,473 78,371 C33,269 80,140 162,92 C208,70 257,80 300,80Z" stroke="#6a6ef5" stroke-width="1" fill="none"/>
+      <path d="M300,110 C390,110 480,176 496,267 C512,358 442,443 333,477 C224,511 124,459 83,363 C42,267 87,148 163,103 C207,83 257,110 300,110Z" stroke="#6a6ef5" stroke-width="1" fill="none"/>
+      <path d="M300,140 C375,140 460,199 474,275 C488,351 422,430 318,461 C214,492 125,445 88,355 C51,265 94,155 165,113 C206,94 258,140 300,140Z" stroke="#6a6ef5" stroke-width="0.9" fill="none"/>
+      <path d="M300,168 C362,168 441,215 453,283 C465,351 402,418 304,446 C206,474 126,431 92,347 C58,263 99,161 166,122 C205,104 258,168 300,168Z" stroke="#6a6ef5" stroke-width="0.8" fill="none"/>
+      <path d="M300,195 C350,195 422,231 432,291 C442,351 383,407 291,432 C199,457 127,418 96,340 C65,262 103,166 167,131 C205,114 258,195 300,195Z" stroke="#6a6ef5" stroke-width="0.8" fill="none"/>
+      <path d="M300,220 C339,220 404,248 412,299 C420,350 364,398 278,420 C192,442 128,406 100,333 C72,260 108,171 168,139 C205,124 259,220 300,220Z" stroke="#6a6ef5" stroke-width="0.7" fill="none"/>
+      <path d="M300,244 C328,244 386,264 392,307 C398,350 346,389 265,408 C184,427 129,394 103,327 C77,260 112,177 169,147 C205,134 259,244 300,244Z" stroke="#6a6ef5" stroke-width="0.6" fill="none"/>
+      <line x1="100" y1="520" x2="450" y2="80"  stroke="#6a6ef5" stroke-width="0.7" opacity="0.35"/>
+      <line x1="60"  y1="360" x2="320" y2="60"  stroke="#6a6ef5" stroke-width="0.5" opacity="0.25"/>
+    </svg>
+  </div>
+
+  <div class="o-nas-grid">
+    <div>
+      <p class="o-nas-heading">Jesteśmy ekspertami<br/>do wspierania organizacji<br/>działających na rzecz<br/>osób starszych.</p>
+      <p class="o-nas-text">Znamy potrzeby i wyzwania, z jakimi zmagają się organizacje funkcjonujące w tym obszarze. Dlatego oprócz pozyskania dotacji służymy radą, pomocą i dzielimy się pomysłami.</p>
+      <p class="o-nas-text">Największą nagrodą dla nas są przedsięwzięcia, które przy wspólnym działaniu skutkują długofalową poprawą jakości życia osób starszych.</p>
+    </div>
+    <div></div><!-- blob takes this space -->
+  </div>
+</section>
+
+<!-- ═══════════ CO NAS WYRÓŻNIA ═══════════ -->
+<section class="section" id="wyroznia">
+  <div class="sidebar-line"></div>
+
+  <!-- partial blob top-right -->
+  <div class="wyroznia-blob">
+    <svg viewBox="0 0 500 400" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M350,10 C460,30 540,120 520,230 C500,340 400,400 290,380 C180,360 110,270 120,170 C130,70 230,−10 350,10Z" stroke="#6a6ef5" stroke-width="1.2" fill="none"/>
+      <path d="M348,35 C448,53 520,135 501,236 C482,337 386,393 281,374 C176,355 110,271 120,176 C130,81 234,14 348,35Z" stroke="#6a6ef5" stroke-width="1" fill="none"/>
+      <path d="M346,60 C436,76 502,149 484,242 C466,335 373,386 272,368 C171,350 110,272 120,183 C130,94 238,38 346,60Z" stroke="#6a6ef5" stroke-width="0.9" fill="none"/>
+      <path d="M344,85 C425,99 484,163 466,248 C448,333 360,380 264,362 C168,344 110,273 121,190 C132,107 241,62 344,85Z" stroke="#6a6ef5" stroke-width="0.8" fill="none"/>
+      <path d="M342,108 C414,121 466,177 449,254 C432,331 348,374 257,357 C166,340 111,273 122,196 C133,119 243,85 342,108Z" stroke="#6a6ef5" stroke-width="0.7" fill="none"/>
+      <path d="M340,130 C404,142 448,191 432,260 C416,329 336,367 250,351 C164,335 112,274 123,202 C134,130 244,107 340,130Z" stroke="#6a6ef5" stroke-width="0.6" fill="none"/>
+    </svg>
+  </div>
+
+  <!-- dot grids top-right area -->
+  <div class="dot-grid" style="grid-template-columns:repeat(4,1fr);top:12%;right:8%;">
+    <div class="dot purple"></div><div class="dot purple"></div><div class="dot purple"></div><div class="dot purple"></div>
+    <div class="dot purple"></div><div class="dot purple"></div><div class="dot purple"></div><div class="dot purple"></div>
+    <div class="dot purple"></div><div class="dot purple"></div><div class="dot purple"></div><div class="dot purple"></div>
+  </div>
+  <!-- small vertical dots right -->
+  <div style="position:absolute;right:7.5%;top:52%;display:flex;flex-direction:column;gap:8px;">
+    <div class="circle-deco purple" style="width:7px;height:7px;position:static;"></div>
+    <div class="circle-deco purple" style="width:7px;height:7px;position:static;"></div>
+    <div class="circle-deco purple" style="width:7px;height:7px;position:static;"></div>
+  </div>
+  <!-- bottom circles -->
+  <div class="wyroznia-circles">
+    <div class="wyroznia-circ"></div>
+    <div class="wyroznia-circ"></div>
+    <div class="wyroznia-circ"></div>
+  </div>
+
+  <h2 class="wyroznia-title">Co nas wyróżnia</h2>
+
+  <div class="wyroznia-grid">
+    <div>
+      <div class="wyroznia-item">
+        <h3>Skuteczność</h3>
+        <p>Ubiegamy się o dofinansowanie tylko tych projektów, które mają realną szansę na dotacje.</p>
+      </div>
+      <div class="wyroznia-item">
+        <h3>Zaangażowanie</h3>
+        <p>Opiekujemy się projektami od momentu ich planowania do zakończenia okresu trwałości.</p>
+      </div>
+      <div class="wyroznia-item">
+        <h3>Odpowiedzialność</h3>
+        <p>Każdy dofinansowany projekt naszych klientów, traktujemy jak nasz własny.</p>
       </div>
     </div>
-  </section>
-
-  <!-- TESTIMONIALS -->
-  <section class="section-testimonial">
-    <div class="padding-section-large-5">
-      <div class="padding-global" style="padding-bottom:0;">
-        <div>
-          <div class="text-block-12" style="padding-left:0;">Zaufali nam</div>
-        </div>
+    <div>
+      <div class="wyroznia-item">
+        <h3>Wiedza i doświadczenie</h3>
+        <p>Posiadamy ponad 20 lat doświadczenia w realizacji projektów finansowanych z różnych źródeł i programów.</p>
       </div>
-      <!-- Infinite scrolling marquee -->
-      <div style="overflow:hidden;padding-bottom:3rem;">
-        <div class="testimonial-loop" id="marquee">
-          <!-- Set 1 -->
-          <div class="testimonial-card">
-            <img src="https://cdn.prod.website-files.com/64d24e4e2a64a9d93d86c2c0/64d77a8204a893ff7e703c4c_Ornament%20Arow.svg" alt="" class="testimonial-arrow"/>
-            <p class="testimonial-quote">Jestem wdzięczna za wszystko, co Pani dla mnie zrobiła i robi.</p>
-            <p class="testimonial-name">Wioletta P.</p>
-            <p class="testimonial-org">NZOZ Max Med</p>
-          </div>
-          <div class="testimonial-card">
-            <img src="https://cdn.prod.website-files.com/64d24e4e2a64a9d93d86c2c0/64d77a8204a893ff7e703c4c_Ornament%20Arow.svg" alt="" class="testimonial-arrow"/>
-            <p class="testimonial-quote">Dzięki indywidualnemu podejściu do naszej firmy oraz profesjonalizmowi pozyskaliśmy 4 projekty unijne.</p>
-            <p class="testimonial-name">Małgorzata A.</p>
-            <p class="testimonial-org">DPS MECENAT</p>
-          </div>
-          <div class="testimonial-card">
-            <img src="https://cdn.prod.website-files.com/64d24e4e2a64a9d93d86c2c0/64d77a8204a893ff7e703c4c_Ornament%20Arow.svg" alt="" class="testimonial-arrow"/>
-            <p class="testimonial-quote">Jeszcze raz dziękuję Paniom za wspaniałą pracę</p>
-            <p class="testimonial-name">Paweł R.</p>
-            <p class="testimonial-org">Fundacja "Dom z Sercem"</p>
-          </div>
-          <div class="testimonial-card">
-            <img src="https://cdn.prod.website-files.com/64d24e4e2a64a9d93d86c2c0/64d77a8204a893ff7e703c4c_Ornament%20Arow.svg" alt="" class="testimonial-arrow"/>
-            <p class="testimonial-quote">Dzięki partnerskiej współpracy projekty zostały zakończone, a poniesione wydatki – w całości rozliczone i zatwierdzone przez instytucję finansującą.</p>
-            <p class="testimonial-name">Adrian B.</p>
-            <p class="testimonial-org">SZPZLO Warszawa - Wawer</p>
-          </div>
-          <div class="testimonial-card">
-            <img src="https://cdn.prod.website-files.com/64d24e4e2a64a9d93d86c2c0/64d77a8204a893ff7e703c4c_Ornament%20Arow.svg" alt="" class="testimonial-arrow"/>
-            <p class="testimonial-quote">Cieszę się, że panie mam.</p>
-            <p class="testimonial-name">Iwona K.</p>
-            <p class="testimonial-org">Fundacja „Leśne Zacisze"</p>
-          </div>
-          <div class="testimonial-card">
-            <img src="https://cdn.prod.website-files.com/64d24e4e2a64a9d93d86c2c0/64d77a8204a893ff7e703c4c_Ornament%20Arow.svg" alt="" class="testimonial-arrow"/>
-            <p class="testimonial-quote">Bardzo doceniam współpracę z Panią, dyspozycyjność i pomoc w każdej zgłoszonej kwestii.</p>
-            <p class="testimonial-name">Wioletta P.</p>
-            <p class="testimonial-org">NZOZ Max Med</p>
-          </div>
-          <div class="testimonial-card">
-            <img src="https://cdn.prod.website-files.com/64d24e4e2a64a9d93d86c2c0/64d77a8204a893ff7e703c4c_Ornament%20Arow.svg" alt="" class="testimonial-arrow"/>
-            <p class="testimonial-quote">Jak zwykle jesteście NAJLEPSZE!</p>
-            <p class="testimonial-name">Paweł R.</p>
-            <p class="testimonial-org">Fundacja "Dom z Sercem"</p>
-          </div>
-          <div class="testimonial-card">
-            <img src="https://cdn.prod.website-files.com/64d24e4e2a64a9d93d86c2c0/64d77a8204a893ff7e703c4c_Ornament%20Arow.svg" alt="" class="testimonial-arrow"/>
-            <p class="testimonial-quote">Super! Bardzo się cieszę z dotacji. To był trudny konkurs. Dziękuję w imieniu brzozowskich seniorów!</p>
-            <p class="testimonial-name">Jolanta L.</p>
-            <p class="testimonial-org">Fundacja „W Trosce o Życie"</p>
-          </div>
-          <div class="testimonial-card">
-            <img src="https://cdn.prod.website-files.com/64d24e4e2a64a9d93d86c2c0/64d77a8204a893ff7e703c4c_Ornament%20Arow.svg" alt="" class="testimonial-arrow"/>
-            <p class="testimonial-quote">Jest Pani Wielka.</p>
-            <p class="testimonial-name">Iwona K.</p>
-            <p class="testimonial-org">Fundacja „Leśne Zacisze"</p>
-          </div>
-          <!-- Set 2 (duplicate for seamless loop) -->
-          <div class="testimonial-card">
-            <img src="https://cdn.prod.website-files.com/64d24e4e2a64a9d93d86c2c0/64d77a8204a893ff7e703c4c_Ornament%20Arow.svg" alt="" class="testimonial-arrow"/>
-            <p class="testimonial-quote">Jestem wdzięczna za wszystko, co Pani dla mnie zrobiła i robi.</p>
-            <p class="testimonial-name">Wioletta P.</p>
-            <p class="testimonial-org">NZOZ Max Med</p>
-          </div>
-          <div class="testimonial-card">
-            <img src="https://cdn.prod.website-files.com/64d24e4e2a64a9d93d86c2c0/64d77a8204a893ff7e703c4c_Ornament%20Arow.svg" alt="" class="testimonial-arrow"/>
-            <p class="testimonial-quote">Dzięki indywidualnemu podejściu do naszej firmy oraz profesjonalizmowi pozyskaliśmy 4 projekty unijne.</p>
-            <p class="testimonial-name">Małgorzata A.</p>
-            <p class="testimonial-org">DPS MECENAT</p>
-          </div>
-          <div class="testimonial-card">
-            <img src="https://cdn.prod.website-files.com/64d24e4e2a64a9d93d86c2c0/64d77a8204a893ff7e703c4c_Ornament%20Arow.svg" alt="" class="testimonial-arrow"/>
-            <p class="testimonial-quote">Jeszcze raz dziękuję Paniom za wspaniałą pracę</p>
-            <p class="testimonial-name">Paweł R.</p>
-            <p class="testimonial-org">Fundacja "Dom z Sercem"</p>
-          </div>
-          <div class="testimonial-card">
-            <img src="https://cdn.prod.website-files.com/64d24e4e2a64a9d93d86c2c0/64d77a8204a893ff7e703c4c_Ornament%20Arow.svg" alt="" class="testimonial-arrow"/>
-            <p class="testimonial-quote">Dzięki partnerskiej współpracy projekty zostały zakończone, a poniesione wydatki – w całości rozliczone i zatwierdzone przez instytucję finansującą.</p>
-            <p class="testimonial-name">Adrian B.</p>
-            <p class="testimonial-org">SZPZLO Warszawa - Wawer</p>
-          </div>
-          <div class="testimonial-card">
-            <img src="https://cdn.prod.website-files.com/64d24e4e2a64a9d93d86c2c0/64d77a8204a893ff7e703c4c_Ornament%20Arow.svg" alt="" class="testimonial-arrow"/>
-            <p class="testimonial-quote">Cieszę się, że panie mam.</p>
-            <p class="testimonial-name">Iwona K.</p>
-            <p class="testimonial-org">Fundacja „Leśne Zacisze"</p>
-          </div>
-          <div class="testimonial-card">
-            <img src="https://cdn.prod.website-files.com/64d24e4e2a64a9d93d86c2c0/64d77a8204a893ff7e703c4c_Ornament%20Arow.svg" alt="" class="testimonial-arrow"/>
-            <p class="testimonial-quote">Bardzo doceniam współpracę z Panią, dyspozycyjność i pomoc w każdej zgłoszonej kwestii.</p>
-            <p class="testimonial-name">Wioletta P.</p>
-            <p class="testimonial-org">NZOZ Max Med</p>
-          </div>
-          <div class="testimonial-card">
-            <img src="https://cdn.prod.website-files.com/64d24e4e2a64a9d93d86c2c0/64d77a8204a893ff7e703c4c_Ornament%20Arow.svg" alt="" class="testimonial-arrow"/>
-            <p class="testimonial-quote">Jak zwykle jesteście NAJLEPSZE!</p>
-            <p class="testimonial-name">Paweł R.</p>
-            <p class="testimonial-org">Fundacja "Dom z Sercem"</p>
-          </div>
-          <div class="testimonial-card">
-            <img src="https://cdn.prod.website-files.com/64d24e4e2a64a9d93d86c2c0/64d77a8204a893ff7e703c4c_Ornament%20Arow.svg" alt="" class="testimonial-arrow"/>
-            <p class="testimonial-quote">Super! Bardzo się cieszę z dotacji. To był trudny konkurs. Dziękuję w imieniu brzozowskich seniorów!</p>
-            <p class="testimonial-name">Jolanta L.</p>
-            <p class="testimonial-org">Fundacja „W Trosce o Życie"</p>
-          </div>
-          <div class="testimonial-card">
-            <img src="https://cdn.prod.website-files.com/64d24e4e2a64a9d93d86c2c0/64d77a8204a893ff7e703c4c_Ornament%20Arow.svg" alt="" class="testimonial-arrow"/>
-            <p class="testimonial-quote">Jest Pani Wielka.</p>
-            <p class="testimonial-name">Iwona K.</p>
-            <p class="testimonial-org">Fundacja „Leśne Zacisze"</p>
-          </div>
-        </div>
+      <div class="wyroznia-item">
+        <h3>Życzliwość</h3>
+        <p>Budujemy dobre i trwałe relacje oparte na szacunku i zaufaniu z klientami, ich pracownikami, jak również z administracją przyznającą dofinansowanie.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ LICZBY ═══════════ -->
+<section class="section" id="liczby">
+  <div class="sidebar-line"></div>
+  <!-- single circle deco -->
+  <div class="circle-deco" style="width:20px;height:20px;top:30%;right:8%;"></div>
+
+  <h2 class="liczby-title">Liczby, które o nas mówią</h2>
+
+  <div class="liczby-grid">
+    <!-- Left: blob with big number -->
+    <div class="liczby-blob-wrap">
+      <svg viewBox="0 0 340 340" fill="none" xmlns="http://www.w3.org/2000/svg" class="liczby-blob-svg">
+        <path d="M170,20 C240,20 300,70 315,145 C330,220 290,290 215,315 C140,340 60,300 30,230 C0,160 30,75 95,40 C125,24 148,20 170,20Z" stroke="#6a6ef5" stroke-width="1.5" fill="none"/>
+        <path d="M170,40 C234,40 289,85 303,152 C317,219 279,285 208,308 C137,331 62,293 35,227 C8,161 37,82 99,49 C127,35 149,40 170,40Z" stroke="#6a6ef5" stroke-width="1.3" fill="none"/>
+        <path d="M170,60 C227,60 278,100 290,160 C302,220 267,281 200,301 C133,321 64,286 40,224 C16,162 43,89 102,57 C128,45 150,60 170,60Z" stroke="#6a6ef5" stroke-width="1.1" fill="none"/>
+        <path d="M170,80 C221,80 267,115 277,167 C287,219 255,276 193,293 C131,310 66,279 45,222 C24,165 49,96 105,66 C129,54 151,80 170,80Z" stroke="#6a6ef5" stroke-width="1" fill="none"/>
+        <path d="M170,100 C215,100 255,130 263,175 C271,220 243,271 186,285 C129,299 68,271 50,219 C32,167 55,103 107,75 C130,64 152,100 170,100Z" stroke="#6a6ef5" stroke-width="0.9" fill="none"/>
+        <path d="M170,118 C209,118 244,143 250,182 C256,221 231,266 179,278 C127,290 70,264 55,217 C40,170 62,110 109,84 C131,73 153,118 170,118Z" stroke="#6a6ef5" stroke-width="0.8" fill="none"/>
+        <path d="M170,135 C204,135 233,155 238,189 C243,223 221,261 173,271 C125,281 72,257 60,215 C48,173 68,117 111,93 C132,82 154,135 170,135Z" stroke="#6a6ef5" stroke-width="0.7" fill="none"/>
+        <path d="M170,152 C198,152 222,168 225,196 C228,224 209,257 166,264 C123,271 74,249 64,212 C54,175 72,124 112,102 C132,92 154,152 170,152Z" stroke="#6a6ef5" stroke-width="0.6" fill="none"/>
+        <line x1="60" y1="300" x2="250" y2="60"  stroke="#6a6ef5" stroke-width="0.8" opacity="0.4"/>
+        <line x1="20" y1="200" x2="180" y2="30"  stroke="#6a6ef5" stroke-width="0.6" opacity="0.3"/>
+      </svg>
+      <div class="liczby-main-inner">
+        <div class="liczby-main-num">2657</div>
+        <div class="liczby-main-label">wspartych<br/>starszych osób</div>
       </div>
     </div>
 
-    <!-- Logos -->
-    <div class="image-wrapper">
-      <img src="https://cdn.prod.website-files.com/64d24e4e2a64a9d93d86c2c0/64d24e4e2a64a9d93d86c2ff_Loga.svg" alt="" loading="lazy"/>
-    </div>
-  </section>
-
-  <!-- KONTAKT -->
-  <section class="kontakt">
-    <div class="padding-global">
-      <div class="padding-section-large-3">
-        <div>
-          <div class="text-block-13">Kontakt</div>
-        </div>
-        <div class="layout232-component">
-          <!-- Row 1: names -->
-          <div class="layout232-item">
-            <div style="margin-bottom:0.25rem;">
-              <h3 class="heading-style-h5">Ewa Fedor – Destrebecq</h3>
-            </div>
-            <p class="contact-role">rozwój pomysłów/projektów</p>
-          </div>
-          <div class="layout232-item">
-            <div style="margin-bottom:0.25rem;">
-              <h3 class="heading-style-h5">Anna Latusek</h3>
-            </div>
-            <p class="contact-role">nadzór nad rozliczaniem projektów</p>
-          </div>
-          <div class="layout232-item">
-            <div style="margin-bottom:0.25rem;">
-              <h3 class="heading-style-h5">Katarzyna Kąkol</h3>
-            </div>
-            <p class="contact-role">rozwój pomysłów/projektów</p>
-          </div>
-          <!-- Row 2: phones + emails -->
-          <div class="layout232-item">
-            <div style="margin-bottom:0.25rem;">
-              <h3 class="heading-style-h5 _1">691 380 714</h3>
-            </div>
-            <p class="contact-role"><a href="mailto:e.fedor@inkubatoridealistow.org.pl?subject=Formularz" class="link-contact">e.fedor@inkubatoridealistow.org.pl</a></p>
-          </div>
-          <div class="layout232-item">
-            <div style="margin-bottom:0.25rem;">
-              <h3 class="heading-style-h5 _1">609 966 215</h3>
-            </div>
-            <p class="contact-role"><a href="mailto:a.latusek@inkubatoridealistow.org.pl?subject=Formularz" class="link-contact">a.latusek@inkubatoridealistow.org.pl</a></p>
-          </div>
-          <div class="layout232-item">
-            <div style="margin-bottom:0.25rem;">
-              <h3 class="heading-style-h5 _1">501 077 931</h3>
-            </div>
-            <p class="contact-role"><a href="mailto:k.kakol@inkubatoridealistow.org.pl?subject=Formularz" class="link-contact">k.kakol@inkubatoridealistow.org.pl</a></p>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- FOOTER -->
-  <footer class="footer">
-    <div class="padding-global _2" style="padding-left:5%;padding-right:5%;">
+    <!-- Center col -->
+    <div class="liczby-col">
       <div>
-        <div style="padding:0 0 2rem;">
-          <div class="footer-bottom-wrapper">
-            <a href="https://app.easy.tools/policies/inkubator-idealistow-2" target="_blank" class="footer-legal-link">Polityka Prywatności</a>
-            <div class="footer-credit">Copyright © 2023 Inkubator Idealistów. All rights reserved.</div>
-          </div>
+        <div class="liczby-group-label">Pozyskaliśmy</div>
+        <div class="liczby-stat">
+          <span class="liczby-big">67</span>
+          <span class="liczby-unit">dotacji</span>
+        </div>
+        <div class="liczby-stat" style="margin-top:16px;">
+          <span class="liczby-big">87</span>
+          <span class="liczby-unit">mln zł</span>
         </div>
       </div>
     </div>
-  </footer>
 
-</div><!-- /main -->
+    <!-- Right col -->
+    <div class="liczby-col">
+      <div>
+        <div class="liczby-group-label">Utworzyliśmy</div>
+        <div class="liczby-stat">
+          <span class="liczby-big">8</span>
+          <span class="liczby-desc" style="margin-left:8px;">dziennych<br/>domów pobytu</span>
+        </div>
+        <div class="liczby-stat" style="margin-top:20px;">
+          <span class="liczby-big">6</span>
+          <span class="liczby-desc" style="margin-left:8px;">dziennych domów<br/>opieki medycznej</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bottom row spanning all cols -->
+    <div class="liczby-bottom">
+      <div class="liczby-bottom-row">
+        <span class="liczby-row-label">Budujemy</span>
+        <span class="liczby-big" style="font-size:3rem;">24</span>
+        <span class="liczby-desc">mieszkania wspomagane</span>
+      </div>
+      <div>
+        <div class="liczby-row-label" style="margin-bottom:6px;">Uruchomiliśmy</div>
+        <p class="liczby-desc">mieszkanie treningowe, ośrodek wsparcia rehabilitacyjnego oraz ośrodek opieki wytchnieniowej</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ OFERTA ═══════════ -->
+<section class="section" id="oferta">
+  <div class="sidebar-line"></div>
+
+  <!-- faint wavy background blob -->
+  <div class="oferta-bg-blob">
+    <svg viewBox="0 0 600 580" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M300,50 C420,50 520,130 540,250 C560,370 480,470 360,510 C240,550 120,490 70,380 C20,270 70,130 160,80 C210,55 255,50 300,50Z" stroke="#6a6ef5" stroke-width="1.5" fill="none"/>
+      <path d="M300,90 C405,90 498,157 514,258 C530,359 458,450 346,485 C234,520 126,466 82,369 C38,272 82,144 162,98 C208,76 257,90 300,90Z" stroke="#6a6ef5" stroke-width="1.3" fill="none"/>
+      <path d="M300,128 C390,128 477,188 491,267 C505,346 437,431 330,463 C223,495 125,446 84,355 C43,264 85,150 163,107 C207,87 257,128 300,128Z" stroke="#6a6ef5" stroke-width="1.1" fill="none"/>
+      <path d="M300,164 C376,164 456,216 468,283 C480,350 416,428 316,457 C216,486 126,442 88,357 C50,272 90,156 165,116 C206,98 258,164 300,164Z" stroke="#6a6ef5" stroke-width="0.9" fill="none"/>
+      <path d="M300,198 C363,198 435,242 445,298 C455,354 395,424 302,450 C209,476 127,436 92,358 C57,280 95,164 166,126 C206,109 259,198 300,198Z" stroke="#6a6ef5" stroke-width="0.7" fill="none"/>
+    </svg>
+  </div>
+
+  <h2 class="oferta-title">Oferta</h2>
+
+  <ul class="oferta-list">
+    <li>
+      <span class="oferta-bullet">
+        <span class="oferta-dot"></span>
+        <span class="oferta-dot"></span>
+        <span class="oferta-dot"></span>
+      </span>
+      <strong>inspirujemy</strong> i motywujemy do działań
+    </li>
+    <li>
+      <span class="oferta-bullet">
+        <span class="oferta-dot"></span>
+        <span class="oferta-dot"></span>
+        <span class="oferta-dot"></span>
+      </span>
+      <strong>budujemy</strong> trwałe zasoby organizacji społecznych
+    </li>
+    <li>
+      <span class="oferta-bullet">
+        <span class="oferta-dot"></span>
+        <span class="oferta-dot"></span>
+        <span class="oferta-dot"></span>
+      </span>
+      <strong>przygotowujemy</strong> wnioski o dotacje
+    </li>
+    <li>
+      <span class="oferta-bullet">
+        <span class="oferta-dot"></span>
+        <span class="oferta-dot"></span>
+        <span class="oferta-dot"></span>
+      </span>
+      <strong>rozliczamy</strong> dotacje
+    </li>
+    <li>
+      <span class="oferta-bullet">
+        <span class="oferta-dot"></span>
+        <span class="oferta-dot"></span>
+        <span class="oferta-dot"></span>
+      </span>
+      <strong>projektujemy</strong> usługi społeczne
+    </li>
+  </ul>
+</section>
+
+<!-- ═══════════ FORMULARZ ═══════════ -->
+<section id="formularz">
+  <div class="form-grid" style="padding:64px 5%;">
+    <div>
+      <h2 class="form-heading">Porozmawiajmy o tym<br/>jak wspierać osoby starsze!</h2>
+      <p class="form-desc">
+        Napisz do nas jeśli potrzebujesz dofinansowania<br/>
+        dla swoich działań, pomysłów na rozwój<br/>
+        lub kontynuację projektów.<br/><br/>
+        Lubimy dzielić się naszą wiedzą i doświadczeniem.
+      </p>
+    </div>
+    <div>
+      <div class="form-block">
+        <form id="contactForm" novalidate>
+          <div class="form-fields">
+            <div class="form-field"><input class="form-input" type="text" name="imie" placeholder="IMIĘ" required/></div>
+            <div class="form-field"><input class="form-input" type="text" name="organizacja" placeholder="NAZWA INSTYTUCJI" required/></div>
+            <div class="form-field"><input class="form-input" type="email" name="email" placeholder="E-MAIL" required/></div>
+            <div class="form-field"><textarea class="form-input" name="wiadomosc" placeholder="WIADOMOŚĆ" required></textarea></div>
+          </div>
+          <div class="form-check-wrap">
+            <div class="check-box" id="checkBox"></div>
+            <input type="checkbox" id="rodo" name="rodo" required style="position:absolute;opacity:0;pointer-events:none;"/>
+            <label class="check-label" for="rodo">
+              <a href="https://app.easy.tools/policies/inkubator-idealistow-2" target="_blank">Akceptuję Politykę Prywatności</a>
+            </label>
+          </div>
+          <button type="submit" class="form-submit">WYŚLIJ WIADOMOŚĆ</button>
+        </form>
+        <div class="form-success" id="formSuccess">Dziękujemy za wiadomość! Odpowiemy jak najszybciej ;)</div>
+        <div class="form-error" id="formError">Oops! Coś poszło nie tak :(</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ TESTIMONIALS ═══════════ -->
+<section id="testimonials">
+  <div class="t-label">Zaufali nam</div>
+  <div class="t-track-wrap">
+    <div class="t-track" id="tTrack">
+      <!-- Set 1 -->
+      <div class="t-card">
+        <img src="https://cdn.prod.website-files.com/64d24e4e2a64a9d93d86c2c0/64d77a8204a893ff7e703c4c_Ornament%20Arow.svg" alt="" class="t-arrow"/>
+        <p class="t-quote">Jestem wdzięczna za wszystko, co Pani dla mnie zrobiła i robi.</p>
+        <p class="t-name">Wioletta P.</p><p class="t-org">NZOZ Max Med</p>
+      </div>
+      <div class="t-card">
+        <img src="https://cdn.prod.website-files.com/64d24e4e2a64a9d93d86c2c0/64d77a8204a893ff7e703c4c_Ornament%20Arow.svg" alt="" class="t-arrow"/>
+        <p class="t-quote">Dzięki indywidualnemu podejściu do naszej firmy oraz profesjonalizmowi pozyskaliśmy 4 projekty unijne.</p>
+        <p class="t-name">Małgorzata A.</p><p class="t-org">DPS MECENAT</p>
+      </div>
+      <div class="t-card">
+        <img src="https://cdn.prod.website-files.com/64d24e4e2a64a9d93d86c2c0/64d77a8204a893ff7e703c4c_Ornament%20Arow.svg" alt="" class="t-arrow"/>
+        <p class="t-quote">Jeszcze raz dziękuję Paniom za wspaniałą pracę</p>
+        <p class="t-name">Paweł R.</p><p class="t-org">Fundacja "Dom z Sercem"</p>
+      </div>
+      <div class="t-card">
+        <img src="https://cdn.prod.website-files.com/64d24e4e2a64a9d93d86c2c0/64d77a8204a893ff7e703c4c_Ornament%20Arow.svg" alt="" class="t-arrow"/>
+        <p class="t-quote">Dzięki partnerskiej współpracy projekty zostały zakończone, a poniesione wydatki – w całości rozliczone i zatwierdzone przez instytucję finansującą.</p>
+        <p class="t-name">Adrian B.</p><p class="t-org">SZPZLO Warszawa - Wawer</p>
+      </div>
+      <div class="t-card">
+        <img src="https://cdn.prod.website-files.com/64d24e4e2a64a9d93d86c2c0/64d77a8204a893ff7e703c4c_Ornament%20Arow.svg" alt="" class="t-arrow"/>
+        <p class="t-quote">Cieszę się, że panie mam.</p>
+        <p class="t-name">Iwona K.</p><p class="t-org">Fundacja „Leśne Zacisze"</p>
+      </div>
+      <div class="t-card">
+        <img src="https://cdn.prod.website-files.com/64d24e4e2a64a9d93d86c2c0/64d77a8204a893ff7e703c4c_Ornament%20Arow.svg" alt="" class="t-arrow"/>
+        <p class="t-quote">Bardzo doceniam współpracę z Panią, dyspozycyjność i pomoc w każdej zgłoszonej kwestii.</p>
+        <p class="t-name">Wioletta P.</p><p class="t-org">NZOZ Max Med</p>
+      </div>
+      <div class="t-card">
+        <img src="https://cdn.prod.website-files.com/64d24e4e2a64a9d93d86c2c0/64d77a8204a893ff7e703c4c_Ornament%20Arow.svg" alt="" class="t-arrow"/>
+        <p class="t-quote">Jak zwykle jesteście NAJLEPSZE!</p>
+        <p class="t-name">Paweł R.</p><p class="t-org">Fundacja "Dom z Sercem"</p>
+      </div>
+      <div class="t-card">
+        <img src="https://cdn.prod.website-files.com/64d24e4e2a64a9d93d86c2c0/64d77a8204a893ff7e703c4c_Ornament%20Arow.svg" alt="" class="t-arrow"/>
+        <p class="t-quote">Super! Bardzo się cieszę z dotacji. To był trudny konkurs. Dziękuję w imieniu brzozowskich seniorów!</p>
+        <p class="t-name">Jolanta L.</p><p class="t-org">Fundacja „W Trosce o Życie"</p>
+      </div>
+      <div class="t-card">
+        <img src="https://cdn.prod.website-files.com/64d24e4e2a64a9d93d86c2c0/64d77a8204a893ff7e703c4c_Ornament%20Arow.svg" alt="" class="t-arrow"/>
+        <p class="t-quote">Jest Pani Wielka.</p>
+        <p class="t-name">Iwona K.</p><p class="t-org">Fundacja „Leśne Zacisze"</p>
+      </div>
+      <!-- Set 2 (duplicate for seamless loop) -->
+      <div class="t-card">
+        <img src="https://cdn.prod.website-files.com/64d24e4e2a64a9d93d86c2c0/64d77a8204a893ff7e703c4c_Ornament%20Arow.svg" alt="" class="t-arrow"/>
+        <p class="t-quote">Jestem wdzięczna za wszystko, co Pani dla mnie zrobiła i robi.</p>
+        <p class="t-name">Wioletta P.</p><p class="t-org">NZOZ Max Med</p>
+      </div>
+      <div class="t-card">
+        <img src="https://cdn.prod.website-files.com/64d24e4e2a64a9d93d86c2c0/64d77a8204a893ff7e703c4c_Ornament%20Arow.svg" alt="" class="t-arrow"/>
+        <p class="t-quote">Dzięki indywidualnemu podejściu do naszej firmy oraz profesjonalizmowi pozyskaliśmy 4 projekty unijne.</p>
+        <p class="t-name">Małgorzata A.</p><p class="t-org">DPS MECENAT</p>
+      </div>
+      <div class="t-card">
+        <img src="https://cdn.prod.website-files.com/64d24e4e2a64a9d93d86c2c0/64d77a8204a893ff7e703c4c_Ornament%20Arow.svg" alt="" class="t-arrow"/>
+        <p class="t-quote">Jeszcze raz dziękuję Paniom za wspaniałą pracę</p>
+        <p class="t-name">Paweł R.</p><p class="t-org">Fundacja "Dom z Sercem"</p>
+      </div>
+      <div class="t-card">
+        <img src="https://cdn.prod.website-files.com/64d24e4e2a64a9d93d86c2c0/64d77a8204a893ff7e703c4c_Ornament%20Arow.svg" alt="" class="t-arrow"/>
+        <p class="t-quote">Dzięki partnerskiej współpracy projekty zostały zakończone, a poniesione wydatki – w całości rozliczone i zatwierdzone przez instytucję finansującą.</p>
+        <p class="t-name">Adrian B.</p><p class="t-org">SZPZLO Warszawa - Wawer</p>
+      </div>
+      <div class="t-card">
+        <img src="https://cdn.prod.website-files.com/64d24e4e2a64a9d93d86c2c0/64d77a8204a893ff7e703c4c_Ornament%20Arow.svg" alt="" class="t-arrow"/>
+        <p class="t-quote">Cieszę się, że panie mam.</p>
+        <p class="t-name">Iwona K.</p><p class="t-org">Fundacja „Leśne Zacisze"</p>
+      </div>
+      <div class="t-card">
+        <img src="https://cdn.prod.website-files.com/64d24e4e2a64a9d93d86c2c0/64d77a8204a893ff7e703c4c_Ornament%20Arow.svg" alt="" class="t-arrow"/>
+        <p class="t-quote">Bardzo doceniam współpracę z Panią, dyspozycyjność i pomoc w każdej zgłoszonej kwestii.</p>
+        <p class="t-name">Wioletta P.</p><p class="t-org">NZOZ Max Med</p>
+      </div>
+      <div class="t-card">
+        <img src="https://cdn.prod.website-files.com/64d24e4e2a64a9d93d86c2c0/64d77a8204a893ff7e703c4c_Ornament%20Arow.svg" alt="" class="t-arrow"/>
+        <p class="t-quote">Jak zwykle jesteście NAJLEPSZE!</p>
+        <p class="t-name">Paweł R.</p><p class="t-org">Fundacja "Dom z Sercem"</p>
+      </div>
+      <div class="t-card">
+        <img src="https://cdn.prod.website-files.com/64d24e4e2a64a9d93d86c2c0/64d77a8204a893ff7e703c4c_Ornament%20Arow.svg" alt="" class="t-arrow"/>
+        <p class="t-quote">Super! Bardzo się cieszę z dotacji. To był trudny konkurs. Dziękuję w imieniu brzozowskich seniorów!</p>
+        <p class="t-name">Jolanta L.</p><p class="t-org">Fundacja „W Trosce o Życie"</p>
+      </div>
+      <div class="t-card">
+        <img src="https://cdn.prod.website-files.com/64d24e4e2a64a9d93d86c2c0/64d77a8204a893ff7e703c4c_Ornament%20Arow.svg" alt="" class="t-arrow"/>
+        <p class="t-quote">Jest Pani Wielka.</p>
+        <p class="t-name">Iwona K.</p><p class="t-org">Fundacja „Leśne Zacisze"</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Logos -->
+  <div class="logos-wrap" style="margin-top:32px;">
+    <img src="https://cdn.prod.website-files.com/64d24e4e2a64a9d93d86c2c0/64d24e4e2a64a9d93d86c2ff_Loga.svg" alt="" loading="lazy"/>
+  </div>
+</section>
+
+<!-- ═══════════ KONTAKT ═══════════ -->
+<section id="kontakt">
+  <div class="k-label">Kontakt</div>
+  <div class="k-grid">
+    <div class="k-item">
+      <div class="k-name">Ewa Fedor – Destrebecq</div>
+      <div class="k-role">rozwój pomysłów/projektów</div>
+    </div>
+    <div class="k-item">
+      <div class="k-name">Anna Latusek</div>
+      <div class="k-role">nadzór nad rozliczaniem projektów</div>
+    </div>
+    <div class="k-item">
+      <div class="k-name">Katarzyna Kąkol</div>
+      <div class="k-role">rozwój pomysłów/projektów</div>
+    </div>
+    <div class="k-item">
+      <div class="k-phone">691 380 714</div>
+      <div class="k-email"><a href="mailto:e.fedor@inkubatoridealistow.org.pl?subject=Formularz">e.fedor@inkubatoridealistow.org.pl</a></div>
+    </div>
+    <div class="k-item">
+      <div class="k-phone">609 966 215</div>
+      <div class="k-email"><a href="mailto:a.latusek@inkubatoridealistow.org.pl?subject=Formularz">a.latusek@inkubatoridealistow.org.pl</a></div>
+    </div>
+    <div class="k-item">
+      <div class="k-phone">501 077 931</div>
+      <div class="k-email"><a href="mailto:k.kakol@inkubatoridealistow.org.pl?subject=Formularz">k.kakol@inkubatoridealistow.org.pl</a></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ FOOTER ═══════════ -->
+<footer>
+  <a href="https://app.easy.tools/policies/inkubator-idealistow-2" target="_blank">Polityka Prywatności</a>
+  <span class="footer-copy">Copyright © 2023 Inkubator Idealistów. All rights reserved.</span>
+</footer>
 
 <script>
-  // Hide overlay after animation
-  window.addEventListener('load', function() {
-    setTimeout(function() {
-      var overlay = document.getElementById('pageOverlay');
-      if (overlay) overlay.style.display = 'none';
-    }, 2400);
-  });
+  // Overlay
+  setTimeout(() => { document.getElementById('overlay').style.display = 'none'; }, 2500);
 
-  // Mobile menu
-  function toggleMenu() {
-    var menu = document.getElementById('navMenu');
-    menu.classList.toggle('open');
+  // Nav toggle
+  function toggleNav() {
+    document.getElementById('navLinks').classList.toggle('open');
   }
 
-  // Custom checkbox
-  var checkboxIcon = document.getElementById('checkboxIcon');
-  var rodoCheckbox = document.getElementById('rodoCheckbox');
-  checkboxIcon.addEventListener('click', function() {
-    rodoCheckbox.checked = !rodoCheckbox.checked;
-    checkboxIcon.classList.toggle('checked', rodoCheckbox.checked);
+  // Checkbox
+  const checkBox = document.getElementById('checkBox');
+  const rodo = document.getElementById('rodo');
+  checkBox.addEventListener('click', () => {
+    rodo.checked = !rodo.checked;
+    checkBox.classList.toggle('checked', rodo.checked);
   });
 
-  // Form submit
+  // Form
   document.getElementById('contactForm').addEventListener('submit', function(e) {
     e.preventDefault();
-
-    var imie = this.querySelector('[name="imie"]').value.trim();
-    var org  = this.querySelector('[name="organizacja"]').value.trim();
-    var mail = this.querySelector('[name="email"]').value.trim();
-    var msg  = this.querySelector('[name="wiadomosc"]').value.trim();
-    var rodo = rodoCheckbox.checked;
-
-    if (!imie || !org || !mail || !msg || !rodo) {
-      document.getElementById('errorMsg').style.display = 'block';
-      document.getElementById('successMsg').style.display = 'none';
+    const vals = ['imie','organizacja','email','wiadomosc'].map(n => this[n]?.value?.trim());
+    if (vals.some(v => !v) || !rodo.checked) {
+      document.getElementById('formError').style.display = 'block';
       return;
     }
-
-    // Simulate send
-    var btn = this.querySelector('.btn-submit');
+    const btn = this.querySelector('.form-submit');
     btn.textContent = 'Proszę czekać...';
     btn.disabled = true;
-
-    setTimeout(function() {
-      document.getElementById('contactForm').style.display = 'none';
-      document.getElementById('successMsg').style.display = 'block';
-      document.getElementById('errorMsg').style.display = 'none';
-    }, 1000);
+    setTimeout(() => {
+      this.style.display = 'none';
+      document.getElementById('formSuccess').style.display = 'block';
+      document.getElementById('formError').style.display = 'none';
+    }, 900);
   });
-
-  // Clear error on input
-  document.querySelectorAll('.form-input').forEach(function(el) {
-    el.addEventListener('input', function() {
-      document.getElementById('errorMsg').style.display = 'none';
-    });
+  document.querySelectorAll('.form-input').forEach(el => {
+    el.addEventListener('input', () => { document.getElementById('formError').style.display = 'none'; });
   });
 </script>
 </body>
