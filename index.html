@@ -33,81 +33,79 @@
       position: fixed; inset: 0; z-index: 9999;
       background: var(--bg);
       display: flex;
-      flex-direction: column;
       align-items: center;
       justify-content: center;
       pointer-events: none;
-      animation: overlayFadeOut 0.6s 4.8s cubic-bezier(.4,0,.2,1) forwards;
+      animation: overlayFadeOut 0.7s 5.4s cubic-bezier(.4,0,.2,1) forwards;
     }
-    @keyframes overlayFadeOut {
-      to { opacity: 0; visibility: hidden; }
-    }
+    @keyframes overlayFadeOut { to { opacity: 0; visibility: hidden; } }
 
-    /* Ripple rings */
-    .overlay-rings {
+    /* Layer 1 — organic blob */
+    .ol-scene {
       position: relative;
-      width: 260px; height: 260px;
-      flex-shrink: 0;
+      width: min(78vmin, 680px);
+      height: min(78vmin, 680px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
-    .overlay-rings circle {
-      transform-origin: 130px 130px;
-      animation: ripple 2s ease-out infinite;
+    .ol-blob {
+      position: absolute;
+      inset: 0;
+      width: 100%; height: 100%;
     }
-    .overlay-rings circle:nth-child(1) { animation-delay: 0s; }
-    .overlay-rings circle:nth-child(2) { animation-delay: 0.28s; }
-    .overlay-rings circle:nth-child(3) { animation-delay: 0.56s; }
-    .overlay-rings circle:nth-child(4) { animation-delay: 0.84s; }
-    .overlay-rings circle:nth-child(5) { animation-delay: 1.12s; }
-    .overlay-rings circle:nth-child(6) { animation-delay: 1.4s; }
-    @keyframes ripple {
-      0%   { r: 8;  opacity: 0.9; stroke-width: 2.5; }
-      100% { r: 128; opacity: 0;   stroke-width: 0.5; }
+    .ol-blob-group {
+      animation: olBlobWave 10s ease-in-out infinite;
+      transform-origin: 300px 300px;
+    }
+    @keyframes olBlobWave {
+      0%   { transform: rotate(0deg)   scaleX(1)    scaleY(1); }
+      20%  { transform: rotate(72deg)  scaleX(1.07) scaleY(0.95); }
+      40%  { transform: rotate(144deg) scaleX(0.96) scaleY(1.08); }
+      60%  { transform: rotate(216deg) scaleX(1.05) scaleY(0.94); }
+      80%  { transform: rotate(288deg) scaleX(0.97) scaleY(1.06); }
+      100% { transform: rotate(360deg) scaleX(1)    scaleY(1); }
     }
 
-    /* INKUBATOR top text — letters appear one by one */
-    .overlay-top {
+    /* Layer 2 — text on top of blob */
+    .ol-text {
       position: absolute;
-      top: calc(50% - 260px/2 - 3.5rem);
-      left: 0; right: 0;
-      text-align: center;
-      font-size: clamp(1.6rem, 4vw, 3rem);
+      inset: 0;
+      z-index: 2;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      line-height: 1.05;
+      gap: 0;
+    }
+    .ol-row-top,
+    .ol-row-bot {
+      display: flex;
+      justify-content: center;
+      font-size: clamp(2rem, 5.5vw, 4rem);
       font-weight: 800;
-      letter-spacing: 0.25em;
-      color: var(--blue);
-      display: flex;
-      justify-content: center;
-      gap: 0;
-      overflow: hidden;
+      color: var(--orange);
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
     }
-    .overlay-top span {
+    .ol-row-top span,
+    .ol-row-bot span {
       display: inline-block;
       opacity: 0;
-      transform: translateY(-20px);
-      animation: letterDrop 0.4s cubic-bezier(.22,1,.36,1) forwards;
     }
-    /* IDEALISTÓW bottom text */
-    .overlay-bottom {
-      position: absolute;
-      top: calc(50% + 260px/2 + 1rem);
-      left: 0; right: 0;
-      text-align: center;
-      font-size: clamp(1rem, 2.5vw, 1.8rem);
-      font-weight: 700;
-      letter-spacing: 0.35em;
-      color: var(--blue);
-      display: flex;
-      justify-content: center;
-      gap: 0;
-      overflow: hidden;
+    /* top letters drop down */
+    .ol-row-top span {
+      transform: translateY(-18px);
+      animation: olLetterDrop 0.35s cubic-bezier(.22,1,.36,1) forwards;
     }
-    .overlay-bottom span {
-      display: inline-block;
-      opacity: 0;
-      transform: translateY(20px);
-      animation: letterRise 0.4s cubic-bezier(.22,1,.36,1) forwards;
+    /* bottom letters rise up */
+    .ol-row-bot span {
+      transform: translateY(18px);
+      animation: olLetterRise 0.35s cubic-bezier(.22,1,.36,1) forwards;
     }
-    @keyframes letterDrop  { to { opacity: 1; transform: translateY(0); } }
-    @keyframes letterRise  { to { opacity: 1; transform: translateY(0); } }
+    @keyframes olLetterDrop { to { opacity: 1; transform: translateY(0); } }
+    @keyframes olLetterRise { to { opacity: 1; transform: translateY(0); } }
 
     /* ── NAVBAR ── */
     nav {
@@ -707,24 +705,36 @@
 
 <!-- PAGE LOAD OVERLAY -->
 <div class="overlay">
-  <!-- INKUBATOR — letters drop in one by one after 2s -->
-  <div class="overlay-top">
-    <span style="animation-delay:2.00s">I</span><span style="animation-delay:2.10s">N</span><span style="animation-delay:2.20s">K</span><span style="animation-delay:2.30s">U</span><span style="animation-delay:2.40s">B</span><span style="animation-delay:2.50s">A</span><span style="animation-delay:2.60s">T</span><span style="animation-delay:2.70s">O</span><span style="animation-delay:2.80s">R</span>
-  </div>
+  <div class="ol-scene">
 
-  <!-- Animated ripple rings -->
-  <svg class="overlay-rings" viewBox="0 0 260 260" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <circle cx="130" cy="130" r="8" stroke="#6a6ef5" stroke-width="2.5"/>
-    <circle cx="130" cy="130" r="8" stroke="#6a6ef5" stroke-width="2.5"/>
-    <circle cx="130" cy="130" r="8" stroke="#6a6ef5" stroke-width="2.5"/>
-    <circle cx="130" cy="130" r="8" stroke="#6a6ef5" stroke-width="2.5"/>
-    <circle cx="130" cy="130" r="8" stroke="#6a6ef5" stroke-width="2.5"/>
-    <circle cx="130" cy="130" r="8" stroke="#6a6ef5" stroke-width="2.5"/>
-  </svg>
+    <!-- Layer 1: organic morphing blob -->
+    <svg class="ol-blob" viewBox="0 0 600 600" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <g class="ol-blob-group" stroke="#6a6ef5" fill="none">
+        <path stroke-width="1.2" opacity="0.90" d="M300,218 C356,200 400,238 406,292 C412,346 378,392 326,408 C274,424 218,404 192,364 C166,324 178,264 214,236 C250,208 264,232 300,218Z"/>
+        <path stroke-width="1.15" opacity="0.83" d="M300,186 C374,160 430,210 434,278 C438,346 396,402 332,421 C268,440 200,414 170,364 C140,314 158,240 198,205 C238,170 254,206 300,186Z"/>
+        <path stroke-width="1.1"  opacity="0.76" d="M300,155 C392,120 462,182 464,264 C466,346 416,410 342,432 C268,454 188,422 154,364 C120,306 144,218 188,176 C232,134 246,182 300,155Z"/>
+        <path stroke-width="1.05" opacity="0.69" d="M300,124 C410,80 492,154 492,250 C492,346 436,418 352,443 C268,468 176,430 138,364 C100,298 128,196 178,148 C228,100 240,160 300,124Z"/>
+        <path stroke-width="1.0"  opacity="0.62" d="M300,94 C428,40 524,126 522,236 C520,346 456,426 362,454 C268,482 164,438 122,364 C80,290 112,174 168,120 C224,66 232,138 300,94Z"/>
+        <path stroke-width="0.95" opacity="0.55" d="M300,64 C446,0 556,98 552,222 C548,346 476,434 372,465 C268,496 152,446 106,364 C60,282 96,152 158,92 C220,32 224,116 300,64Z"/>
+        <path stroke-width="0.9"  opacity="0.48" d="M300,35 C464,-40 588,70 582,208 C576,346 496,442 382,476 C268,510 140,454 90,364 C40,274 80,130 148,64 C216,-2 216,94 300,35Z"/>
+        <path stroke-width="0.85" opacity="0.41" d="M300,6 C482,-80 620,42 612,194 C604,346 516,450 392,487 C268,524 128,462 74,364 C20,266 64,108 138,36 C212,-36 208,72 300,6Z"/>
+        <path stroke-width="0.8"  opacity="0.34" d="M300,-22 C500,-120 652,14 642,180 C632,346 536,458 402,498 C268,538 116,470 58,364 C0,258 48,86 128,8 C208,-70 200,50 300,-22Z"/>
+        <path stroke-width="0.75" opacity="0.27" d="M300,-50 C518,-160 684,-14 672,166 C660,346 556,466 412,509 C268,552 104,478 42,364 C-20,250 32,64 118,-20 C204,-104 192,28 300,-50Z"/>
+        <path stroke-width="0.7"  opacity="0.20" d="M300,-78 C536,-200 716,-42 702,152 C688,346 576,474 422,520 C268,566 92,486 26,364 C-40,242 16,42 108,-48 C200,-138 184,6 300,-78Z"/>
+        <path stroke-width="0.65" opacity="0.13" d="M300,-106 C554,-240 748,-70 732,138 C716,346 596,482 432,531 C268,580 80,494 10,364 C-60,234 0,20 98,-76 C196,-172 176,-16 300,-106Z"/>
+      </g>
+    </svg>
 
-  <!-- IDEALISTÓW — letters rise in one by one after 2s -->
-  <div class="overlay-bottom">
-    <span style="animation-delay:2.00s">I</span><span style="animation-delay:2.09s">D</span><span style="animation-delay:2.18s">E</span><span style="animation-delay:2.27s">A</span><span style="animation-delay:2.36s">L</span><span style="animation-delay:2.45s">I</span><span style="animation-delay:2.54s">S</span><span style="animation-delay:2.63s">T</span><span style="animation-delay:2.72s">Ó</span><span style="animation-delay:2.81s">W</span>
+    <!-- Layer 2: text centered on blob -->
+    <div class="ol-text">
+      <div class="ol-row-top">
+        <span style="animation-delay:2.00s">I</span><span style="animation-delay:2.09s">N</span><span style="animation-delay:2.18s">K</span><span style="animation-delay:2.27s">U</span><span style="animation-delay:2.36s">B</span><span style="animation-delay:2.45s">A</span><span style="animation-delay:2.54s">T</span><span style="animation-delay:2.63s">O</span><span style="animation-delay:2.72s">R</span>
+      </div>
+      <div class="ol-row-bot">
+        <span style="animation-delay:2.09s">I</span><span style="animation-delay:2.18s">D</span><span style="animation-delay:2.27s">E</span><span style="animation-delay:2.36s">A</span><span style="animation-delay:2.45s">L</span><span style="animation-delay:2.54s">I</span><span style="animation-delay:2.63s">S</span><span style="animation-delay:2.72s">T</span><span style="animation-delay:2.81s">Ó</span><span style="animation-delay:2.90s">W</span>
+      </div>
+    </div>
+
   </div>
 </div>
 
