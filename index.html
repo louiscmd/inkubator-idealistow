@@ -6,1104 +6,1248 @@
   <title>Inkubator Idealistów</title>
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,300;1,400;1,600;1,700;1,800&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400;1,600;1,700;1,800&display=swap" rel="stylesheet"/>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     * { -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
-
     :root {
       --orange: #ff5f1b;
-      --purple: #6a6ef5;
-      --dark-purple: #533341;
+      --blue: #6a6ef5;
+      --purple: #533341;
       --bg: #f0f0f0;
       --white: #ffffff;
-      --black: #000000;
     }
-
     html { scroll-behavior: smooth; }
-
     body {
       background: var(--bg);
       font-family: Poppins, sans-serif;
-      color: var(--black);
+      color: #222;
       font-size: 1rem;
-      line-height: 1.5;
+      line-height: 1.6;
       overflow-x: hidden;
     }
+    a { color: inherit; text-decoration: none; }
 
-    p { margin: 0; }
-    a { color: inherit; text-decoration: underline; }
-    img { max-width: 100%; display: block; }
-
-    /* ─── PAGE LOAD OVERLAY ─── */
+    /* ── OVERLAY ── */
     .overlay {
-      position: fixed; inset: 0;
-      z-index: 9999;
-      display: flex;
+      position: fixed; inset: 0; z-index: 9999;
       background: var(--bg);
+      display: flex;
       pointer-events: none;
-      animation: overlayOut 0.4s 2s forwards;
+      animation: fadeOverlay 0.5s 2.2s forwards;
     }
-    @keyframes overlayOut { to { opacity: 0; visibility: hidden; } }
-
+    @keyframes fadeOverlay { to { opacity: 0; visibility: hidden; } }
     .overlay-left {
-      flex: 1; display: flex; align-items: flex-end; padding: 5vw 4vw;
+      flex: 1; display: flex; align-items: flex-end;
+      padding: 5vw 5vw;
     }
     .overlay-right {
-      flex: 1; display: flex; align-items: flex-start; justify-content: flex-end; padding: 5vw 4vw;
+      width: 48%; display: flex; align-items: center; justify-content: center;
     }
-    .overlay-letters { display: flex; flex-direction: column; line-height: 1; }
-    .overlay-row { overflow: hidden; }
-    .overlay-row span {
-      display: block;
-      font-size: clamp(3.5rem, 9vw, 8rem);
-      font-weight: 900;
-      color: var(--purple);
+    .overlay-letters {
+      display: flex; flex-direction: column; gap: 0.15em;
+      overflow: hidden;
+    }
+    .ol-row {
+      display: flex; gap: 0.4em;
+      overflow: hidden;
+    }
+    .ol-row span {
+      font-size: clamp(3rem, 8vw, 6rem);
+      font-weight: 800;
+      color: var(--orange);
+      display: inline-block;
       transform: translateY(120%);
-      animation: slideUp 0.55s cubic-bezier(.16,1,.3,1) forwards;
+      animation: slideUp 0.7s cubic-bezier(.22,1,.36,1) forwards;
     }
-    .overlay-row:nth-child(1) span { animation-delay: 0.05s; }
-    .overlay-row:nth-child(2) span { animation-delay: 0.15s; }
-    .overlay-row:nth-child(3) span { animation-delay: 0.25s; }
-    .overlay-row:nth-child(4) span { animation-delay: 0.35s; }
-    .overlay-right-text { overflow: hidden; }
-    .overlay-right-text span {
-      display: block;
-      font-size: clamp(2rem, 5vw, 5rem);
-      font-weight: 900;
-      color: var(--purple);
-      transform: translateY(80px);
-      animation: slideUp 0.6s 0.5s cubic-bezier(.16,1,.3,1) forwards;
-    }
-    .overlay-rings {
-      position: absolute; left: 50%; top: 50%; transform: translate(-50%,-50%);
-      width: clamp(100px, 18vw, 220px);
-      opacity: 0;
-      animation: fadeIn 0.8s 0.15s forwards;
-    }
+    .ol-row:nth-child(1) span { animation-delay: 0.1s; }
+    .ol-row:nth-child(2) span { animation-delay: 0.25s; }
+    .ol-row:nth-child(3) span { animation-delay: 0.4s; }
+    .ol-row:nth-child(4) span { animation-delay: 0.55s; }
     @keyframes slideUp { to { transform: translateY(0); } }
-    @keyframes fadeIn  { to { opacity: 1; } }
+    .overlay-idealistow {
+      font-size: clamp(0.9rem, 2vw, 1.5rem);
+      font-weight: 700;
+      color: var(--orange);
+      letter-spacing: 0.35em;
+      text-transform: uppercase;
+      transform: translateX(-40px);
+      opacity: 0;
+      animation: slideRight 0.6s 0.8s cubic-bezier(.22,1,.36,1) forwards;
+    }
+    @keyframes slideRight { to { transform: translateX(0); opacity: 1; } }
+    .overlay-rings {
+      opacity: 0;
+      animation: fadeIn 0.6s 0.9s forwards;
+    }
+    @keyframes fadeIn { to { opacity: 1; } }
 
-    /* ─── NAVBAR ─── */
-    .navbar {
-      position: sticky; top: 0; z-index: 1000;
+    /* ── NAVBAR ── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
       display: flex; align-items: center; justify-content: space-between;
-      background: rgba(240,240,240,0.75);
-      backdrop-filter: blur(8px);
-      -webkit-backdrop-filter: blur(8px);
       padding: 0 5%;
-      min-height: 72px;
+      min-height: 4.5rem;
+      background: rgba(240,240,240,0.75);
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
     }
     .nav-logo {
-      font-size: 0.8rem; font-weight: 800; letter-spacing: 0.15em;
-      text-transform: uppercase; color: var(--orange); text-decoration: none;
-      line-height: 1.2;
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: var(--orange);
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
     }
-    .nav-logo img { height: 44px; width: auto; }
-    .nav-links { display: flex; align-items: center; gap: 0; }
-    .nav-link {
-      color: var(--purple); font-size: 18px; font-weight: 400;
-      text-decoration: none; padding: 0.5rem 40px;
-      transition: opacity 0.2s;
+    .nav-links {
+      display: flex; align-items: center; gap: 3rem;
     }
-    .nav-link:hover { opacity: 0.7; }
+    .nav-links a {
+      font-size: 0.9rem;
+      font-weight: 500;
+      color: #333;
+    }
     .nav-cta {
-      background: var(--orange); color: var(--white);
-      font-size: 18px; font-weight: 600; text-transform: uppercase;
-      padding: 15px 25px; text-decoration: none;
-      transition: background 0.2s;
+      background: var(--orange);
+      color: var(--white) !important;
+      padding: 0.75rem 1.6rem;
+      font-weight: 700 !important;
+      font-size: 0.8rem !important;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
     }
-    .nav-cta:hover { background: #e04e0a; }
-    .nav-burger { display: none; flex-direction: column; gap: 5px; cursor: pointer; }
-    .burger-line { width: 24px; height: 2px; background: var(--purple); }
 
-    /* ─── LEFT SIDEBAR LINE ─── */
-    .sidebar-line {
-      position: absolute; left: 5%; top: 0; bottom: 0;
-      width: 1px; background: var(--orange); pointer-events: none;
+    /* ── SECTION LABEL (vertical line + dash) ── */
+    .sec-label {
+      position: absolute;
+      left: 0; top: 0; bottom: 0;
+      width: 5%;
+      display: flex; align-items: flex-start; justify-content: flex-end;
+      padding-top: 6rem;
+      pointer-events: none;
     }
-    .sidebar-line::before,
-    .sidebar-line::after {
+    .sec-label::before {
       content: '';
-      position: absolute; left: -6px;
-      width: 13px; height: 1px; background: var(--orange);
+      position: absolute;
+      left: 50%; top: 5rem; bottom: 0;
+      width: 1.5px;
+      background: var(--blue);
+      opacity: 0.35;
     }
-    .sidebar-line::before { top: 30%; }
-    .sidebar-line::after  { top: 60%; }
+    .sec-label::after {
+      content: '';
+      position: absolute;
+      left: calc(50% - 8px); top: 5rem;
+      width: 16px; height: 1.5px;
+      background: var(--blue);
+      opacity: 0.35;
+    }
 
-    /* ─── TOPOGRAPHIC BLOB SVG (reusable) ─── */
-    .blob-svg { overflow: visible; }
-
-    /* ─── DOT GRID ─── */
-    .dot-grid {
-      display: grid;
-      gap: 8px;
+    /* ── HOLLOW CIRCLE DOTS ── */
+    .dots {
       position: absolute;
       pointer-events: none;
     }
     .dot {
-      width: 5px; height: 5px;
-      border-radius: 50%;
-      background: var(--orange);
-      opacity: 0.5;
-    }
-    .dot.purple { background: var(--purple); opacity: 0.4; }
-
-    /* ─── CIRCLE DECO ─── */
-    .circle-deco {
+      display: inline-block;
+      width: 7px; height: 7px;
       border-radius: 50%;
       border: 1.5px solid var(--orange);
-      position: absolute; pointer-events: none;
+      background: transparent;
     }
-    .circle-deco.purple { border-color: var(--purple); }
-
-    /* ─── SECTION SHARED ─── */
-    .section {
-      position: relative;
-      padding: 80px 5% 80px calc(5% + 30px);
-      overflow: hidden;
+    .dot-lg {
+      width: 18px; height: 18px;
+      border: 2px solid var(--orange);
+    }
+    .dot-blue {
+      border-color: var(--blue);
+    }
+    .dot-grid {
+      display: grid;
+      gap: 8px;
     }
 
-    /* ─── HERO ─── */
+    /* ── TOPOGRAPHIC BLOB SVG ── */
+    .blob-svg { overflow: visible; }
+
+    /* ── HERO ── */
     #hero {
-      min-height: 88vh;
+      min-height: 100vh;
       position: relative;
       overflow: hidden;
-      padding: 0;
+      display: flex;
+      align-items: stretch;
     }
-    /* Blob: left-center, large — mirrors original */
     .hero-blob {
-      position: absolute; left: 4%; top: 3%;
-      width: 44%; height: 94%;
-      z-index: 0; opacity: 0.75;
+      position: absolute;
+      left: -2%; top: 0; bottom: 0;
+      width: 56%;
+      display: flex; align-items: center;
+      z-index: 0;
     }
     .hero-blob svg { width: 100%; height: 100%; }
-    /* Orange box overlaid on top of blob */
+    .hero-content {
+      position: relative; z-index: 2;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding-top: 4.5rem;
+      width: 100%;
+    }
     .hero-box {
       position: absolute;
-      left: 17%; top: 38%;
-      z-index: 2;
+      left: 18%; top: 40%;
       background: var(--orange);
-      padding: 36px 44px;
-      width: 46%;
+      padding: 2.2rem 2.8rem;
+      width: 42%;
+      z-index: 3;
     }
     .hero-box h1 {
       color: var(--white);
-      font-size: clamp(1.4rem, 2.4vw, 2rem);
-      font-weight: 800;
-      line-height: 1.25;
+      font-size: clamp(1.1rem, 1.8vw, 1.6rem);
+      font-weight: 700;
+      line-height: 1.35;
+    }
+    /* hero right decorations */
+    .hero-deco {
+      position: absolute;
+      right: 0; top: 0; bottom: 0;
+      width: 44%;
+      pointer-events: none;
+      z-index: 1;
     }
 
-    /* ─── O NAS ─── */
+    /* ── O NAS ── */
     #o-nas {
       background: var(--bg);
-      padding: 80px 5% 80px calc(5% + 30px);
-      position: relative; overflow: hidden;
+      position: relative;
+      padding: 7rem 8% 7rem 5%;
+      overflow: hidden;
     }
-    .o-nas-heading {
-      font-size: clamp(1.6rem, 2.6vw, 2.1rem);
-      font-weight: 700; font-style: italic;
-      color: var(--purple); line-height: 1.3;
-      margin-bottom: 28px;
-      max-width: 52%;
+    #o-nas .sec-heading {
+      font-size: clamp(2.5rem, 5vw, 4rem);
+      font-weight: 800;
+      color: var(--blue);
+      line-height: 1.1;
+      margin-bottom: 2.5rem;
     }
     .o-nas-text {
-      font-size: 1rem; color: var(--dark-purple);
-      line-height: 1.75; margin-bottom: 20px;
-      max-width: 52%;
+      max-width: 50%;
+    }
+    .o-nas-text .sub-heading {
+      font-size: clamp(1rem, 1.8vw, 1.35rem);
+      font-weight: 700;
+      font-style: italic;
+      color: var(--orange);
+      line-height: 1.35;
+      margin-bottom: 1.8rem;
+    }
+    .o-nas-text p {
+      font-size: 0.95rem;
+      color: #333;
+      line-height: 1.7;
+      margin-bottom: 1rem;
     }
     .o-nas-blob {
-      position: absolute; right: -3%; top: 5%;
-      width: 46%; height: 90%; z-index: 0; opacity: 0.55;
+      position: absolute;
+      right: -4%; top: 5%; bottom: 5%;
+      width: 48%;
+      pointer-events: none;
+      z-index: 0;
     }
     .o-nas-blob svg { width: 100%; height: 100%; }
 
-    /* ─── CO NAS WYRÓŻNIA ─── */
-    #wyroznia {
-      padding-top: 80px; padding-bottom: 80px;
+    /* ── CO NAS WYRÓŻNIA ── */
+    #co-nas {
+      background: var(--bg);
+      position: relative;
+      padding: 5rem 5% 5rem 8%;
+      overflow: hidden;
     }
-    .wyroznia-title {
-      font-size: clamp(2.5rem, 6vw, 5rem);
-      font-weight: 800; color: var(--orange);
-      line-height: 1; margin-bottom: 56px;
-      position: relative; z-index: 1;
+    #co-nas .sec-heading {
+      font-size: clamp(2rem, 4vw, 3.2rem);
+      font-weight: 800;
+      font-style: italic;
+      color: var(--orange);
+      margin-bottom: 3rem;
     }
-    .wyroznia-grid {
-      display: grid; grid-template-columns: 1fr 1fr;
-      gap: 16px 60px; position: relative; z-index: 1;
+    .features-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2rem 6%;
+      max-width: 75%;
     }
-    .wyroznia-item { margin-bottom: 32px; }
-    .wyroznia-item h3 {
-      color: var(--orange); font-size: 1.15rem;
-      font-weight: 700; margin-bottom: 8px;
+    .feature h3 {
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--orange);
+      margin-bottom: 0.5rem;
     }
-    .wyroznia-item p {
-      font-size: 0.95rem; color: var(--dark-purple); line-height: 1.7;
-    }
-    .wyroznia-blob {
-      position: absolute; right: -6%; top: 0;
-      width: 42%; z-index: 0; opacity: 0.5;
-    }
-    /* dots bottom-left of wyroznia */
-    .wyroznia-circles {
-      position: absolute; bottom: 8%; left: 3%;
-      display: flex; gap: 12px; z-index: 1;
-    }
-    .wyroznia-circ {
-      width: 8px; height: 8px; border-radius: 50%;
-      border: 1.5px solid var(--orange);
+    .feature p {
+      font-size: 0.88rem;
+      color: #333;
+      line-height: 1.7;
     }
 
-    /* ─── LICZBY ─── */
+    /* ── LICZBY ── */
     #liczby {
-      padding-top: 80px; padding-bottom: 80px;
+      background: var(--bg);
+      position: relative;
+      padding: 5rem 5%;
+      overflow: hidden;
     }
-    .liczby-title {
-      font-size: clamp(2rem, 4.5vw, 3.5rem);
-      font-weight: 800; color: var(--orange);
-      margin-bottom: 56px; position: relative; z-index: 1;
+    #liczby .sec-heading {
+      font-size: clamp(2rem, 3.5vw, 2.8rem);
+      font-weight: 800;
+      font-style: italic;
+      color: var(--orange);
+      margin-bottom: 3rem;
     }
     .liczby-grid {
       display: grid;
-      grid-template-columns: 340px 1fr 1fr;
-      gap: 40px; align-items: start;
-      position: relative; z-index: 1;
+      grid-template-columns: 38% 1fr;
+      gap: 0 4%;
+      align-items: start;
     }
-    /* left blob + big number */
-    .liczby-blob-wrap {
-      position: relative; display: flex;
-      align-items: center; justify-content: center;
-      width: 340px; height: 340px; flex-shrink: 0;
+    .liczby-left {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
     }
-    .liczby-blob-svg { position: absolute; inset: 0; width: 100%; height: 100%; }
-    .liczby-main-num {
-      font-size: clamp(4rem, 8vw, 7rem);
-      font-weight: 800; color: var(--orange);
-      line-height: 1; position: relative; z-index: 1;
-      text-align: center;
+    .liczby-left .blob-small {
+      width: 85%;
+      margin-bottom: -3rem;
     }
-    .liczby-main-label {
-      background: var(--orange); color: var(--white);
-      font-size: 1.1rem; font-weight: 700;
-      padding: 10px 20px; text-align: center;
-      position: relative; z-index: 1;
-      margin-top: 8px;
+    .liczby-number {
+      font-size: clamp(4rem, 10vw, 8rem);
+      font-weight: 800;
+      color: var(--orange);
+      line-height: 1;
+      position: relative;
+      z-index: 2;
     }
-    .liczby-main-inner {
-      display: flex; flex-direction: column; align-items: center;
+    .liczby-label {
+      background: var(--orange);
+      color: var(--white);
+      font-weight: 700;
+      font-size: clamp(0.9rem, 1.5vw, 1.2rem);
+      padding: 0.4rem 1.2rem;
+      margin-top: 0.2rem;
+      display: inline-block;
       position: relative; z-index: 2;
     }
-
-    /* stat groups */
-    .liczby-col { display: flex; flex-direction: column; gap: 32px; }
-    .liczby-group-label {
-      font-size: 0.85rem; font-weight: 700;
-      letter-spacing: 0.05em; text-transform: uppercase;
-      color: var(--purple); margin-bottom: 12px;
+    .liczby-right {
+      display: flex;
+      flex-direction: column;
+      gap: 2rem;
+      padding-top: 2rem;
     }
-    .liczby-stat { display: flex; align-items: baseline; gap: 8px; }
-    .liczby-big {
-      font-size: clamp(3rem, 5vw, 4.5rem);
-      font-weight: 200; color: var(--purple);
+    .stat-block { display: flex; flex-direction: column; gap: 0.3rem; }
+    .stat-label {
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      color: var(--orange);
+      text-transform: uppercase;
+    }
+    .stat-number {
+      font-size: clamp(2.5rem, 5vw, 4rem);
+      font-weight: 300;
+      color: var(--blue);
       line-height: 1;
     }
-    .liczby-unit {
-      font-size: 1.1rem; font-weight: 300;
-      color: var(--purple); line-height: 1;
+    .stat-number span { font-size: 1rem; font-weight: 400; color: #444; margin-left: 0.3em; }
+    .stat-text {
+      font-size: 0.85rem;
+      color: #333;
+      line-height: 1.5;
     }
-    .liczby-row {
-      display: flex; align-items: baseline; gap: 16px;
-      margin-top: 12px;
+    .stat-row {
+      display: flex; gap: 4rem; align-items: flex-end;
     }
-    .liczby-row-label {
-      font-size: 0.85rem; font-weight: 700;
-      text-transform: uppercase; color: var(--purple);
+    .stat-connector {
+      display: flex; align-items: center; gap: 1rem; margin-top: 0.5rem;
     }
-    .liczby-desc { font-size: 1rem; color: var(--dark-purple); line-height: 1.4; }
-
-    /* bottom row */
-    .liczby-bottom {
-      grid-column: 1 / -1;
-      display: flex; flex-direction: column; gap: 16px;
-      border-top: 1px solid rgba(106,110,245,0.2);
-      padding-top: 28px; margin-top: 8px;
-      position: relative; z-index: 1;
-    }
-    .liczby-bottom-row {
-      display: flex; align-items: baseline; gap: 16px;
-    }
-
-    /* ─── OFERTA ─── */
-    #oferta {
-      padding-top: 80px; padding-bottom: 100px;
-    }
-    .oferta-title {
-      font-size: clamp(3rem, 7vw, 6rem);
-      font-weight: 800; color: var(--orange);
-      line-height: 1; margin-bottom: 48px;
-      position: relative; z-index: 1;
-    }
-    .oferta-list {
-      list-style: none; position: relative; z-index: 1;
-    }
-    .oferta-list li {
-      display: flex; align-items: center;
-      font-size: clamp(1.1rem, 2.2vw, 1.6rem);
-      color: var(--purple); font-weight: 300;
-      line-height: 1;
-      padding: 18px 0;
-      border-bottom: 1px solid rgba(106,110,245,0.15);
-    }
-    .oferta-list li:first-child { border-top: 1px solid rgba(106,110,245,0.15); }
-    .oferta-list li strong { font-weight: 700; margin-right: 6px; }
-    .oferta-bullet {
-      display: flex; gap: 4px; margin-right: 24px; flex-shrink: 0;
-      align-items: center;
-    }
-    .oferta-dot {
-      width: 5px; height: 5px; border-radius: 50%;
-      border: 1.5px solid var(--purple); flex-shrink: 0;
-    }
-    /* wavy bg on oferta */
-    .oferta-bg-blob {
-      position: absolute; right: -5%; top: 50%;
-      transform: translateY(-50%);
-      width: 50%; opacity: 0.12; z-index: 0;
-    }
-
-    /* ─── FORMULARZ ─── */
-    #formularz {
-      background: var(--orange);
-      padding: 64px 5%;
-    }
-    .form-grid {
-      display: grid; grid-template-columns: 1fr 1fr;
-      gap: 40px; align-items: start;
-    }
-    .form-heading {
-      color: var(--white); font-size: clamp(1.5rem, 2.5vw, 2.2rem);
-      font-weight: 700; line-height: 1.2; margin-bottom: 24px;
-    }
-    .form-desc {
-      color: var(--white); font-size: 1.1rem;
-      font-weight: 400; line-height: 1.7;
-    }
-    .form-block { background: #f4f4f4; }
-    .form-fields {
-      display: flex; flex-direction: column; gap: 0;
-    }
-    .form-field {
-      margin: 0 25px;
-    }
-    .form-field:first-child { margin-top: 20px; }
-    .form-field + .form-field { margin-top: 24px; }
-    .form-input {
-      width: 100%; border: 1px solid var(--orange);
-      background: var(--white); color: var(--black);
-      font-family: Poppins, sans-serif; font-size: 1rem;
-      padding: 10px 12px; outline: none;
-      transition: border-color 0.2s;
-    }
-    .form-input:focus { border-color: #000; }
-    .form-input::placeholder { color: rgba(0,0,0,0.5); }
-    textarea.form-input {
-      min-height: 160px; resize: vertical;
-      padding-top: 12px; padding-bottom: 12px;
-    }
-    .form-check-wrap {
-      display: flex; align-items: center; gap: 10px;
-      margin: 20px 25px 0;
-    }
-    .check-box {
-      width: 18px; height: 18px; border: 1px solid #000;
-      flex-shrink: 0; cursor: pointer; position: relative;
-      transition: background 0.15s;
-    }
-    .check-box.checked { background: #000; }
-    .check-box.checked::after {
+    .stat-connector::before {
       content: '';
-      position: absolute; top: 2px; left: 4px;
-      width: 8px; height: 5px;
-      border-left: 2px solid #fff;
-      border-bottom: 2px solid #fff;
-      transform: rotate(-45deg);
-    }
-    .check-label {
-      font-size: 0.8rem; color: var(--dark-purple); cursor: pointer;
-    }
-    .check-label a { color: var(--dark-purple); }
-    .form-submit {
-      display: block; width: calc(100% - 55px);
-      margin: 20px 30px 30px 25px;
-      background: var(--orange); color: var(--white);
-      border: none; font-family: Poppins, sans-serif;
-      font-size: 1rem; font-weight: 600;
-      padding: 14px; cursor: pointer;
-      transition: background 0.2s;
-    }
-    .form-submit:hover { background: #e04e0a; }
-    .form-success {
-      display: none; background: #f4f4f4;
-      padding: 24px; font-weight: 600;
-    }
-    .form-error {
-      display: none; padding: 14px 16px;
-      color: #e23939; font-size: 0.9rem;
+      display: block;
+      width: 30px; height: 1px;
+      background: var(--blue);
     }
 
-    /* ─── TESTIMONIALS ─── */
-    #testimonials {
+    /* ── OFERTA ── */
+    #oferta {
       background: var(--bg);
-      padding-top: 48px; padding-bottom: 48px;
+      position: relative;
+      padding: 5rem 5% 5rem 8%;
       overflow: hidden;
     }
-    .t-label {
-      color: var(--purple); font-size: clamp(1.5rem, 3vw, 2.4rem);
-      font-weight: 700; margin-bottom: 32px; padding: 0 5%;
+    #oferta .sec-heading {
+      font-size: clamp(2.5rem, 5vw, 4rem);
+      font-weight: 800;
+      color: var(--blue);
+      margin-bottom: 3rem;
     }
-    .t-track-wrap { overflow: hidden; }
-    .t-track {
-      display: flex; gap: 24px;
-      width: max-content;
-      animation: marquee 38s linear infinite;
+    .oferta-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 1.2rem;
+      max-width: 60%;
     }
-    .t-track:hover { animation-play-state: paused; }
-    @keyframes marquee {
-      from { transform: translateX(0); }
-      to   { transform: translateX(-50%); }
+    .oferta-list li {
+      font-size: clamp(1rem, 1.8vw, 1.4rem);
+      font-weight: 400;
+      color: var(--blue);
+      display: flex;
+      align-items: center;
+      gap: 1rem;
     }
-    .t-card {
-      flex-shrink: 0; width: 340px;
-      border: 1px solid var(--orange);
-      background: var(--white);
-      padding: 28px 28px 24px;
+    .oferta-list li::before {
+      content: '';
+      display: inline-flex;
+      width: 6px; height: 6px;
+      border: 1.5px solid var(--blue);
+      border-radius: 50%;
+      flex-shrink: 0;
+      position: relative;
+      top: -1px;
     }
-    .t-arrow { width: 28px; margin-bottom: 16px; }
-    .t-quote {
-      color: var(--purple); font-size: 1.05rem;
-      font-style: italic; font-weight: 200;
-      line-height: 1.6; margin-bottom: 16px;
+    .oferta-list li strong {
+      font-weight: 800;
     }
-    .t-name {
-      color: var(--purple); font-weight: 700;
-      text-align: center; padding-bottom: 4px; font-size: 0.95rem;
+    .oferta-blob {
+      position: absolute;
+      right: -5%; top: -5%; bottom: -5%;
+      width: 48%;
+      opacity: 0.18;
+      pointer-events: none;
+      z-index: 0;
     }
-    .t-org {
-      color: var(--dark-purple); font-size: 0.8rem;
-      opacity: 0.6; text-align: center;
-    }
+    .oferta-blob svg { width: 100%; height: 100%; }
 
-    /* ─── LOGOS ─── */
-    .logos-wrap {
-      padding: 0 2rem 2rem;
+    /* ── FORMULARZ ── */
+    #formularz {
+      background: var(--orange);
+      padding: 6rem 5%;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4%;
+      align-items: start;
+    }
+    .form-left h2 {
+      font-size: clamp(1.4rem, 2.5vw, 2rem);
+      font-weight: 800;
+      color: var(--white);
+      line-height: 1.25;
+      margin-bottom: 1.5rem;
+    }
+    .form-left p {
+      font-size: 0.9rem;
+      color: rgba(255,255,255,0.85);
+      line-height: 1.7;
+    }
+    .form-right {
+      background: #f2f0ee;
+      padding: 2.5rem 2.5rem 2rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+    .form-right input,
+    .form-right textarea {
+      width: 100%;
+      background: transparent;
+      border: none;
+      border-bottom: 1.5px solid var(--orange);
+      padding: 0.7rem 0;
+      font-family: Poppins, sans-serif;
+      font-size: 0.78rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      color: #333;
+      outline: none;
+      text-transform: uppercase;
+    }
+    .form-right input::placeholder,
+    .form-right textarea::placeholder {
+      color: #999;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+    }
+    .form-right textarea {
+      min-height: 100px;
+      resize: vertical;
+    }
+    .form-submit {
+      align-self: flex-end;
+      margin-top: 0.5rem;
+      border: 2px solid var(--orange);
+      background: transparent;
+      color: var(--orange);
+      font-family: Poppins, sans-serif;
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      padding: 0.75rem 2rem;
+      cursor: pointer;
+      transition: background 0.2s, color 0.2s;
+    }
+    .form-submit:hover { background: var(--orange); color: var(--white); }
+
+    /* ── ZAUFALI NAM ── */
+    #zaufali {
       background: var(--bg);
+      padding: 6rem 0 4rem;
+      overflow: hidden;
     }
-    .logos-wrap img { width: 100%; }
+    #zaufali h2 {
+      font-size: clamp(1.6rem, 3vw, 2.4rem);
+      font-weight: 800;
+      color: var(--blue);
+      padding: 0 5%;
+      margin-bottom: 4rem;
+    }
+    .testimonials-track {
+      display: flex;
+      gap: 2rem;
+      animation: marquee 40s linear infinite;
+      width: max-content;
+    }
+    .testimonials-track:hover { animation-play-state: paused; }
+    @keyframes marquee {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
+    }
+    .testimonial {
+      width: 280px;
+      flex-shrink: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+    }
+    .testimonial-quote-mark {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      margin-bottom: 1rem;
+      width: 100%;
+      justify-content: center;
+    }
+    .testimonial-quote-mark::before,
+    .testimonial-quote-mark::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--blue);
+      opacity: 0.4;
+    }
+    .testimonial-quote-mark span {
+      color: var(--blue);
+      font-size: 1.2rem;
+      opacity: 0.8;
+    }
+    .testimonial p {
+      font-size: 0.82rem;
+      font-style: italic;
+      color: #333;
+      line-height: 1.65;
+      margin-bottom: 1rem;
+    }
+    .testimonial-author {
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: var(--blue);
+      margin-bottom: 0.2rem;
+    }
+    .testimonial-org {
+      font-size: 0.75rem;
+      color: #666;
+    }
 
-    /* ─── KONTAKT ─── */
+    /* ── LOGA ── */
+    #loga {
+      background: var(--bg);
+      padding: 3rem 5% 5rem;
+      overflow: hidden;
+    }
+    .loga-track {
+      display: flex;
+      align-items: center;
+      gap: 4rem;
+      animation: marquee 30s linear infinite;
+      width: max-content;
+    }
+    .loga-track img {
+      height: 60px;
+      filter: opacity(0.5) drop-shadow(0 0 0 #6a6ef5);
+      filter: invert(30%) sepia(100%) saturate(1000%) hue-rotate(210deg) brightness(0.8) opacity(0.6);
+    }
+
+    /* ── KONTAKT ── */
     #kontakt {
-      background: var(--purple);
-      padding: 40px 5% 32px;
+      background: var(--blue);
+      padding: 5rem 5%;
     }
-    .k-label {
-      color: var(--white); font-size: 1.75rem;
-      font-weight: 700; margin-bottom: 28px;
+    #kontakt h2 {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--white);
+      margin-bottom: 3rem;
     }
-    .k-grid {
-      display: grid; grid-template-columns: 1fr 1fr 1fr;
-      gap: 8px 24px;
+    .kontakt-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2rem;
     }
-    .k-item { text-align: center; padding: 12px 0; }
-    .k-name {
-      color: var(--white); font-size: 1.1rem;
-      font-weight: 700; line-height: 1.3; margin-bottom: 4px;
+    .kontakt-person h3 {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--white);
+      margin-bottom: 0.3rem;
     }
-    .k-role { color: var(--white); font-size: 0.9rem; }
-    .k-phone {
-      color: var(--white); font-size: 1.1rem;
-      font-weight: 700; margin-bottom: 4px;
+    .kontakt-person .role {
+      font-size: 0.82rem;
+      color: rgba(255,255,255,0.75);
+      margin-bottom: 1.2rem;
     }
-    .k-email a {
-      color: var(--white); font-size: 0.9rem;
+    .kontakt-person .phone {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--white);
+      margin-bottom: 0.3rem;
+    }
+    .kontakt-person .email {
+      font-size: 0.82rem;
+      color: rgba(255,255,255,0.85);
       text-decoration: underline;
     }
 
-    /* ─── FOOTER ─── */
+    /* ── FOOTER ── */
     footer {
-      background: var(--purple);
-      padding: 0 5% 28px;
-      display: flex; justify-content: center;
-      align-items: center; gap: 48px;
-      flex-wrap: wrap;
+      background: rgba(106,110,245,0.85);
+      padding: 1.5rem 5%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
     }
-    footer a { color: #000; font-size: 0.875rem; text-decoration: underline; }
-    .footer-copy { font-size: 0.875rem; color: #000; }
-
-    /* ─── RESPONSIVE ─── */
-    @media (max-width: 900px) {
-      .form-grid { grid-template-columns: 1fr; }
-      .o-nas-grid { grid-template-columns: 1fr; }
-      .wyroznia-grid { grid-template-columns: 1fr; }
-      .liczby-grid { grid-template-columns: 1fr; }
-      .liczby-blob-wrap { width: 240px; height: 240px; margin: 0 auto; }
-      .k-grid { grid-template-columns: 1fr 1fr; }
-      .nav-links { display: none; }
-      .nav-burger { display: flex; }
-      .nav-links.open {
-        display: flex; flex-direction: column;
-        position: fixed; top: 72px; left: 0; right: 0;
-        background: rgba(240,240,240,0.97);
-        padding: 16px 5%; gap: 4px; align-items: flex-start;
-      }
-      .hero-blob { width: 70%; right: -10%; opacity: 0.3; }
-      .o-nas-blob { display: none; }
-      .wyroznia-blob { display: none; }
-      .oferta-bg-blob { display: none; }
+    footer a {
+      font-size: 0.8rem;
+      color: rgba(255,255,255,0.8);
+      text-decoration: underline;
     }
-    @media (max-width: 560px) {
-      .k-grid { grid-template-columns: 1fr; }
-      .liczby-grid { grid-template-columns: 1fr; }
-      .t-card { width: 280px; }
+    footer p {
+      font-size: 0.8rem;
+      color: rgba(255,255,255,0.7);
     }
   </style>
 </head>
 <body>
 
 <!-- PAGE LOAD OVERLAY -->
-<div class="overlay" id="overlay">
+<div class="overlay">
   <div class="overlay-left">
-    <div class="overlay-letters">
-      <div class="overlay-row"><span>IN</span></div>
-      <div class="overlay-row"><span>KU</span></div>
-      <div class="overlay-row"><span>BA</span></div>
-      <div class="overlay-row"><span>TOR</span></div>
+    <div>
+      <div class="overlay-letters">
+        <div class="ol-row"><span>IN</span><span>/</span></div>
+        <div class="ol-row"><span>KU</span><span>/</span></div>
+        <div class="ol-row"><span>BA</span><span>/</span></div>
+        <div class="ol-row"><span>TOR</span></div>
+      </div>
+      <div class="overlay-idealistow">IDEALISTÓW</div>
     </div>
   </div>
   <div class="overlay-right">
-    <div class="overlay-right-text"><span>IDEALISTÓW</span></div>
+    <div class="overlay-rings">
+      <svg width="280" height="280" viewBox="0 0 280 280" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="140" cy="140" r="130" stroke="#6a6ef5" stroke-width="1.5" opacity="0.5"/>
+        <circle cx="140" cy="140" r="105" stroke="#6a6ef5" stroke-width="1.5" opacity="0.5"/>
+        <circle cx="140" cy="140" r="80" stroke="#6a6ef5" stroke-width="1.5" opacity="0.5"/>
+        <circle cx="140" cy="140" r="55" stroke="#6a6ef5" stroke-width="1.5" opacity="0.5"/>
+        <circle cx="140" cy="140" r="30" stroke="#6a6ef5" stroke-width="1.5" opacity="0.5"/>
+      </svg>
+    </div>
   </div>
-  <img src="https://cdn.prod.website-files.com/64d24e4e2a64a9d93d86c2c0/64d24e4e2a64a9d93d86c2cf_Rings%20blue.svg"
-       alt="" class="overlay-rings"/>
 </div>
 
 <!-- NAVBAR -->
-<nav class="navbar">
-  <a href="#hero" class="nav-logo">
-    <img src="https://cdn.prod.website-files.com/64d24e4e2a64a9d93d86c2c0/64d24e4e2a64a9d93d86c2e5_inkubator%20idealisto%CC%81w.svg"
-         alt="Inkubator Idealistów"/>
-  </a>
-  <div class="nav-links" id="navLinks">
-    <a href="#o-nas"   class="nav-link">O nas</a>
-    <a href="#oferta"  class="nav-link">Oferta</a>
+<nav>
+  <div class="nav-logo">Inkubator Idealistów</div>
+  <div class="nav-links">
+    <a href="#o-nas">O nas</a>
+    <a href="#oferta">Oferta</a>
     <a href="#formularz" class="nav-cta">Porozmawiajmy</a>
-  </div>
-  <div class="nav-burger" id="burger" onclick="toggleNav()">
-    <div class="burger-line"></div>
-    <div class="burger-line"></div>
-    <div class="burger-line"></div>
   </div>
 </nav>
 
-<!-- ═══════════ HERO ═══════════ -->
+<!-- HERO -->
 <section id="hero">
-  <!-- Left sidebar line -->
-  <div class="sidebar-line" style="position:absolute;left:5%;top:0;bottom:0;width:1px;background:var(--orange);pointer-events:none;z-index:1;"></div>
-  <div style="position:absolute;left:5%;top:30%;width:13px;height:1px;background:var(--orange);z-index:1;"></div>
-  <div style="position:absolute;left:5%;top:60%;width:13px;height:1px;background:var(--orange);z-index:1;"></div>
-
-  <!-- Topographic blob: LEFT/CENTER (the dominant background element) -->
+  <!-- Topographic blob left -->
   <div class="hero-blob">
-    <svg viewBox="0 0 560 700" fill="none" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet">
-      <path d="M260,30 C360,20 460,80 490,180 C520,280 490,390 410,460 C330,530 200,540 120,480 C40,420 10,300 30,200 C50,100 160,40 260,30Z" stroke="#6a6ef5" stroke-width="1.4" fill="none"/>
-      <path d="M260,55 C352,46 445,102 474,195 C503,288 473,392 397,459 C321,526 196,536 118,477 C40,418 13,303 33,207 C53,111 168,64 260,55Z" stroke="#6a6ef5" stroke-width="1.2" fill="none"/>
-      <path d="M260,80 C344,72 430,123 457,210 C484,297 456,393 384,458 C312,523 192,532 117,474 C42,416 17,305 37,213 C57,121 176,88 260,80Z" stroke="#6a6ef5" stroke-width="1.1" fill="none"/>
-      <path d="M260,104 C336,97 415,144 440,224 C465,304 440,393 371,456 C302,519 188,528 116,471 C44,414 21,308 41,220 C61,132 184,111 260,104Z" stroke="#6a6ef5" stroke-width="1" fill="none"/>
-      <path d="M260,128 C328,122 400,164 423,237 C446,310 424,393 358,453 C292,513 184,522 115,467 C46,412 25,311 45,227 C65,143 192,134 260,128Z" stroke="#6a6ef5" stroke-width="0.9" fill="none"/>
-      <path d="M260,150 C321,145 385,183 406,250 C427,317 407,393 345,450 C283,507 180,516 114,463 C48,410 29,313 49,234 C69,155 199,155 260,150Z" stroke="#6a6ef5" stroke-width="0.9" fill="none"/>
-      <path d="M260,172 C314,168 370,202 389,263 C408,324 391,393 332,447 C273,501 176,510 113,459 C50,408 33,315 53,240 C73,165 206,176 260,172Z" stroke="#6a6ef5" stroke-width="0.8" fill="none"/>
-      <path d="M260,193 C307,189 356,220 373,275 C390,330 375,393 319,445 C263,497 172,505 112,455 C52,405 37,317 57,246 C77,175 213,197 260,193Z" stroke="#6a6ef5" stroke-width="0.7" fill="none"/>
-      <path d="M260,213 C300,210 342,237 357,286 C372,335 360,393 307,442 C254,491 168,499 111,451 C54,403 41,318 61,252 C81,186 220,216 260,213Z" stroke="#6a6ef5" stroke-width="0.7" fill="none"/>
-      <path d="M260,232 C294,229 329,253 342,297 C355,341 345,392 295,439 C245,486 164,493 111,447 C58,401 45,319 65,258 C85,197 226,235 260,232Z" stroke="#6a6ef5" stroke-width="0.6" fill="none"/>
-      <path d="M260,250 C288,248 316,268 327,307 C338,346 330,392 283,436 C236,480 160,487 110,443 C60,399 49,321 69,264 C89,207 232,252 260,250Z" stroke="#6a6ef5" stroke-width="0.55" fill="none"/>
-      <path d="M260,267 C282,265 303,282 312,317 C321,352 315,392 271,432 C227,472 156,479 109,438 C62,397 53,322 73,270 C93,218 238,269 260,267Z" stroke="#6a6ef5" stroke-width="0.5" fill="none"/>
-      <!-- diagonal lines going through blob -->
-      <line x1="30"  y1="590" x2="440" y2="80"  stroke="#6a6ef5" stroke-width="0.9" opacity="0.35"/>
-      <line x1="80"  y1="650" x2="530" y2="100" stroke="#6a6ef5" stroke-width="0.7" opacity="0.25"/>
+    <svg class="blob-svg" viewBox="0 0 700 800" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+      <g fill="none" stroke="#6a6ef5" stroke-width="1.2">
+        <path d="M350,400 C280,320 180,300 140,380 C100,460 130,560 200,590 C270,620 370,580 420,510 C470,440 420,480 350,400Z" opacity="0.9"/>
+        <path d="M350,400 C270,300 150,270 100,370 C50,470 90,590 180,625 C270,660 390,610 445,520 C500,430 430,500 350,400Z" opacity="0.82"/>
+        <path d="M350,400 C260,280 120,240 60,360 C0,480 50,620 160,660 C270,700 410,640 470,530 C530,420 440,520 350,400Z" opacity="0.74"/>
+        <path d="M350,400 C250,260 90,210 20,350 C-50,490 10,650 140,695 C270,740 430,670 495,540 C560,410 450,540 350,400Z" opacity="0.66"/>
+        <path d="M350,400 C240,240 60,180 -20,340 C-100,500 -30,680 120,730 C270,780 450,700 520,550 C590,400 460,560 350,400Z" opacity="0.58"/>
+        <path d="M350,400 C230,220 30,150 -60,330 C-150,510 -70,710 100,765 C270,820 470,730 545,560 C620,390 470,580 350,400Z" opacity="0.5"/>
+        <path d="M350,400 C220,200 0,120 -100,320 C-200,520 -110,740 80,800 C270,860 490,760 570,570 C650,380 480,600 350,400Z" opacity="0.42"/>
+        <path d="M350,400 C210,180 -30,90 -140,310 C-250,530 -150,770 60,835 C270,900 510,790 595,580 C680,370 490,620 350,400Z" opacity="0.34"/>
+        <path d="M350,400 C200,160 -60,60 -180,300 C-300,540 -190,800 40,870 C270,940 530,820 620,590 C710,360 500,640 350,400Z" opacity="0.26"/>
+        <path d="M350,400 C190,140 -90,30 -220,290 C-350,550 -230,830 20,905 C270,980 550,850 645,600 C740,350 510,660 350,400Z" opacity="0.18"/>
+        <!-- diagonal lines -->
+        <line x1="-50" y1="750" x2="250" y2="100" stroke="#6a6ef5" stroke-width="0.8" opacity="0.25"/>
+        <line x1="0" y1="780" x2="300" y2="80" stroke="#6a6ef5" stroke-width="0.8" opacity="0.2"/>
+        <line x1="-100" y1="720" x2="200" y2="120" stroke="#6a6ef5" stroke-width="0.8" opacity="0.2"/>
+      </g>
     </svg>
   </div>
 
-  <!-- Right-side decorations (dot grid, circles) -->
-  <!-- 3×4 dot grid ~55% from left, ~24% from top -->
-  <div class="dot-grid" style="grid-template-columns:repeat(4,1fr);top:24%;left:57%;gap:9px;">
-    <div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div>
-    <div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div>
-    <div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div>
-  </div>
-  <!-- Large hollow circle ~70%, 36% -->
-  <div class="circle-deco" style="width:26px;height:26px;top:36%;left:70%;"></div>
-  <!-- Stacked small right-side dots ~70%, 70% -->
-  <div style="position:absolute;top:69%;left:70%;display:flex;flex-direction:column;gap:9px;">
-    <div class="circle-deco" style="width:7px;height:7px;position:static;border-radius:50%;border:1.5px solid var(--orange);"></div>
-    <div class="circle-deco" style="width:7px;height:7px;position:static;border-radius:50%;border:1.5px solid var(--orange);"></div>
-    <div class="circle-deco" style="width:7px;height:7px;position:static;border-radius:50%;border:1.5px solid var(--orange);"></div>
-  </div>
-  <!-- Single small circle ~70%, 80% -->
-  <div class="circle-deco" style="width:8px;height:8px;top:80%;left:70%;"></div>
-
-  <!-- Tiny orange circle bottom-left area -->
-  <div class="circle-deco" style="width:14px;height:14px;bottom:18%;left:10%;"></div>
-
-  <!-- Orange down-arrow bottom-center -->
-  <div style="position:absolute;bottom:24px;left:41%;color:var(--orange);font-size:1.2rem;z-index:2;">↓</div>
-
-  <!-- Orange box overlaid on blob, lower-left of blob -->
+  <!-- Orange text box -->
   <div class="hero-box">
-    <h1>Pomagamy organizacjom społecznym w działaniu na rzecz poprawy jakości życia osób starszych i ich opiekunów</h1>
+    <h1>Pomagamy organizacjom społecznym w działaniu na rzecz poprawy jakości życia osób starszych i&nbsp;ich opiekunów</h1>
   </div>
-</section>
 
-<!-- ═══════════ O NAS ═══════════ -->
-<section id="o-nas">
-  <div class="sidebar-line"></div>
+  <!-- Right-side hollow circle decorations -->
+  <div class="hero-deco">
+    <!-- Cluster 1: upper area ~58-64% from left, 24-33% from top of hero -->
+    <svg width="100%" height="100%" viewBox="0 0 680 800" preserveAspectRatio="xMidYMid meet" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <!-- Upper cluster: staggered 4-5-3 dot triangle -->
+      <g stroke="#ff5f1b" stroke-width="1.5" fill="none">
+        <!-- row 1: 4 dots -->
+        <circle cx="100" cy="190" r="3.5"/>
+        <circle cx="116" cy="190" r="3.5"/>
+        <circle cx="132" cy="190" r="3.5"/>
+        <circle cx="148" cy="190" r="3.5"/>
+        <!-- row 2: 5 dots, offset -->
+        <circle cx="92" cy="206" r="3.5"/>
+        <circle cx="108" cy="206" r="3.5"/>
+        <circle cx="124" cy="206" r="3.5"/>
+        <circle cx="140" cy="206" r="3.5"/>
+        <circle cx="156" cy="206" r="3.5"/>
+        <!-- row 3: 3 dots -->
+        <circle cx="108" cy="222" r="3.5"/>
+        <circle cx="124" cy="222" r="3.5"/>
+        <circle cx="140" cy="222" r="3.5"/>
+      </g>
 
-  <!-- Blob: right side -->
-  <div class="o-nas-blob">
-    <svg viewBox="0 0 560 600" fill="none" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet">
-      <path d="M280,30 C390,20 490,90 510,200 C530,310 480,420 380,470 C280,520 160,500 90,410 C20,320 30,180 100,100 C160,30 220,38 280,30Z" stroke="#6a6ef5" stroke-width="1.3" fill="none"/>
-      <path d="M280,58 C382,49 476,114 495,217 C514,320 466,424 370,472 C274,520 158,500 91,413 C24,326 35,191 102,113 C161,44 224,65 280,58Z" stroke="#6a6ef5" stroke-width="1.1" fill="none"/>
-      <path d="M280,85 C374,77 462,137 479,233 C496,329 452,427 360,473 C268,519 157,500 92,415 C27,330 40,201 104,126 C162,60 228,92 280,85Z" stroke="#6a6ef5" stroke-width="1" fill="none"/>
-      <path d="M280,111 C366,104 448,160 463,249 C478,338 438,430 350,474 C262,518 156,499 93,417 C30,335 44,211 106,139 C163,75 232,118 280,111Z" stroke="#6a6ef5" stroke-width="0.9" fill="none"/>
-      <path d="M280,136 C358,130 434,182 447,264 C460,346 424,431 340,473 C256,515 156,497 94,418 C32,339 48,221 108,152 C164,91 236,142 280,136Z" stroke="#6a6ef5" stroke-width="0.8" fill="none"/>
-      <path d="M280,159 C350,154 420,202 431,278 C442,354 410,432 330,472 C250,512 156,495 95,419 C34,343 52,230 110,164 C165,106 240,164 280,159Z" stroke="#6a6ef5" stroke-width="0.75" fill="none"/>
-      <path d="M280,181 C342,177 405,221 414,291 C423,361 396,432 320,470 C244,508 156,492 96,420 C36,348 56,239 112,177 C166,122 244,185 280,181Z" stroke="#6a6ef5" stroke-width="0.7" fill="none"/>
-      <path d="M280,202 C335,198 391,239 398,304 C405,369 382,432 310,468 C238,504 156,489 97,420 C38,351 60,248 114,189 C167,137 248,206 280,202Z" stroke="#6a6ef5" stroke-width="0.6" fill="none"/>
-      <line x1="80"  y1="550" x2="430" y2="60"  stroke="#6a6ef5" stroke-width="0.8" opacity="0.3"/>
-      <line x1="30"  y1="400" x2="320" y2="40"  stroke="#6a6ef5" stroke-width="0.6" opacity="0.2"/>
+      <!-- Single large circle mid-right -->
+      <circle cx="290" cy="290" r="9" stroke="#ff5f1b" stroke-width="2" fill="none"/>
+
+      <!-- Mid cluster: 3-3-3-2-1 triangle cluster -->
+      <g stroke="#ff5f1b" stroke-width="1.5" fill="none">
+        <!-- row 1 -->
+        <circle cx="240" cy="375" r="3.5"/>
+        <circle cx="256" cy="375" r="3.5"/>
+        <circle cx="272" cy="375" r="3.5"/>
+        <!-- row 2 -->
+        <circle cx="248" cy="391" r="3.5"/>
+        <circle cx="264" cy="391" r="3.5"/>
+        <circle cx="280" cy="391" r="3.5"/>
+        <!-- row 3 -->
+        <circle cx="256" cy="407" r="3.5"/>
+        <circle cx="272" cy="407" r="3.5"/>
+        <circle cx="288" cy="407" r="3.5"/>
+        <!-- row 4 -->
+        <circle cx="264" cy="423" r="3.5"/>
+        <circle cx="280" cy="423" r="3.5"/>
+        <!-- row 5 -->
+        <circle cx="272" cy="439" r="3.5"/>
+      </g>
+
+      <!-- 3 stacked small circles lower-left -->
+      <g stroke="#ff5f1b" stroke-width="1.5" fill="none">
+        <circle cx="90" cy="580" r="3.5"/>
+        <circle cx="90" cy="596" r="3.5"/>
+        <circle cx="90" cy="612" r="3.5"/>
+      </g>
+
+      <!-- Lone small circle even lower -->
+      <circle cx="90" cy="670" r="3.5" stroke="#ff5f1b" stroke-width="1.5" fill="none"/>
     </svg>
   </div>
-
-  <p class="o-nas-heading">Jesteśmy ekspertami<br/>do wspierania organizacji<br/>działających na rzecz<br/>osób starszych.</p>
-  <p class="o-nas-text">Znamy potrzeby i wyzwania, z jakimi zmagają się organizacje funkcjonujące w tym obszarze. Dlatego oprócz pozyskania dotacji służymy radą, pomocą i dzielimy się pomysłami.</p>
-  <p class="o-nas-text">Największą nagrodą dla nas są przedsięwzięcia, które przy wspólnym działaniu skutkują długofalową poprawą jakości życia osób starszych.</p>
 </section>
 
-<!-- ═══════════ CO NAS WYRÓŻNIA ═══════════ -->
-<section class="section" id="wyroznia">
-  <div class="sidebar-line"></div>
-
-  <!-- partial blob top-right -->
-  <div class="wyroznia-blob">
-    <svg viewBox="0 0 500 400" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <path d="M350,10 C460,30 540,120 520,230 C500,340 400,400 290,380 C180,360 110,270 120,170 C130,70 230,−10 350,10Z" stroke="#6a6ef5" stroke-width="1.2" fill="none"/>
-      <path d="M348,35 C448,53 520,135 501,236 C482,337 386,393 281,374 C176,355 110,271 120,176 C130,81 234,14 348,35Z" stroke="#6a6ef5" stroke-width="1" fill="none"/>
-      <path d="M346,60 C436,76 502,149 484,242 C466,335 373,386 272,368 C171,350 110,272 120,183 C130,94 238,38 346,60Z" stroke="#6a6ef5" stroke-width="0.9" fill="none"/>
-      <path d="M344,85 C425,99 484,163 466,248 C448,333 360,380 264,362 C168,344 110,273 121,190 C132,107 241,62 344,85Z" stroke="#6a6ef5" stroke-width="0.8" fill="none"/>
-      <path d="M342,108 C414,121 466,177 449,254 C432,331 348,374 257,357 C166,340 111,273 122,196 C133,119 243,85 342,108Z" stroke="#6a6ef5" stroke-width="0.7" fill="none"/>
-      <path d="M340,130 C404,142 448,191 432,260 C416,329 336,367 250,351 C164,335 112,274 123,202 C134,130 244,107 340,130Z" stroke="#6a6ef5" stroke-width="0.6" fill="none"/>
-    </svg>
-  </div>
-
-  <!-- dot grids top-right area -->
-  <div class="dot-grid" style="grid-template-columns:repeat(4,1fr);top:12%;right:8%;">
-    <div class="dot purple"></div><div class="dot purple"></div><div class="dot purple"></div><div class="dot purple"></div>
-    <div class="dot purple"></div><div class="dot purple"></div><div class="dot purple"></div><div class="dot purple"></div>
-    <div class="dot purple"></div><div class="dot purple"></div><div class="dot purple"></div><div class="dot purple"></div>
-  </div>
-  <!-- small vertical dots right -->
-  <div style="position:absolute;right:7.5%;top:52%;display:flex;flex-direction:column;gap:8px;">
-    <div class="circle-deco purple" style="width:7px;height:7px;position:static;"></div>
-    <div class="circle-deco purple" style="width:7px;height:7px;position:static;"></div>
-    <div class="circle-deco purple" style="width:7px;height:7px;position:static;"></div>
-  </div>
-  <!-- bottom circles -->
-  <div class="wyroznia-circles">
-    <div class="wyroznia-circ"></div>
-    <div class="wyroznia-circ"></div>
-    <div class="wyroznia-circ"></div>
-  </div>
-
-  <h2 class="wyroznia-title">Co nas wyróżnia</h2>
-
-  <div class="wyroznia-grid">
-    <div>
-      <div class="wyroznia-item">
-        <h3>Skuteczność</h3>
-        <p>Ubiegamy się o dofinansowanie tylko tych projektów, które mają realną szansę na dotacje.</p>
-      </div>
-      <div class="wyroznia-item">
-        <h3>Zaangażowanie</h3>
-        <p>Opiekujemy się projektami od momentu ich planowania do zakończenia okresu trwałości.</p>
-      </div>
-      <div class="wyroznia-item">
-        <h3>Odpowiedzialność</h3>
-        <p>Każdy dofinansowany projekt naszych klientów, traktujemy jak nasz własny.</p>
-      </div>
-    </div>
-    <div>
-      <div class="wyroznia-item">
-        <h3>Wiedza i doświadczenie</h3>
-        <p>Posiadamy ponad 20 lat doświadczenia w realizacji projektów finansowanych z różnych źródeł i programów.</p>
-      </div>
-      <div class="wyroznia-item">
-        <h3>Życzliwość</h3>
-        <p>Budujemy dobre i trwałe relacje oparte na szacunku i zaufaniu z klientami, ich pracownikami, jak również z administracją przyznającą dofinansowanie.</p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ═══════════ LICZBY ═══════════ -->
-<section class="section" id="liczby">
-  <div class="sidebar-line"></div>
-  <!-- single circle deco -->
-  <div class="circle-deco" style="width:20px;height:20px;top:30%;right:8%;"></div>
-
-  <h2 class="liczby-title">Liczby, które o nas mówią</h2>
-
-  <div class="liczby-grid">
-    <!-- Left: blob with big number -->
-    <div class="liczby-blob-wrap">
-      <svg viewBox="0 0 340 340" fill="none" xmlns="http://www.w3.org/2000/svg" class="liczby-blob-svg">
-        <path d="M170,20 C240,20 300,70 315,145 C330,220 290,290 215,315 C140,340 60,300 30,230 C0,160 30,75 95,40 C125,24 148,20 170,20Z" stroke="#6a6ef5" stroke-width="1.5" fill="none"/>
-        <path d="M170,40 C234,40 289,85 303,152 C317,219 279,285 208,308 C137,331 62,293 35,227 C8,161 37,82 99,49 C127,35 149,40 170,40Z" stroke="#6a6ef5" stroke-width="1.3" fill="none"/>
-        <path d="M170,60 C227,60 278,100 290,160 C302,220 267,281 200,301 C133,321 64,286 40,224 C16,162 43,89 102,57 C128,45 150,60 170,60Z" stroke="#6a6ef5" stroke-width="1.1" fill="none"/>
-        <path d="M170,80 C221,80 267,115 277,167 C287,219 255,276 193,293 C131,310 66,279 45,222 C24,165 49,96 105,66 C129,54 151,80 170,80Z" stroke="#6a6ef5" stroke-width="1" fill="none"/>
-        <path d="M170,100 C215,100 255,130 263,175 C271,220 243,271 186,285 C129,299 68,271 50,219 C32,167 55,103 107,75 C130,64 152,100 170,100Z" stroke="#6a6ef5" stroke-width="0.9" fill="none"/>
-        <path d="M170,118 C209,118 244,143 250,182 C256,221 231,266 179,278 C127,290 70,264 55,217 C40,170 62,110 109,84 C131,73 153,118 170,118Z" stroke="#6a6ef5" stroke-width="0.8" fill="none"/>
-        <path d="M170,135 C204,135 233,155 238,189 C243,223 221,261 173,271 C125,281 72,257 60,215 C48,173 68,117 111,93 C132,82 154,135 170,135Z" stroke="#6a6ef5" stroke-width="0.7" fill="none"/>
-        <path d="M170,152 C198,152 222,168 225,196 C228,224 209,257 166,264 C123,271 74,249 64,212 C54,175 72,124 112,102 C132,92 154,152 170,152Z" stroke="#6a6ef5" stroke-width="0.6" fill="none"/>
-        <line x1="60" y1="300" x2="250" y2="60"  stroke="#6a6ef5" stroke-width="0.8" opacity="0.4"/>
-        <line x1="20" y1="200" x2="180" y2="30"  stroke="#6a6ef5" stroke-width="0.6" opacity="0.3"/>
-      </svg>
-      <div class="liczby-main-inner">
-        <div class="liczby-main-num">2657</div>
-        <div class="liczby-main-label">wspartych<br/>starszych osób</div>
-      </div>
-    </div>
-
-    <!-- Center col -->
-    <div class="liczby-col">
-      <div>
-        <div class="liczby-group-label">Pozyskaliśmy</div>
-        <div class="liczby-stat">
-          <span class="liczby-big">67</span>
-          <span class="liczby-unit">dotacji</span>
-        </div>
-        <div class="liczby-stat" style="margin-top:16px;">
-          <span class="liczby-big">87</span>
-          <span class="liczby-unit">mln zł</span>
-        </div>
-      </div>
-    </div>
-
-    <!-- Right col -->
-    <div class="liczby-col">
-      <div>
-        <div class="liczby-group-label">Utworzyliśmy</div>
-        <div class="liczby-stat">
-          <span class="liczby-big">8</span>
-          <span class="liczby-desc" style="margin-left:8px;">dziennych<br/>domów pobytu</span>
-        </div>
-        <div class="liczby-stat" style="margin-top:20px;">
-          <span class="liczby-big">6</span>
-          <span class="liczby-desc" style="margin-left:8px;">dziennych domów<br/>opieki medycznej</span>
-        </div>
-      </div>
-    </div>
-
-    <!-- Bottom row spanning all cols -->
-    <div class="liczby-bottom">
-      <div class="liczby-bottom-row">
-        <span class="liczby-row-label">Budujemy</span>
-        <span class="liczby-big" style="font-size:3rem;">24</span>
-        <span class="liczby-desc">mieszkania wspomagane</span>
-      </div>
-      <div>
-        <div class="liczby-row-label" style="margin-bottom:6px;">Uruchomiliśmy</div>
-        <p class="liczby-desc">mieszkanie treningowe, ośrodek wsparcia rehabilitacyjnego oraz ośrodek opieki wytchnieniowej</p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ═══════════ OFERTA ═══════════ -->
-<section class="section" id="oferta">
-  <div class="sidebar-line"></div>
-
-  <!-- faint wavy background blob -->
-  <div class="oferta-bg-blob">
-    <svg viewBox="0 0 600 580" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <path d="M300,50 C420,50 520,130 540,250 C560,370 480,470 360,510 C240,550 120,490 70,380 C20,270 70,130 160,80 C210,55 255,50 300,50Z" stroke="#6a6ef5" stroke-width="1.5" fill="none"/>
-      <path d="M300,90 C405,90 498,157 514,258 C530,359 458,450 346,485 C234,520 126,466 82,369 C38,272 82,144 162,98 C208,76 257,90 300,90Z" stroke="#6a6ef5" stroke-width="1.3" fill="none"/>
-      <path d="M300,128 C390,128 477,188 491,267 C505,346 437,431 330,463 C223,495 125,446 84,355 C43,264 85,150 163,107 C207,87 257,128 300,128Z" stroke="#6a6ef5" stroke-width="1.1" fill="none"/>
-      <path d="M300,164 C376,164 456,216 468,283 C480,350 416,428 316,457 C216,486 126,442 88,357 C50,272 90,156 165,116 C206,98 258,164 300,164Z" stroke="#6a6ef5" stroke-width="0.9" fill="none"/>
-      <path d="M300,198 C363,198 435,242 445,298 C455,354 395,424 302,450 C209,476 127,436 92,358 C57,280 95,164 166,126 C206,109 259,198 300,198Z" stroke="#6a6ef5" stroke-width="0.7" fill="none"/>
-    </svg>
-  </div>
-
-  <h2 class="oferta-title">Oferta</h2>
-
-  <ul class="oferta-list">
-    <li>
-      <span class="oferta-bullet">
-        <span class="oferta-dot"></span>
-        <span class="oferta-dot"></span>
-        <span class="oferta-dot"></span>
-      </span>
-      <strong>inspirujemy</strong> i motywujemy do działań
-    </li>
-    <li>
-      <span class="oferta-bullet">
-        <span class="oferta-dot"></span>
-        <span class="oferta-dot"></span>
-        <span class="oferta-dot"></span>
-      </span>
-      <strong>budujemy</strong> trwałe zasoby organizacji społecznych
-    </li>
-    <li>
-      <span class="oferta-bullet">
-        <span class="oferta-dot"></span>
-        <span class="oferta-dot"></span>
-        <span class="oferta-dot"></span>
-      </span>
-      <strong>przygotowujemy</strong> wnioski o dotacje
-    </li>
-    <li>
-      <span class="oferta-bullet">
-        <span class="oferta-dot"></span>
-        <span class="oferta-dot"></span>
-        <span class="oferta-dot"></span>
-      </span>
-      <strong>rozliczamy</strong> dotacje
-    </li>
-    <li>
-      <span class="oferta-bullet">
-        <span class="oferta-dot"></span>
-        <span class="oferta-dot"></span>
-        <span class="oferta-dot"></span>
-      </span>
-      <strong>projektujemy</strong> usługi społeczne
-    </li>
-  </ul>
-</section>
-
-<!-- ═══════════ FORMULARZ ═══════════ -->
-<section id="formularz">
-  <div class="form-grid" style="padding:64px 5%;">
-    <div>
-      <h2 class="form-heading">Porozmawiajmy o tym<br/>jak wspierać osoby starsze!</h2>
-      <p class="form-desc">
-        Napisz do nas jeśli potrzebujesz dofinansowania<br/>
-        dla swoich działań, pomysłów na rozwój<br/>
-        lub kontynuację projektów.<br/><br/>
-        Lubimy dzielić się naszą wiedzą i doświadczeniem.
+<!-- O NAS -->
+<section id="o-nas" style="position:relative;">
+  <div class="sec-label"></div>
+  <div style="padding: 7rem 5% 6rem 8%; position:relative; z-index:1;">
+    <h2 class="sec-heading" style="font-size:clamp(2.5rem,5vw,4rem);font-weight:800;color:var(--blue);margin-bottom:2.5rem;">O nas</h2>
+    <div class="o-nas-text">
+      <p class="sub-heading" style="font-size:clamp(1rem,1.7vw,1.3rem);font-weight:700;font-style:italic;color:var(--orange);line-height:1.4;margin-bottom:1.8rem;">
+        Naszą wiedzę i 20-letnie doświadczenie wykorzystujemy<br>do wspierania organizacji działających na rzecz osób starszych.
+      </p>
+      <p style="font-size:0.95rem;color:#333;line-height:1.75;margin-bottom:1rem;">
+        Znamy potrzeby i wyzwania, z jakimi zmagają się organizacje funkcjonujące w tym obszarze. Dlatego oprócz pozyskania dotacji służymy radą, pomocą i dzielimy się pomysłami.
+      </p>
+      <p style="font-size:0.95rem;color:#333;line-height:1.75;">
+        Największą nagrodą dla nas są przedsięwzięcia, które przy wspólnym działaniu skutkują długofalową poprawą jakości życia osób starszych.
       </p>
     </div>
-    <div>
-      <div class="form-block">
-        <form id="contactForm" novalidate>
-          <div class="form-fields">
-            <div class="form-field"><input class="form-input" type="text" name="imie" placeholder="IMIĘ" required/></div>
-            <div class="form-field"><input class="form-input" type="text" name="organizacja" placeholder="NAZWA INSTYTUCJI" required/></div>
-            <div class="form-field"><input class="form-input" type="email" name="email" placeholder="E-MAIL" required/></div>
-            <div class="form-field"><textarea class="form-input" name="wiadomosc" placeholder="WIADOMOŚĆ" required></textarea></div>
+  </div>
+  <!-- blob right -->
+  <div style="position:absolute;right:-3%;top:3%;bottom:3%;width:47%;pointer-events:none;z-index:0;">
+    <svg viewBox="0 0 600 700" preserveAspectRatio="xMidYMid meet" fill="none" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%;">
+      <g stroke="#6a6ef5" stroke-width="1.1" fill="none" opacity="0.8">
+        <path d="M300,350 C240,280 160,265 130,330 C100,395 130,475 200,500 C270,525 355,495 385,430 C415,365 360,420 300,350Z"/>
+        <path d="M300,350 C230,265 135,240 95,320 C55,400 90,500 175,528 C260,556 370,520 400,440 C430,360 370,435 300,350Z"/>
+        <path d="M300,350 C220,250 110,215 60,310 C10,405 50,525 150,556 C250,587 385,545 415,450 C445,355 380,450 300,350Z"/>
+        <path d="M300,350 C210,235 85,190 25,300 C-35,410 10,550 125,584 C240,618 400,570 430,460 C460,350 390,465 300,350Z"/>
+        <path d="M300,350 C200,220 60,165 -10,290 C-80,415 -30,575 100,612 C230,649 415,595 445,470 C475,345 400,480 300,350Z"/>
+        <path d="M300,350 C190,205 35,140 -45,280 C-125,420 -70,600 75,640 C220,680 430,620 460,480 C490,340 410,495 300,350Z"/>
+        <path d="M300,350 C180,190 10,115 -80,270 C-170,425 -110,625 50,668 C210,711 445,645 475,490 C505,335 420,510 300,350Z"/>
+        <path d="M300,350 C170,175 -15,90 -115,260 C-215,430 -150,650 25,696 C200,742 460,670 490,500 C520,330 430,525 300,350Z"/>
+        <path d="M300,350 C160,160 -40,65 -150,250 C-260,435 -190,675 0,724 C190,773 475,695 505,510 C535,325 440,540 300,350Z"/>
+        <path d="M300,350 C150,145 -65,40 -185,240 C-305,440 -230,700 -25,752 C180,804 490,720 520,520 C550,320 450,555 300,350Z"/>
+        <!-- diagonal lines -->
+        <line x1="-100" y1="600" x2="350" y2="50" stroke="#6a6ef5" stroke-width="0.7" opacity="0.3"/>
+        <line x1="-50" y1="630" x2="400" y2="70" stroke="#6a6ef5" stroke-width="0.7" opacity="0.25"/>
+      </g>
+    </svg>
+  </div>
+  <!-- dots upper right -->
+  <div style="position:absolute;right:7%;top:8%;pointer-events:none;z-index:2;">
+    <svg width="100" height="70" viewBox="0 0 100 70" fill="none">
+      <g stroke="#ff5f1b" stroke-width="1.5" fill="none">
+        <circle cx="10" cy="10" r="3.5"/><circle cx="26" cy="10" r="3.5"/><circle cx="42" cy="10" r="3.5"/>
+        <circle cx="18" cy="26" r="3.5"/><circle cx="34" cy="26" r="3.5"/><circle cx="50" cy="26" r="3.5"/><circle cx="66" cy="26" r="3.5"/>
+        <circle cx="26" cy="42" r="3.5"/><circle cx="42" cy="42" r="3.5"/><circle cx="58" cy="42" r="3.5"/>
+        <circle cx="18" cy="58" r="3.5"/><circle cx="34" cy="58" r="3.5"/>
+      </g>
+    </svg>
+  </div>
+  <!-- single orange circle mid-left -->
+  <div style="position:absolute;left:4%;top:62%;pointer-events:none;z-index:2;">
+    <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
+      <circle cx="11" cy="11" r="8" stroke="#ff5f1b" stroke-width="2" fill="none"/>
+    </svg>
+  </div>
+</section>
+
+<!-- CO NAS WYRÓŻNIA -->
+<section id="co-nas" style="position:relative;background:var(--bg);padding:5rem 5% 5rem 8%;overflow:hidden;">
+  <div class="sec-label"></div>
+  <h2 style="font-size:clamp(2rem,4vw,3.2rem);font-weight:800;font-style:italic;color:var(--orange);margin-bottom:3rem;position:relative;z-index:1;">Co nas wyróżnia</h2>
+  <div class="features-grid" style="position:relative;z-index:1;">
+    <div class="feature">
+      <h3>Skuteczność</h3>
+      <p>Pomagamy organizacjom pozyskiwać dotacje z różnych źródeł i programów.</p>
+    </div>
+    <div class="feature">
+      <h3>Wiedza i doświadczenie</h3>
+      <p>Mamy 20-letnie doświadczenie w obszarze wsparcia osób starszych i pozyskiwania dofinansowania.</p>
+    </div>
+    <div class="feature">
+      <h3>Zaangażowanie</h3>
+      <p>Opiekujemy się projektami od momentu ich planowania do zakończenia okresu trwałości.</p>
+    </div>
+    <div class="feature">
+      <h3>Życzliwość</h3>
+      <p>Budujemy dobre i trwałe relacje oparte na szacunku i zaufaniu z klientami, ich pracownikami, jak również z administracją przyznającą dofinansowanie.</p>
+    </div>
+    <div class="feature">
+      <h3>Odpowiedzialność</h3>
+      <p>Każdy dofinansowany projekt naszych klientów, traktujemy jak nasz własny.</p>
+    </div>
+  </div>
+  <!-- dots upper-right -->
+  <div style="position:absolute;right:8%;top:10%;pointer-events:none;z-index:2;">
+    <svg width="110" height="80" viewBox="0 0 110 80" fill="none">
+      <g stroke="#ff5f1b" stroke-width="1.5" fill="none">
+        <circle cx="10" cy="10" r="3.5"/><circle cx="26" cy="10" r="3.5"/><circle cx="42" cy="10" r="3.5"/><circle cx="58" cy="10" r="3.5"/>
+        <circle cx="18" cy="26" r="3.5"/><circle cx="34" cy="26" r="3.5"/><circle cx="50" cy="26" r="3.5"/>
+        <circle cx="26" cy="42" r="3.5"/><circle cx="42" cy="42" r="3.5"/>
+        <circle cx="10" cy="58" r="3.5"/>
+        <circle cx="18" cy="74" r="3.5"/>
+      </g>
+    </svg>
+  </div>
+  <!-- 3 dots lower-left -->
+  <div style="position:absolute;left:5%;bottom:15%;pointer-events:none;z-index:2;">
+    <svg width="60" height="16" viewBox="0 0 60 16" fill="none">
+      <g stroke="#ff5f1b" stroke-width="1.5" fill="none">
+        <circle cx="8" cy="8" r="3.5"/>
+        <circle cx="24" cy="8" r="3.5"/>
+        <circle cx="40" cy="8" r="3.5"/>
+      </g>
+    </svg>
+  </div>
+</section>
+
+<!-- LICZBY -->
+<section id="liczby" style="background:var(--bg);position:relative;padding:5rem 5%;overflow:hidden;">
+  <div class="sec-label"></div>
+  <h2 style="font-size:clamp(2rem,3.5vw,2.8rem);font-weight:800;font-style:italic;color:var(--orange);margin-bottom:3rem;padding-left:3%;">Liczby, które o nas mówią</h2>
+  <div class="liczby-grid" style="padding-left:3%;">
+    <div class="liczby-left">
+      <!-- small topographic blob behind the number -->
+      <div style="width:90%;margin-bottom:-2.5rem;z-index:0;">
+        <svg viewBox="0 0 400 320" fill="none" xmlns="http://www.w3.org/2000/svg" style="width:100%;">
+          <g stroke="#6a6ef5" stroke-width="1" fill="none" opacity="0.7">
+            <path d="M200,160 C160,120 110,110 90,145 C70,180 85,225 130,240 C175,255 230,235 250,195 C270,155 240,200 200,160Z"/>
+            <path d="M200,160 C150,110 90,90 60,135 C30,180 50,240 110,258 C170,276 245,250 268,200 C291,150 250,210 200,160Z"/>
+            <path d="M200,160 C140,100 70,70 30,125 C-10,180 15,255 90,276 C165,297 260,265 286,205 C312,145 260,220 200,160Z"/>
+            <path d="M200,160 C130,90 50,50 0,115 C-50,180 -20,270 70,294 C160,318 275,280 304,210 C333,140 270,230 200,160Z"/>
+            <path d="M200,160 C120,80 30,30 -30,105 C-90,180 -55,285 50,312 C155,339 290,295 322,215 C354,135 280,240 200,160Z"/>
+            <line x1="-60" y1="300" x2="300" y2="-20" stroke="#6a6ef5" stroke-width="0.7" opacity="0.3"/>
+            <line x1="-30" y1="310" x2="330" y2="-10" stroke="#6a6ef5" stroke-width="0.7" opacity="0.2"/>
+          </g>
+        </svg>
+      </div>
+      <div class="liczby-number" style="position:relative;z-index:2;">2657</div>
+      <div class="liczby-label">starszych osób</div>
+    </div>
+    <div class="liczby-right">
+      <div class="stat-row">
+        <div class="stat-block">
+          <div class="stat-label">Pozyskaliśmy</div>
+          <div style="display:flex;align-items:baseline;gap:0.3rem;">
+            <span style="font-size:clamp(2.5rem,5vw,4rem);font-weight:300;color:var(--blue);line-height:1;">67</span>
+            <span style="font-size:0.9rem;color:#444;">dotacji</span>
           </div>
-          <div class="form-check-wrap">
-            <div class="check-box" id="checkBox"></div>
-            <input type="checkbox" id="rodo" name="rodo" required style="position:absolute;opacity:0;pointer-events:none;"/>
-            <label class="check-label" for="rodo">
-              <a href="https://app.easy.tools/policies/inkubator-idealistow-2" target="_blank">Akceptuję Politykę Prywatności</a>
-            </label>
+          <div style="display:flex;align-items:baseline;gap:0.3rem;">
+            <span style="font-size:clamp(2rem,4vw,3rem);font-weight:300;color:var(--blue);line-height:1;">87</span>
+            <span style="font-size:0.9rem;color:#444;">mln zł</span>
           </div>
-          <button type="submit" class="form-submit">WYŚLIJ WIADOMOŚĆ</button>
-        </form>
-        <div class="form-success" id="formSuccess">Dziękujemy za wiadomość! Odpowiemy jak najszybciej ;)</div>
-        <div class="form-error" id="formError">Oops! Coś poszło nie tak :(</div>
+        </div>
+        <div class="stat-block">
+          <div class="stat-label">Utworzyliśmy</div>
+          <div style="display:flex;align-items:baseline;gap:0.5rem;">
+            <span style="font-size:clamp(2.5rem,5vw,4rem);font-weight:300;color:var(--blue);line-height:1;">8</span>
+            <div>
+              <div style="font-size:0.85rem;color:#333;">dziennych</div>
+              <div style="font-size:0.85rem;color:#333;">domów pobytu</div>
+            </div>
+          </div>
+          <div style="display:flex;align-items:baseline;gap:0.5rem;margin-top:0.5rem;">
+            <span style="font-size:clamp(2rem,4vw,3rem);font-weight:300;color:var(--blue);line-height:1;">6</span>
+            <div>
+              <div style="font-size:0.85rem;color:#333;">dziennych domów</div>
+              <div style="font-size:0.85rem;color:#333;">opieki medycznej</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div style="display:flex;align-items:center;gap:1.5rem;">
+        <div style="width:40px;height:1.5px;background:var(--blue);opacity:0.4;"></div>
+        <div class="stat-block">
+          <div class="stat-label">Budujemy</div>
+          <div style="display:flex;align-items:baseline;gap:0.3rem;">
+            <span style="font-size:clamp(2.5rem,5vw,4rem);font-weight:300;color:var(--blue);line-height:1;">24</span>
+            <span style="font-size:0.9rem;color:#444;">mieszkania wspomagane</span>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="stat-label" style="margin-bottom:0.5rem;">Uruchomiliśmy</div>
+        <p style="font-size:0.9rem;color:#333;line-height:1.6;">mieszkanie treningowe, ośrodek wsparcia rehabilitacyjnego<br>oraz ośrodek opieki wytchnieniowej</p>
+      </div>
+    </div>
+  </div>
+  <!-- single orange circle right -->
+  <div style="position:absolute;right:12%;top:55%;pointer-events:none;">
+    <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
+      <circle cx="11" cy="11" r="8" stroke="#ff5f1b" stroke-width="2" fill="none"/>
+    </svg>
+  </div>
+  <!-- dots cluster right -->
+  <div style="position:absolute;right:5%;top:10%;pointer-events:none;">
+    <svg width="100" height="65" viewBox="0 0 100 65" fill="none">
+      <g stroke="#ff5f1b" stroke-width="1.5" fill="none">
+        <circle cx="10" cy="10" r="3.5"/><circle cx="26" cy="10" r="3.5"/><circle cx="42" cy="10" r="3.5"/><circle cx="58" cy="10" r="3.5"/>
+        <circle cx="18" cy="26" r="3.5"/><circle cx="34" cy="26" r="3.5"/><circle cx="50" cy="26" r="3.5"/><circle cx="66" cy="26" r="3.5"/>
+        <circle cx="26" cy="42" r="3.5"/><circle cx="42" cy="42" r="3.5"/><circle cx="58" cy="42" r="3.5"/>
+      </g>
+    </svg>
+  </div>
+</section>
+
+<!-- OFERTA -->
+<section id="oferta" style="background:var(--bg);position:relative;padding:5rem 5% 5rem 8%;overflow:hidden;">
+  <div class="sec-label"></div>
+  <h2 style="font-size:clamp(2.5rem,5vw,4rem);font-weight:800;color:var(--blue);margin-bottom:3rem;position:relative;z-index:1;">Oferta</h2>
+  <ul class="oferta-list" style="position:relative;z-index:1;">
+    <li><strong>inspirujemy</strong>&nbsp;i motywujemy do działań</li>
+    <li><strong>budujemy</strong>&nbsp;trwałe zasoby organizacji społecznych</li>
+    <li><strong>przygotowujemy</strong>&nbsp;wnioski o dotacje</li>
+    <li><strong>rozliczamy</strong>&nbsp;dotacje</li>
+    <li><strong>projektujemy</strong>&nbsp;usługi społeczne</li>
+  </ul>
+  <!-- blob right, very faint -->
+  <div style="position:absolute;right:-5%;top:-10%;bottom:-10%;width:50%;opacity:0.12;pointer-events:none;z-index:0;">
+    <svg viewBox="0 0 600 700" preserveAspectRatio="xMidYMid meet" fill="none" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%;">
+      <g stroke="#6a6ef5" stroke-width="1.5" fill="none">
+        <path d="M300,350 C240,280 160,265 130,330 C100,395 130,475 200,500 C270,525 355,495 385,430 C415,365 360,420 300,350Z"/>
+        <path d="M300,350 C220,250 110,215 60,310 C10,405 50,525 150,556 C250,587 385,545 415,450 C445,355 380,450 300,350Z"/>
+        <path d="M300,350 C200,220 60,165 -10,290 C-80,415 -30,575 100,612 C230,649 415,595 445,470 C475,345 400,480 300,350Z"/>
+        <path d="M300,350 C180,190 10,115 -80,270 C-170,425 -110,625 50,668 C210,711 445,645 475,490 C505,335 420,510 300,350Z"/>
+        <path d="M300,350 C160,160 -40,65 -150,250 C-260,435 -190,675 0,724 C190,773 475,695 505,510 C535,325 440,540 300,350Z"/>
+      </g>
+    </svg>
+  </div>
+  <!-- single orange circle -->
+  <div style="position:absolute;right:42%;top:55%;pointer-events:none;z-index:2;">
+    <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
+      <circle cx="11" cy="11" r="8" stroke="#ff5f1b" stroke-width="2" fill="none"/>
+    </svg>
+  </div>
+</section>
+
+<!-- FORMULARZ -->
+<section id="formularz" style="background:var(--orange);padding:6rem 5%;display:grid;grid-template-columns:1fr 1fr;gap:4%;align-items:center;">
+  <div>
+    <h2 style="font-size:clamp(1.4rem,2.5vw,2rem);font-weight:800;color:var(--white);line-height:1.3;margin-bottom:1.5rem;">
+      Porozmawiajmy o tym<br>jak wspierać osoby starsze!
+    </h2>
+    <p style="font-size:0.9rem;color:rgba(255,255,255,0.85);line-height:1.75;">
+      Napisz do nas jeśli potrzebujesz dofinansowania dla swoich działań, pomysłów na rozwój lub kontynuację projektów.
+    </p>
+  </div>
+  <div style="background:#f2f0ee;padding:2.5rem 2.5rem 2rem;display:flex;flex-direction:column;gap:1.2rem;">
+    <input type="text" placeholder="IMIĘ"/>
+    <input type="text" placeholder="NAZWA INSTYTUCJI"/>
+    <input type="email" placeholder="E-MAIL"/>
+    <textarea placeholder="WIADOMOŚĆ" style="min-height:100px;resize:vertical;"></textarea>
+    <div style="text-align:right;">
+      <button class="form-submit">Wyślij wiadomość</button>
+    </div>
+  </div>
+</section>
+
+<!-- ZAUFALI NAM -->
+<section id="zaufali" style="background:var(--bg);padding:6rem 0 4rem;overflow:hidden;">
+  <h2 style="font-size:clamp(1.6rem,3vw,2.4rem);font-weight:800;color:var(--blue);padding:0 5%;margin-bottom:4rem;">Zaufali nam</h2>
+  <div style="overflow:hidden;">
+    <div class="testimonials-track">
+      <!-- set 1 -->
+      <div class="testimonial">
+        <div class="testimonial-quote-mark"><span>»</span></div>
+        <p>Dzięki indywidualnemu podejściu do naszej firmy oraz profesjonalizmowi pozyskaliśmy 4 projekty unijne.</p>
+        <div class="testimonial-author">Małgorzata A.</div>
+        <div class="testimonial-org">SZPZLO Warszawa – Wawer</div>
+      </div>
+      <div class="testimonial">
+        <div class="testimonial-quote-mark"><span>»</span></div>
+        <p>Jeszcze raz dziękuję Paniom za wspaniałą pracę</p>
+        <div class="testimonial-author">Paweł R.</div>
+        <div class="testimonial-org">Fundacja "Dom z Sercem"</div>
+      </div>
+      <div class="testimonial">
+        <div class="testimonial-quote-mark"><span>»</span></div>
+        <p>Dzięki partnerskiej współpracy projekty zostały zakończone, a poniesione wydatki – w całości rozliczone i zatwierdzone przez instytucję finansującą.</p>
+        <div class="testimonial-author">Adrian B.</div>
+        <div class="testimonial-org">SZPZLO Warszawa – Wawer</div>
+      </div>
+      <div class="testimonial">
+        <div class="testimonial-quote-mark"><span>»</span></div>
+        <p>Cieszę się, że panie mam.</p>
+        <div class="testimonial-author">Iwona K.</div>
+        <div class="testimonial-org">Fundacja „Leśne Zacisze"</div>
+      </div>
+      <div class="testimonial">
+        <div class="testimonial-quote-mark"><span>»</span></div>
+        <p>Bardzo doceniam współpracę z Panią, dyspozycyjność i pomoc w każdej zgłoszonej kwestii.</p>
+        <div class="testimonial-author">Wioletta P.</div>
+        <div class="testimonial-org">NZOZ Max Med</div>
+      </div>
+      <div class="testimonial">
+        <div class="testimonial-quote-mark"><span>»</span></div>
+        <p>Współpraca z Inkubatorem Idealistów to gwarancja profesjonalizmu i skuteczności w pozyskiwaniu środków.</p>
+        <div class="testimonial-author">Katarzyna M.</div>
+        <div class="testimonial-org">Fundacja Nic Dwa Razy</div>
+      </div>
+      <div class="testimonial">
+        <div class="testimonial-quote-mark"><span>»</span></div>
+        <p>Profesjonalne wsparcie na każdym etapie realizacji projektu. Polecam każdej organizacji, która myśli o pozyskaniu dotacji.</p>
+        <div class="testimonial-author">Marek W.</div>
+        <div class="testimonial-org">Pensjonat Mecenat</div>
+      </div>
+      <div class="testimonial">
+        <div class="testimonial-quote-mark"><span>»</span></div>
+        <p>Dzięki wsparciu Inkubatora udało nam się zrealizować projekt, który znacząco poprawił jakość życia naszych podopiecznych.</p>
+        <div class="testimonial-author">Anna K.</div>
+        <div class="testimonial-org">Dom z Sercem</div>
+      </div>
+      <div class="testimonial">
+        <div class="testimonial-quote-mark"><span>»</span></div>
+        <p>Rzetelność, terminowość i pełne zaangażowanie – właśnie tak mogę opisać współpracę z Inkubatorem Idealistów.</p>
+        <div class="testimonial-author">Joanna S.</div>
+        <div class="testimonial-org">Fundacja Leśne Zacisze</div>
+      </div>
+      <!-- duplicate set for infinite scroll -->
+      <div class="testimonial">
+        <div class="testimonial-quote-mark"><span>»</span></div>
+        <p>Dzięki indywidualnemu podejściu do naszej firmy oraz profesjonalizmowi pozyskaliśmy 4 projekty unijne.</p>
+        <div class="testimonial-author">Małgorzata A.</div>
+        <div class="testimonial-org">SZPZLO Warszawa – Wawer</div>
+      </div>
+      <div class="testimonial">
+        <div class="testimonial-quote-mark"><span>»</span></div>
+        <p>Jeszcze raz dziękuję Paniom za wspaniałą pracę</p>
+        <div class="testimonial-author">Paweł R.</div>
+        <div class="testimonial-org">Fundacja "Dom z Sercem"</div>
+      </div>
+      <div class="testimonial">
+        <div class="testimonial-quote-mark"><span>»</span></div>
+        <p>Dzięki partnerskiej współpracy projekty zostały zakończone, a poniesione wydatki – w całości rozliczone i zatwierdzone przez instytucję finansującą.</p>
+        <div class="testimonial-author">Adrian B.</div>
+        <div class="testimonial-org">SZPZLO Warszawa – Wawer</div>
+      </div>
+      <div class="testimonial">
+        <div class="testimonial-quote-mark"><span>»</span></div>
+        <p>Cieszę się, że panie mam.</p>
+        <div class="testimonial-author">Iwona K.</div>
+        <div class="testimonial-org">Fundacja „Leśne Zacisze"</div>
+      </div>
+      <div class="testimonial">
+        <div class="testimonial-quote-mark"><span>»</span></div>
+        <p>Bardzo doceniam współpracę z Panią, dyspozycyjność i pomoc w każdej zgłoszonej kwestii.</p>
+        <div class="testimonial-author">Wioletta P.</div>
+        <div class="testimonial-org">NZOZ Max Med</div>
+      </div>
+      <div class="testimonial">
+        <div class="testimonial-quote-mark"><span>»</span></div>
+        <p>Współpraca z Inkubatorem Idealistów to gwarancja profesjonalizmu i skuteczności w pozyskiwaniu środków.</p>
+        <div class="testimonial-author">Katarzyna M.</div>
+        <div class="testimonial-org">Fundacja Nic Dwa Razy</div>
+      </div>
+      <div class="testimonial">
+        <div class="testimonial-quote-mark"><span>»</span></div>
+        <p>Profesjonalne wsparcie na każdym etapie realizacji projektu. Polecam każdej organizacji, która myśli o pozyskaniu dotacji.</p>
+        <div class="testimonial-author">Marek W.</div>
+        <div class="testimonial-org">Pensjonat Mecenat</div>
+      </div>
+      <div class="testimonial">
+        <div class="testimonial-quote-mark"><span>»</span></div>
+        <p>Dzięki wsparciu Inkubatora udało nam się zrealizować projekt, który znacząco poprawił jakość życia naszych podopiecznych.</p>
+        <div class="testimonial-author">Anna K.</div>
+        <div class="testimonial-org">Dom z Sercem</div>
+      </div>
+      <div class="testimonial">
+        <div class="testimonial-quote-mark"><span>»</span></div>
+        <p>Rzetelność, terminowość i pełne zaangażowanie – właśnie tak mogę opisać współpracę z Inkubatorem Idealistów.</p>
+        <div class="testimonial-author">Joanna S.</div>
+        <div class="testimonial-org">Fundacja Leśne Zacisze</div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ═══════════ TESTIMONIALS ═══════════ -->
-<section id="testimonials">
-  <div class="t-label">Zaufali nam</div>
-  <div class="t-track-wrap">
-    <div class="t-track" id="tTrack">
-      <!-- Set 1 -->
-      <div class="t-card">
-        <img src="https://cdn.prod.website-files.com/64d24e4e2a64a9d93d86c2c0/64d77a8204a893ff7e703c4c_Ornament%20Arow.svg" alt="" class="t-arrow"/>
-        <p class="t-quote">Jestem wdzięczna za wszystko, co Pani dla mnie zrobiła i robi.</p>
-        <p class="t-name">Wioletta P.</p><p class="t-org">NZOZ Max Med</p>
-      </div>
-      <div class="t-card">
-        <img src="https://cdn.prod.website-files.com/64d24e4e2a64a9d93d86c2c0/64d77a8204a893ff7e703c4c_Ornament%20Arow.svg" alt="" class="t-arrow"/>
-        <p class="t-quote">Dzięki indywidualnemu podejściu do naszej firmy oraz profesjonalizmowi pozyskaliśmy 4 projekty unijne.</p>
-        <p class="t-name">Małgorzata A.</p><p class="t-org">DPS MECENAT</p>
-      </div>
-      <div class="t-card">
-        <img src="https://cdn.prod.website-files.com/64d24e4e2a64a9d93d86c2c0/64d77a8204a893ff7e703c4c_Ornament%20Arow.svg" alt="" class="t-arrow"/>
-        <p class="t-quote">Jeszcze raz dziękuję Paniom za wspaniałą pracę</p>
-        <p class="t-name">Paweł R.</p><p class="t-org">Fundacja "Dom z Sercem"</p>
-      </div>
-      <div class="t-card">
-        <img src="https://cdn.prod.website-files.com/64d24e4e2a64a9d93d86c2c0/64d77a8204a893ff7e703c4c_Ornament%20Arow.svg" alt="" class="t-arrow"/>
-        <p class="t-quote">Dzięki partnerskiej współpracy projekty zostały zakończone, a poniesione wydatki – w całości rozliczone i zatwierdzone przez instytucję finansującą.</p>
-        <p class="t-name">Adrian B.</p><p class="t-org">SZPZLO Warszawa - Wawer</p>
-      </div>
-      <div class="t-card">
-        <img src="https://cdn.prod.website-files.com/64d24e4e2a64a9d93d86c2c0/64d77a8204a893ff7e703c4c_Ornament%20Arow.svg" alt="" class="t-arrow"/>
-        <p class="t-quote">Cieszę się, że panie mam.</p>
-        <p class="t-name">Iwona K.</p><p class="t-org">Fundacja „Leśne Zacisze"</p>
-      </div>
-      <div class="t-card">
-        <img src="https://cdn.prod.website-files.com/64d24e4e2a64a9d93d86c2c0/64d77a8204a893ff7e703c4c_Ornament%20Arow.svg" alt="" class="t-arrow"/>
-        <p class="t-quote">Bardzo doceniam współpracę z Panią, dyspozycyjność i pomoc w każdej zgłoszonej kwestii.</p>
-        <p class="t-name">Wioletta P.</p><p class="t-org">NZOZ Max Med</p>
-      </div>
-      <div class="t-card">
-        <img src="https://cdn.prod.website-files.com/64d24e4e2a64a9d93d86c2c0/64d77a8204a893ff7e703c4c_Ornament%20Arow.svg" alt="" class="t-arrow"/>
-        <p class="t-quote">Jak zwykle jesteście NAJLEPSZE!</p>
-        <p class="t-name">Paweł R.</p><p class="t-org">Fundacja "Dom z Sercem"</p>
-      </div>
-      <div class="t-card">
-        <img src="https://cdn.prod.website-files.com/64d24e4e2a64a9d93d86c2c0/64d77a8204a893ff7e703c4c_Ornament%20Arow.svg" alt="" class="t-arrow"/>
-        <p class="t-quote">Super! Bardzo się cieszę z dotacji. To był trudny konkurs. Dziękuję w imieniu brzozowskich seniorów!</p>
-        <p class="t-name">Jolanta L.</p><p class="t-org">Fundacja „W Trosce o Życie"</p>
-      </div>
-      <div class="t-card">
-        <img src="https://cdn.prod.website-files.com/64d24e4e2a64a9d93d86c2c0/64d77a8204a893ff7e703c4c_Ornament%20Arow.svg" alt="" class="t-arrow"/>
-        <p class="t-quote">Jest Pani Wielka.</p>
-        <p class="t-name">Iwona K.</p><p class="t-org">Fundacja „Leśne Zacisze"</p>
-      </div>
-      <!-- Set 2 (duplicate for seamless loop) -->
-      <div class="t-card">
-        <img src="https://cdn.prod.website-files.com/64d24e4e2a64a9d93d86c2c0/64d77a8204a893ff7e703c4c_Ornament%20Arow.svg" alt="" class="t-arrow"/>
-        <p class="t-quote">Jestem wdzięczna za wszystko, co Pani dla mnie zrobiła i robi.</p>
-        <p class="t-name">Wioletta P.</p><p class="t-org">NZOZ Max Med</p>
-      </div>
-      <div class="t-card">
-        <img src="https://cdn.prod.website-files.com/64d24e4e2a64a9d93d86c2c0/64d77a8204a893ff7e703c4c_Ornament%20Arow.svg" alt="" class="t-arrow"/>
-        <p class="t-quote">Dzięki indywidualnemu podejściu do naszej firmy oraz profesjonalizmowi pozyskaliśmy 4 projekty unijne.</p>
-        <p class="t-name">Małgorzata A.</p><p class="t-org">DPS MECENAT</p>
-      </div>
-      <div class="t-card">
-        <img src="https://cdn.prod.website-files.com/64d24e4e2a64a9d93d86c2c0/64d77a8204a893ff7e703c4c_Ornament%20Arow.svg" alt="" class="t-arrow"/>
-        <p class="t-quote">Jeszcze raz dziękuję Paniom za wspaniałą pracę</p>
-        <p class="t-name">Paweł R.</p><p class="t-org">Fundacja "Dom z Sercem"</p>
-      </div>
-      <div class="t-card">
-        <img src="https://cdn.prod.website-files.com/64d24e4e2a64a9d93d86c2c0/64d77a8204a893ff7e703c4c_Ornament%20Arow.svg" alt="" class="t-arrow"/>
-        <p class="t-quote">Dzięki partnerskiej współpracy projekty zostały zakończone, a poniesione wydatki – w całości rozliczone i zatwierdzone przez instytucję finansującą.</p>
-        <p class="t-name">Adrian B.</p><p class="t-org">SZPZLO Warszawa - Wawer</p>
-      </div>
-      <div class="t-card">
-        <img src="https://cdn.prod.website-files.com/64d24e4e2a64a9d93d86c2c0/64d77a8204a893ff7e703c4c_Ornament%20Arow.svg" alt="" class="t-arrow"/>
-        <p class="t-quote">Cieszę się, że panie mam.</p>
-        <p class="t-name">Iwona K.</p><p class="t-org">Fundacja „Leśne Zacisze"</p>
-      </div>
-      <div class="t-card">
-        <img src="https://cdn.prod.website-files.com/64d24e4e2a64a9d93d86c2c0/64d77a8204a893ff7e703c4c_Ornament%20Arow.svg" alt="" class="t-arrow"/>
-        <p class="t-quote">Bardzo doceniam współpracę z Panią, dyspozycyjność i pomoc w każdej zgłoszonej kwestii.</p>
-        <p class="t-name">Wioletta P.</p><p class="t-org">NZOZ Max Med</p>
-      </div>
-      <div class="t-card">
-        <img src="https://cdn.prod.website-files.com/64d24e4e2a64a9d93d86c2c0/64d77a8204a893ff7e703c4c_Ornament%20Arow.svg" alt="" class="t-arrow"/>
-        <p class="t-quote">Jak zwykle jesteście NAJLEPSZE!</p>
-        <p class="t-name">Paweł R.</p><p class="t-org">Fundacja "Dom z Sercem"</p>
-      </div>
-      <div class="t-card">
-        <img src="https://cdn.prod.website-files.com/64d24e4e2a64a9d93d86c2c0/64d77a8204a893ff7e703c4c_Ornament%20Arow.svg" alt="" class="t-arrow"/>
-        <p class="t-quote">Super! Bardzo się cieszę z dotacji. To był trudny konkurs. Dziękuję w imieniu brzozowskich seniorów!</p>
-        <p class="t-name">Jolanta L.</p><p class="t-org">Fundacja „W Trosce o Życie"</p>
-      </div>
-      <div class="t-card">
-        <img src="https://cdn.prod.website-files.com/64d24e4e2a64a9d93d86c2c0/64d77a8204a893ff7e703c4c_Ornament%20Arow.svg" alt="" class="t-arrow"/>
-        <p class="t-quote">Jest Pani Wielka.</p>
-        <p class="t-name">Iwona K.</p><p class="t-org">Fundacja „Leśne Zacisze"</p>
-      </div>
-    </div>
-  </div>
-
-  <!-- Logos -->
-  <div class="logos-wrap" style="margin-top:32px;">
-    <img src="https://cdn.prod.website-files.com/64d24e4e2a64a9d93d86c2c0/64d24e4e2a64a9d93d86c2ff_Loga.svg" alt="" loading="lazy"/>
-  </div>
-</section>
-
-<!-- ═══════════ KONTAKT ═══════════ -->
-<section id="kontakt">
-  <div class="k-label">Kontakt</div>
-  <div class="k-grid">
-    <div class="k-item">
-      <div class="k-name">Ewa Fedor – Destrebecq</div>
-      <div class="k-role">rozwój pomysłów/projektów</div>
-    </div>
-    <div class="k-item">
-      <div class="k-name">Anna Latusek</div>
-      <div class="k-role">nadzór nad rozliczaniem projektów</div>
-    </div>
-    <div class="k-item">
-      <div class="k-name">Katarzyna Kąkol</div>
-      <div class="k-role">rozwój pomysłów/projektów</div>
-    </div>
-    <div class="k-item">
-      <div class="k-phone">691 380 714</div>
-      <div class="k-email"><a href="mailto:e.fedor@inkubatoridealistow.org.pl?subject=Formularz">e.fedor@inkubatoridealistow.org.pl</a></div>
-    </div>
-    <div class="k-item">
-      <div class="k-phone">609 966 215</div>
-      <div class="k-email"><a href="mailto:a.latusek@inkubatoridealistow.org.pl?subject=Formularz">a.latusek@inkubatoridealistow.org.pl</a></div>
-    </div>
-    <div class="k-item">
-      <div class="k-phone">501 077 931</div>
-      <div class="k-email"><a href="mailto:k.kakol@inkubatoridealistow.org.pl?subject=Formularz">k.kakol@inkubatoridealistow.org.pl</a></div>
+<!-- LOGA -->
+<section id="loga" style="background:var(--bg);padding:3rem 5% 5rem;overflow:hidden;">
+  <div style="overflow:hidden;">
+    <div class="loga-track">
+      <!-- SVG text logos in blue tint -->
+      <svg height="55" viewBox="0 0 180 55" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="27" cy="27" r="24" stroke="#6a6ef5" stroke-width="2" fill="none"/>
+        <text x="27" y="20" text-anchor="middle" font-family="Poppins,sans-serif" font-size="7" font-weight="700" fill="#6a6ef5">SZPZLO</text>
+        <text x="27" y="30" text-anchor="middle" font-family="Poppins,sans-serif" font-size="5" fill="#6a6ef5">WARSZAWA</text>
+        <text x="27" y="39" text-anchor="middle" font-family="Poppins,sans-serif" font-size="4.5" fill="#6a6ef5">WAWER</text>
+        <text x="80" y="35" text-anchor="start" font-family="Poppins,sans-serif" font-size="9" font-weight="300" fill="#6a6ef5">SAMODZIELNY</text>
+        <text x="80" y="47" text-anchor="start" font-family="Poppins,sans-serif" font-size="9" font-weight="300" fill="#6a6ef5">ZESPÓŁ ZAKŁADÓW</text>
+      </svg>
+      <svg height="55" viewBox="0 0 200 55" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <text x="100" y="20" text-anchor="middle" font-family="Poppins,sans-serif" font-size="13" font-weight="300" fill="#6a6ef5">Pensjonat</text>
+        <text x="100" y="40" text-anchor="middle" font-family="Poppins,sans-serif" font-size="18" font-weight="300" letter-spacing="3" fill="#6a6ef5">Mecenat</text>
+      </svg>
+      <svg height="55" viewBox="0 0 160 55" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect x="20" y="10" width="35" height="35" rx="18" stroke="#6a6ef5" stroke-width="1.5" fill="none"/>
+        <path d="M30,27 L25,27 M37,20 L37,34" stroke="#6a6ef5" stroke-width="1.5"/>
+        <text x="65" y="22" font-family="Poppins,sans-serif" font-size="10" font-weight="600" fill="#6a6ef5">Dom</text>
+        <text x="65" y="36" font-family="Poppins,sans-serif" font-size="10" font-weight="600" fill="#6a6ef5">z Sercem</text>
+      </svg>
+      <svg height="55" viewBox="0 0 210 55" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <text x="10" y="24" font-family="Poppins,sans-serif" font-size="14" font-weight="700" fill="#6a6ef5">FUNDACJA</text>
+        <text x="10" y="44" font-family="Poppins,sans-serif" font-size="14" font-weight="700" fill="#6a6ef5">NIC DWA RAZY</text>
+      </svg>
+      <svg height="55" viewBox="0 0 200 55" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <text x="100" y="35" text-anchor="middle" font-family="Poppins,sans-serif" font-size="22" font-weight="700" letter-spacing="2" fill="#6a6ef5">MAX – MED</text>
+      </svg>
+      <!-- duplicates for marquee -->
+      <svg height="55" viewBox="0 0 180 55" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="27" cy="27" r="24" stroke="#6a6ef5" stroke-width="2" fill="none"/>
+        <text x="27" y="20" text-anchor="middle" font-family="Poppins,sans-serif" font-size="7" font-weight="700" fill="#6a6ef5">SZPZLO</text>
+        <text x="27" y="30" text-anchor="middle" font-family="Poppins,sans-serif" font-size="5" fill="#6a6ef5">WARSZAWA</text>
+        <text x="27" y="39" text-anchor="middle" font-family="Poppins,sans-serif" font-size="4.5" fill="#6a6ef5">WAWER</text>
+      </svg>
+      <svg height="55" viewBox="0 0 200 55" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <text x="100" y="20" text-anchor="middle" font-family="Poppins,sans-serif" font-size="13" font-weight="300" fill="#6a6ef5">Pensjonat</text>
+        <text x="100" y="40" text-anchor="middle" font-family="Poppins,sans-serif" font-size="18" font-weight="300" letter-spacing="3" fill="#6a6ef5">Mecenat</text>
+      </svg>
+      <svg height="55" viewBox="0 0 210 55" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <text x="10" y="24" font-family="Poppins,sans-serif" font-size="14" font-weight="700" fill="#6a6ef5">FUNDACJA</text>
+        <text x="10" y="44" font-family="Poppins,sans-serif" font-size="14" font-weight="700" fill="#6a6ef5">NIC DWA RAZY</text>
+      </svg>
+      <svg height="55" viewBox="0 0 200 55" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <text x="100" y="35" text-anchor="middle" font-family="Poppins,sans-serif" font-size="22" font-weight="700" letter-spacing="2" fill="#6a6ef5">MAX – MED</text>
+      </svg>
     </div>
   </div>
 </section>
 
-<!-- ═══════════ FOOTER ═══════════ -->
+<!-- KONTAKT -->
+<section id="kontakt" style="background:var(--blue);padding:5rem 5%;">
+  <h2 style="font-size:1.5rem;font-weight:700;color:var(--white);margin-bottom:3rem;">Kontakt</h2>
+  <div class="kontakt-grid">
+    <div class="kontakt-person">
+      <h3>Ewa Fedor – Destrebecq</h3>
+      <div class="role">rozwój pomysłów/projektów</div>
+      <div class="phone">691 380 714</div>
+      <a href="mailto:e.fedor@inkubatoridealistow.org.pl" class="email">e.fedor@inkubatoridealistow.org.pl</a>
+    </div>
+    <div class="kontakt-person">
+      <h3>Anna Latusek</h3>
+      <div class="role">nadzór nad rozliczaniem projektów</div>
+      <div class="phone">609 966 215</div>
+      <a href="mailto:a.latusek@inkubatoridealistow.org.pl" class="email">a.latusek@inkubatoridealistow.org.pl</a>
+    </div>
+    <div class="kontakt-person">
+      <h3>Katarzyna Kąkol</h3>
+      <div class="role">rozwój pomysłów/projektów</div>
+      <div class="phone">501 077 931</div>
+      <a href="mailto:k.kakol@inkubatoridealistow.org.pl" class="email">k.kakol@inkubatoridealistow.org.pl</a>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
 <footer>
-  <a href="https://app.easy.tools/policies/inkubator-idealistow-2" target="_blank">Polityka Prywatności</a>
-  <span class="footer-copy">Copyright © 2023 Inkubator Idealistów. All rights reserved.</span>
+  <a href="#">Polityka Prywatności</a>
+  <p>Copyright © 2023 Inkubator Idealistów. All rights reserved.</p>
 </footer>
 
-<script>
-  // Overlay
-  setTimeout(() => { document.getElementById('overlay').style.display = 'none'; }, 2500);
-
-  // Nav toggle
-  function toggleNav() {
-    document.getElementById('navLinks').classList.toggle('open');
+<style>
+  /* Form field styles need to apply inside the section */
+  #formularz input, #formularz textarea {
+    width: 100%;
+    background: transparent;
+    border: none;
+    border-bottom: 1.5px solid var(--orange);
+    padding: 0.7rem 0;
+    font-family: Poppins, sans-serif;
+    font-size: 0.78rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    color: #333;
+    outline: none;
+    text-transform: uppercase;
   }
+  #formularz input::placeholder,
+  #formularz textarea::placeholder {
+    color: #999;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+  }
+  #formularz textarea {
+    min-height: 100px;
+    resize: vertical;
+  }
+</style>
 
-  // Checkbox
-  const checkBox = document.getElementById('checkBox');
-  const rodo = document.getElementById('rodo');
-  checkBox.addEventListener('click', () => {
-    rodo.checked = !rodo.checked;
-    checkBox.classList.toggle('checked', rodo.checked);
-  });
-
-  // Form
-  document.getElementById('contactForm').addEventListener('submit', function(e) {
-    e.preventDefault();
-    const vals = ['imie','organizacja','email','wiadomosc'].map(n => this[n]?.value?.trim());
-    if (vals.some(v => !v) || !rodo.checked) {
-      document.getElementById('formError').style.display = 'block';
-      return;
-    }
-    const btn = this.querySelector('.form-submit');
-    btn.textContent = 'Proszę czekać...';
-    btn.disabled = true;
-    setTimeout(() => {
-      this.style.display = 'none';
-      document.getElementById('formSuccess').style.display = 'block';
-      document.getElementById('formError').style.display = 'none';
-    }, 900);
-  });
-  document.querySelectorAll('.form-input').forEach(el => {
-    el.addEventListener('input', () => { document.getElementById('formError').style.display = 'none'; });
-  });
-</script>
 </body>
 </html>
