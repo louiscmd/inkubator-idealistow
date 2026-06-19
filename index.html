@@ -33,54 +33,81 @@
       position: fixed; inset: 0; z-index: 9999;
       background: var(--bg);
       display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
       pointer-events: none;
-      animation: fadeOverlay 0.5s 2.2s forwards;
+      animation: overlayFadeOut 0.6s 4.8s cubic-bezier(.4,0,.2,1) forwards;
     }
-    @keyframes fadeOverlay { to { opacity: 0; visibility: hidden; } }
-    .overlay-left {
-      flex: 1; display: flex; align-items: flex-end;
-      padding: 5vw 5vw;
+    @keyframes overlayFadeOut {
+      to { opacity: 0; visibility: hidden; }
     }
-    .overlay-right {
-      width: 48%; display: flex; align-items: center; justify-content: center;
-    }
-    .overlay-letters {
-      display: flex; flex-direction: column; gap: 0.15em;
-      overflow: hidden;
-    }
-    .ol-row {
-      display: flex; gap: 0.4em;
-      overflow: hidden;
-    }
-    .ol-row span {
-      font-size: clamp(3rem, 8vw, 6rem);
-      font-weight: 800;
-      color: var(--orange);
-      display: inline-block;
-      transform: translateY(120%);
-      animation: slideUp 0.7s cubic-bezier(.22,1,.36,1) forwards;
-    }
-    .ol-row:nth-child(1) span { animation-delay: 0.1s; }
-    .ol-row:nth-child(2) span { animation-delay: 0.25s; }
-    .ol-row:nth-child(3) span { animation-delay: 0.4s; }
-    .ol-row:nth-child(4) span { animation-delay: 0.55s; }
-    @keyframes slideUp { to { transform: translateY(0); } }
-    .overlay-idealistow {
-      font-size: clamp(0.9rem, 2vw, 1.5rem);
-      font-weight: 700;
-      color: var(--orange);
-      letter-spacing: 0.35em;
-      text-transform: uppercase;
-      transform: translateX(-40px);
-      opacity: 0;
-      animation: slideRight 0.6s 0.8s cubic-bezier(.22,1,.36,1) forwards;
-    }
-    @keyframes slideRight { to { transform: translateX(0); opacity: 1; } }
+
+    /* Ripple rings */
     .overlay-rings {
-      opacity: 0;
-      animation: fadeIn 0.6s 0.9s forwards;
+      position: relative;
+      width: 260px; height: 260px;
+      flex-shrink: 0;
     }
-    @keyframes fadeIn { to { opacity: 1; } }
+    .overlay-rings circle {
+      transform-origin: 130px 130px;
+      animation: ripple 2s ease-out infinite;
+    }
+    .overlay-rings circle:nth-child(1) { animation-delay: 0s; }
+    .overlay-rings circle:nth-child(2) { animation-delay: 0.28s; }
+    .overlay-rings circle:nth-child(3) { animation-delay: 0.56s; }
+    .overlay-rings circle:nth-child(4) { animation-delay: 0.84s; }
+    .overlay-rings circle:nth-child(5) { animation-delay: 1.12s; }
+    .overlay-rings circle:nth-child(6) { animation-delay: 1.4s; }
+    @keyframes ripple {
+      0%   { r: 8;  opacity: 0.9; stroke-width: 2.5; }
+      100% { r: 128; opacity: 0;   stroke-width: 0.5; }
+    }
+
+    /* INKUBATOR top text — letters appear one by one */
+    .overlay-top {
+      position: absolute;
+      top: calc(50% - 260px/2 - 3.5rem);
+      left: 0; right: 0;
+      text-align: center;
+      font-size: clamp(1.6rem, 4vw, 3rem);
+      font-weight: 800;
+      letter-spacing: 0.25em;
+      color: var(--blue);
+      display: flex;
+      justify-content: center;
+      gap: 0;
+      overflow: hidden;
+    }
+    .overlay-top span {
+      display: inline-block;
+      opacity: 0;
+      transform: translateY(-20px);
+      animation: letterDrop 0.4s cubic-bezier(.22,1,.36,1) forwards;
+    }
+    /* IDEALISTÓW bottom text */
+    .overlay-bottom {
+      position: absolute;
+      top: calc(50% + 260px/2 + 1rem);
+      left: 0; right: 0;
+      text-align: center;
+      font-size: clamp(1rem, 2.5vw, 1.8rem);
+      font-weight: 700;
+      letter-spacing: 0.35em;
+      color: var(--blue);
+      display: flex;
+      justify-content: center;
+      gap: 0;
+      overflow: hidden;
+    }
+    .overlay-bottom span {
+      display: inline-block;
+      opacity: 0;
+      transform: translateY(20px);
+      animation: letterRise 0.4s cubic-bezier(.22,1,.36,1) forwards;
+    }
+    @keyframes letterDrop  { to { opacity: 1; transform: translateY(0); } }
+    @keyframes letterRise  { to { opacity: 1; transform: translateY(0); } }
 
     /* ── NAVBAR ── */
     nav {
@@ -680,27 +707,24 @@
 
 <!-- PAGE LOAD OVERLAY -->
 <div class="overlay">
-  <div class="overlay-left">
-    <div>
-      <div class="overlay-letters">
-        <div class="ol-row"><span>IN</span><span>/</span></div>
-        <div class="ol-row"><span>KU</span><span>/</span></div>
-        <div class="ol-row"><span>BA</span><span>/</span></div>
-        <div class="ol-row"><span>TOR</span></div>
-      </div>
-      <div class="overlay-idealistow">IDEALISTÓW</div>
-    </div>
+  <!-- INKUBATOR — letters drop in one by one after 2s -->
+  <div class="overlay-top">
+    <span style="animation-delay:2.00s">I</span><span style="animation-delay:2.10s">N</span><span style="animation-delay:2.20s">K</span><span style="animation-delay:2.30s">U</span><span style="animation-delay:2.40s">B</span><span style="animation-delay:2.50s">A</span><span style="animation-delay:2.60s">T</span><span style="animation-delay:2.70s">O</span><span style="animation-delay:2.80s">R</span>
   </div>
-  <div class="overlay-right">
-    <div class="overlay-rings">
-      <svg width="280" height="280" viewBox="0 0 280 280" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <circle cx="140" cy="140" r="130" stroke="#6a6ef5" stroke-width="1.5" opacity="0.5"/>
-        <circle cx="140" cy="140" r="105" stroke="#6a6ef5" stroke-width="1.5" opacity="0.5"/>
-        <circle cx="140" cy="140" r="80" stroke="#6a6ef5" stroke-width="1.5" opacity="0.5"/>
-        <circle cx="140" cy="140" r="55" stroke="#6a6ef5" stroke-width="1.5" opacity="0.5"/>
-        <circle cx="140" cy="140" r="30" stroke="#6a6ef5" stroke-width="1.5" opacity="0.5"/>
-      </svg>
-    </div>
+
+  <!-- Animated ripple rings -->
+  <svg class="overlay-rings" viewBox="0 0 260 260" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <circle cx="130" cy="130" r="8" stroke="#6a6ef5" stroke-width="2.5"/>
+    <circle cx="130" cy="130" r="8" stroke="#6a6ef5" stroke-width="2.5"/>
+    <circle cx="130" cy="130" r="8" stroke="#6a6ef5" stroke-width="2.5"/>
+    <circle cx="130" cy="130" r="8" stroke="#6a6ef5" stroke-width="2.5"/>
+    <circle cx="130" cy="130" r="8" stroke="#6a6ef5" stroke-width="2.5"/>
+    <circle cx="130" cy="130" r="8" stroke="#6a6ef5" stroke-width="2.5"/>
+  </svg>
+
+  <!-- IDEALISTÓW — letters rise in one by one after 2s -->
+  <div class="overlay-bottom">
+    <span style="animation-delay:2.00s">I</span><span style="animation-delay:2.09s">D</span><span style="animation-delay:2.18s">E</span><span style="animation-delay:2.27s">A</span><span style="animation-delay:2.36s">L</span><span style="animation-delay:2.45s">I</span><span style="animation-delay:2.54s">S</span><span style="animation-delay:2.63s">T</span><span style="animation-delay:2.72s">Ó</span><span style="animation-delay:2.81s">W</span>
   </div>
 </div>
 
