@@ -4,6 +4,7 @@
   <meta charset="utf-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <title>Inkubator Idealistów</title>
+  <link rel="icon" type="image/png" href="favicon.png"/>
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400;1,600;1,700;1,800&display=swap" rel="stylesheet"/>
@@ -118,7 +119,7 @@
       -webkit-backdrop-filter: blur(6px);
     }
     .nav-logo {
-      font-size: 0.75rem;
+      font-size: 1.05rem;
       font-weight: 700;
       color: var(--orange);
       letter-spacing: 0.2em;
@@ -220,6 +221,16 @@
     .blob-anim-mini {
       animation: blobWave 22s linear infinite reverse;
       transform-origin: 200px 160px;
+    }
+    @keyframes blobMorph {
+      0%,100% { transform: scaleX(1)    scaleY(1); }
+      25%      { transform: scaleX(1.09) scaleY(0.93); }
+      50%      { transform: scaleX(0.95) scaleY(1.08); }
+      75%      { transform: scaleX(1.06) scaleY(0.96); }
+    }
+    .blob-morph {
+      animation: blobMorph 8s ease-in-out infinite;
+      transform-origin: 200px 200px;
     }
 
     /* ── TOPOGRAPHIC BLOB SVG ── */
@@ -339,7 +350,7 @@
       margin-bottom: 0.5rem;
     }
     .feature p {
-      font-size: 0.88rem;
+      font-size: 0.97rem;
       color: #333;
       line-height: 1.7;
     }
@@ -414,7 +425,7 @@
     }
     .stat-number span { font-size: 1rem; font-weight: 400; color: #444; margin-left: 0.3em; }
     .stat-text {
-      font-size: 0.85rem;
+      font-size: 0.97rem;
       color: #333;
       line-height: 1.5;
     }
@@ -925,8 +936,8 @@
       </g>
     </svg>
   </div>
-  <!-- 3 dots lower-left -->
-  <div style="position:absolute;left:5%;bottom:15%;pointer-events:none;z-index:2;">
+  <!-- 3 dots far right -->
+  <div style="position:absolute;right:4%;top:50%;transform:translateY(-50%);pointer-events:none;z-index:2;">
     <svg width="60" height="16" viewBox="0 0 60 16" fill="none">
       <g stroke="#ff5f1b" stroke-width="1.5" fill="none">
         <circle cx="8" cy="8" r="3.5"/>
@@ -941,85 +952,92 @@
 <section id="liczby" style="background:var(--bg);position:relative;padding:5rem 5%;overflow:hidden;">
   <div class="sec-label"></div>
   <h2 style="font-size:clamp(2rem,3.5vw,2.8rem);font-weight:800;font-style:italic;color:var(--orange);margin-bottom:3rem;padding-left:3%;">Liczby, które o nas mówią</h2>
-  <div class="liczby-grid" style="padding-left:3%;">
-    <div class="liczby-left">
-      <!-- small topographic blob behind the number -->
-      <div style="width:100%;margin-bottom:-2.5rem;z-index:0;">
-        <svg viewBox="0 0 400 400" fill="none" xmlns="http://www.w3.org/2000/svg" style="width:100%;">
-          <g class="blob-anim-mini" fill="none" stroke="#6a6ef5" opacity="0.75">
-            <path stroke-width="1.1" d="M200,160 C232,144 258,158 262,186 C266,214 248,238 222,245 C196,252 168,240 156,218 C144,196 152,168 172,157 C192,146 188,170 200,160Z"/>
-            <path stroke-width="1.0" d="M200,160 C244,136 278,156 280,192 C282,228 258,258 224,267 C190,276 156,260 140,230 C124,200 136,160 160,146 C184,132 180,178 200,160Z"/>
-            <path stroke-width="0.95" d="M200,160 C255,128 297,154 298,198 C299,242 268,278 226,289 C184,300 144,280 124,242 C104,204 120,152 148,135 C176,118 172,186 200,160Z"/>
-            <path stroke-width="0.9" d="M200,160 C267,120 316,152 316,204 C316,256 278,298 228,311 C178,324 132,300 108,254 C84,208 104,144 136,124 C168,104 164,194 200,160Z"/>
-            <path stroke-width="0.85" d="M200,160 C279,112 335,150 334,210 C333,270 288,318 230,333 C172,348 120,320 92,266 C64,212 88,136 124,113 C160,90 156,202 200,160Z"/>
-            <path stroke-width="0.8" d="M200,160 C290,104 354,148 352,216 C350,284 298,338 232,355 C166,372 108,340 76,278 C44,216 72,128 112,102 C152,76 148,210 200,160Z"/>
-            <path stroke-width="0.75" d="M200,160 C302,96 373,146 370,222 C367,298 308,358 234,377 C160,396 96,360 60,290 C24,220 56,120 100,91 C144,62 140,218 200,160Z"/>
-          </g>
-        </svg>
+  <div style="display:grid;grid-template-columns:36% 1fr;gap:0 5%;align-items:center;padding-left:3%;">
+
+    <!-- LEFT: blob layer 1 + text layer 2 -->
+    <div style="position:relative;">
+      <!-- Layer 1: wavy blob -->
+      <svg viewBox="0 0 400 400" fill="none" xmlns="http://www.w3.org/2000/svg" style="width:100%;display:block;">
+        <g class="blob-morph" fill="none" stroke="#6a6ef5" opacity="0.8">
+          <path stroke-width="1.15" d="M200,148 C238,132 270,150 274,184 C278,218 254,248 220,257 C186,266 152,248 138,218 C124,188 136,152 162,140 C188,128 182,160 200,148Z"/>
+          <path stroke-width="1.05" d="M200,122 C252,100 294,126 296,172 C298,218 266,256 222,268 C178,280 136,256 118,218 C100,180 118,130 150,114 C182,98 176,140 200,122Z"/>
+          <path stroke-width="0.95" d="M200,97 C266,68 318,102 318,160 C318,218 278,264 224,279 C170,294 120,264 98,218 C76,172 100,108 138,88 C176,68 170,120 200,97Z"/>
+          <path stroke-width="0.88" d="M200,73 C280,36 342,78 340,148 C338,218 290,272 226,290 C162,308 104,272 78,218 C52,164 82,86 126,62 C170,38 164,100 200,73Z"/>
+          <path stroke-width="0.8"  d="M200,50 C294,4 366,54 362,136 C358,218 302,280 228,301 C154,322 88,280 58,218 C28,156 64,64 114,36 C164,8 158,80 200,50Z"/>
+          <path stroke-width="0.72" d="M200,27 C308,-28 390,30 384,124 C378,218 314,288 230,312 C146,336 72,288 38,218 C4,148 46,42 102,10 C158,-22 152,60 200,27Z"/>
+          <path stroke-width="0.64" d="M200,5 C322,-60 414,6 406,112 C398,218 326,296 232,323 C138,350 56,296 18,218 C-20,140 28,20 90,-16 C152,-52 146,40 200,5Z"/>
+          <path stroke-width="0.56" d="M200,-17 C336,-92 438,-18 428,100 C418,218 338,304 234,334 C130,364 40,304 -2,218 C-44,132 10,-2 78,-42 C146,-82 140,20 200,-17Z"/>
+        </g>
+      </svg>
+      <!-- Layer 2: text centered on blob -->
+      <div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:0.1rem;">
+        <div style="font-size:clamp(3.5rem,9vw,6.5rem);font-weight:800;color:var(--orange);line-height:1;">2657</div>
+        <div style="font-size:clamp(0.85rem,1.4vw,1.1rem);font-weight:700;color:var(--orange);letter-spacing:0.05em;text-align:center;">starszych osób</div>
       </div>
-      <div class="liczby-number" style="position:relative;z-index:2;">2657</div>
-      <div class="liczby-label">starszych osób</div>
     </div>
-    <div class="liczby-right">
-      <div class="stat-row">
-        <div class="stat-block">
-          <div class="stat-label">Pozyskaliśmy</div>
-          <div style="display:flex;align-items:baseline;gap:0.3rem;">
-            <span style="font-size:clamp(2.5rem,5vw,4rem);font-weight:300;color:var(--blue);line-height:1;">67</span>
-            <span style="font-size:0.9rem;color:#444;">dotacji</span>
+
+    <!-- RIGHT: stats in aligned 2×2 grid then extras -->
+    <div style="display:flex;flex-direction:column;gap:2.2rem;">
+
+      <!-- Row 1: POZYSKALIŚMY + UTWORZYLIŚMY side by side -->
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:0 3rem;align-items:start;">
+        <div>
+          <div class="stat-label" style="margin-bottom:0.6rem;">Pozyskaliśmy</div>
+          <div style="display:flex;align-items:baseline;gap:0.35rem;margin-bottom:0.3rem;">
+            <span style="font-size:clamp(2.2rem,4.5vw,3.5rem);font-weight:300;color:var(--blue);line-height:1;">67</span>
+            <span style="font-size:0.97rem;color:#444;">dotacji</span>
           </div>
-          <div style="display:flex;align-items:baseline;gap:0.3rem;">
-            <span style="font-size:clamp(2rem,4vw,3rem);font-weight:300;color:var(--blue);line-height:1;">87</span>
-            <span style="font-size:0.9rem;color:#444;">mln zł</span>
+          <div style="display:flex;align-items:baseline;gap:0.35rem;">
+            <span style="font-size:clamp(2.2rem,4.5vw,3.5rem);font-weight:300;color:var(--blue);line-height:1;">87</span>
+            <span style="font-size:0.97rem;color:#444;">mln zł</span>
           </div>
         </div>
-        <div class="stat-block">
-          <div class="stat-label">Utworzyliśmy</div>
+        <div>
+          <div class="stat-label" style="margin-bottom:0.6rem;">Utworzyliśmy</div>
+          <div style="display:flex;align-items:baseline;gap:0.5rem;margin-bottom:0.3rem;">
+            <span style="font-size:clamp(2.2rem,4.5vw,3.5rem);font-weight:300;color:var(--blue);line-height:1;">8</span>
+            <span style="font-size:0.97rem;color:#333;">dziennych domów pobytu</span>
+          </div>
           <div style="display:flex;align-items:baseline;gap:0.5rem;">
-            <span style="font-size:clamp(2.5rem,5vw,4rem);font-weight:300;color:var(--blue);line-height:1;">8</span>
-            <div>
-              <div style="font-size:0.85rem;color:#333;">dziennych</div>
-              <div style="font-size:0.85rem;color:#333;">domów pobytu</div>
-            </div>
-          </div>
-          <div style="display:flex;align-items:baseline;gap:0.5rem;margin-top:0.5rem;">
-            <span style="font-size:clamp(2rem,4vw,3rem);font-weight:300;color:var(--blue);line-height:1;">6</span>
-            <div>
-              <div style="font-size:0.85rem;color:#333;">dziennych domów</div>
-              <div style="font-size:0.85rem;color:#333;">opieki medycznej</div>
-            </div>
+            <span style="font-size:clamp(2.2rem,4.5vw,3.5rem);font-weight:300;color:var(--blue);line-height:1;">6</span>
+            <span style="font-size:0.97rem;color:#333;">dziennych domów opieki medycznej</span>
           </div>
         </div>
       </div>
-      <div style="display:flex;align-items:center;gap:1.5rem;">
-        <div style="width:40px;height:1.5px;background:var(--blue);opacity:0.4;"></div>
-        <div class="stat-block">
-          <div class="stat-label">Budujemy</div>
-          <div style="display:flex;align-items:baseline;gap:0.3rem;">
-            <span style="font-size:clamp(2.5rem,5vw,4rem);font-weight:300;color:var(--blue);line-height:1;">24</span>
-            <span style="font-size:0.9rem;color:#444;">mieszkania wspomagane</span>
-          </div>
+
+      <!-- Divider -->
+      <div style="width:40px;height:1.5px;background:var(--blue);opacity:0.35;"></div>
+
+      <!-- Row 2: BUDUJEMY -->
+      <div>
+        <div class="stat-label" style="margin-bottom:0.5rem;">Budujemy</div>
+        <div style="display:flex;align-items:baseline;gap:0.35rem;">
+          <span style="font-size:clamp(2.2rem,4.5vw,3.5rem);font-weight:300;color:var(--blue);line-height:1;">24</span>
+          <span style="font-size:0.97rem;color:#444;">mieszkania wspomagane</span>
         </div>
       </div>
+
+      <!-- Row 3: URUCHOMILIŚMY -->
       <div>
         <div class="stat-label" style="margin-bottom:0.5rem;">Uruchomiliśmy</div>
-        <p style="font-size:0.9rem;color:#333;line-height:1.6;">mieszkanie treningowe, ośrodek wsparcia rehabilitacyjnego<br>oraz ośrodek opieki wytchnieniowej</p>
+        <p style="font-size:0.97rem;color:#333;line-height:1.65;">mieszkanie treningowe, ośrodek wsparcia rehabilitacyjnego oraz ośrodek opieki wytchnieniowej</p>
       </div>
+
     </div>
   </div>
-  <!-- single orange circle right -->
-  <div style="position:absolute;right:12%;top:55%;pointer-events:none;">
+
+  <!-- decorations -->
+  <div style="position:absolute;right:3%;top:50%;transform:translateY(-50%);pointer-events:none;">
     <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
       <circle cx="11" cy="11" r="8" stroke="#ff5f1b" stroke-width="2" fill="none"/>
     </svg>
   </div>
-  <!-- dots cluster right -->
-  <div style="position:absolute;right:5%;top:10%;pointer-events:none;">
-    <svg width="100" height="65" viewBox="0 0 100 65" fill="none">
+  <div style="position:absolute;right:3%;top:12%;pointer-events:none;">
+    <svg width="90" height="60" viewBox="0 0 90 60" fill="none">
       <g stroke="#ff5f1b" stroke-width="1.5" fill="none">
-        <circle cx="10" cy="10" r="3.5"/><circle cx="26" cy="10" r="3.5"/><circle cx="42" cy="10" r="3.5"/><circle cx="58" cy="10" r="3.5"/>
-        <circle cx="18" cy="26" r="3.5"/><circle cx="34" cy="26" r="3.5"/><circle cx="50" cy="26" r="3.5"/><circle cx="66" cy="26" r="3.5"/>
-        <circle cx="26" cy="42" r="3.5"/><circle cx="42" cy="42" r="3.5"/><circle cx="58" cy="42" r="3.5"/>
+        <circle cx="10" cy="10" r="3.5"/><circle cx="26" cy="10" r="3.5"/><circle cx="42" cy="10" r="3.5"/>
+        <circle cx="18" cy="26" r="3.5"/><circle cx="34" cy="26" r="3.5"/><circle cx="50" cy="26" r="3.5"/>
+        <circle cx="26" cy="42" r="3.5"/><circle cx="42" cy="42" r="3.5"/>
       </g>
     </svg>
   </div>
@@ -1199,55 +1217,8 @@
 </section>
 
 <!-- LOGA -->
-<section id="loga" style="background:var(--bg);padding:3rem 5% 5rem;overflow:hidden;">
-  <div style="overflow:hidden;">
-    <div class="loga-track">
-      <!-- SVG text logos in blue tint -->
-      <svg height="55" viewBox="0 0 180 55" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <circle cx="27" cy="27" r="24" stroke="#6a6ef5" stroke-width="2" fill="none"/>
-        <text x="27" y="20" text-anchor="middle" font-family="Poppins,sans-serif" font-size="7" font-weight="700" fill="#6a6ef5">SZPZLO</text>
-        <text x="27" y="30" text-anchor="middle" font-family="Poppins,sans-serif" font-size="5" fill="#6a6ef5">WARSZAWA</text>
-        <text x="27" y="39" text-anchor="middle" font-family="Poppins,sans-serif" font-size="4.5" fill="#6a6ef5">WAWER</text>
-        <text x="80" y="35" text-anchor="start" font-family="Poppins,sans-serif" font-size="9" font-weight="300" fill="#6a6ef5">SAMODZIELNY</text>
-        <text x="80" y="47" text-anchor="start" font-family="Poppins,sans-serif" font-size="9" font-weight="300" fill="#6a6ef5">ZESPÓŁ ZAKŁADÓW</text>
-      </svg>
-      <svg height="55" viewBox="0 0 200 55" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <text x="100" y="20" text-anchor="middle" font-family="Poppins,sans-serif" font-size="13" font-weight="300" fill="#6a6ef5">Pensjonat</text>
-        <text x="100" y="40" text-anchor="middle" font-family="Poppins,sans-serif" font-size="18" font-weight="300" letter-spacing="3" fill="#6a6ef5">Mecenat</text>
-      </svg>
-      <svg height="55" viewBox="0 0 160 55" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <rect x="20" y="10" width="35" height="35" rx="18" stroke="#6a6ef5" stroke-width="1.5" fill="none"/>
-        <path d="M30,27 L25,27 M37,20 L37,34" stroke="#6a6ef5" stroke-width="1.5"/>
-        <text x="65" y="22" font-family="Poppins,sans-serif" font-size="10" font-weight="600" fill="#6a6ef5">Dom</text>
-        <text x="65" y="36" font-family="Poppins,sans-serif" font-size="10" font-weight="600" fill="#6a6ef5">z Sercem</text>
-      </svg>
-      <svg height="55" viewBox="0 0 210 55" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <text x="10" y="24" font-family="Poppins,sans-serif" font-size="14" font-weight="700" fill="#6a6ef5">FUNDACJA</text>
-        <text x="10" y="44" font-family="Poppins,sans-serif" font-size="14" font-weight="700" fill="#6a6ef5">NIC DWA RAZY</text>
-      </svg>
-      <svg height="55" viewBox="0 0 200 55" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <text x="100" y="35" text-anchor="middle" font-family="Poppins,sans-serif" font-size="22" font-weight="700" letter-spacing="2" fill="#6a6ef5">MAX – MED</text>
-      </svg>
-      <!-- duplicates for marquee -->
-      <svg height="55" viewBox="0 0 180 55" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <circle cx="27" cy="27" r="24" stroke="#6a6ef5" stroke-width="2" fill="none"/>
-        <text x="27" y="20" text-anchor="middle" font-family="Poppins,sans-serif" font-size="7" font-weight="700" fill="#6a6ef5">SZPZLO</text>
-        <text x="27" y="30" text-anchor="middle" font-family="Poppins,sans-serif" font-size="5" fill="#6a6ef5">WARSZAWA</text>
-        <text x="27" y="39" text-anchor="middle" font-family="Poppins,sans-serif" font-size="4.5" fill="#6a6ef5">WAWER</text>
-      </svg>
-      <svg height="55" viewBox="0 0 200 55" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <text x="100" y="20" text-anchor="middle" font-family="Poppins,sans-serif" font-size="13" font-weight="300" fill="#6a6ef5">Pensjonat</text>
-        <text x="100" y="40" text-anchor="middle" font-family="Poppins,sans-serif" font-size="18" font-weight="300" letter-spacing="3" fill="#6a6ef5">Mecenat</text>
-      </svg>
-      <svg height="55" viewBox="0 0 210 55" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <text x="10" y="24" font-family="Poppins,sans-serif" font-size="14" font-weight="700" fill="#6a6ef5">FUNDACJA</text>
-        <text x="10" y="44" font-family="Poppins,sans-serif" font-size="14" font-weight="700" fill="#6a6ef5">NIC DWA RAZY</text>
-      </svg>
-      <svg height="55" viewBox="0 0 200 55" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <text x="100" y="35" text-anchor="middle" font-family="Poppins,sans-serif" font-size="22" font-weight="700" letter-spacing="2" fill="#6a6ef5">MAX – MED</text>
-      </svg>
-    </div>
-  </div>
+<section id="loga" style="background:var(--bg);padding:3.5rem 5% 5rem;">
+  <img src="clients.png" alt="Nasi klienci" style="width:100%;max-width:1100px;display:block;margin:0 auto;height:auto;opacity:0.85;"/>
 </section>
 
 <!-- KONTAKT -->
