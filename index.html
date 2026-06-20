@@ -222,14 +222,18 @@
       animation: blobWave 22s linear infinite reverse;
       transform-origin: 200px 160px;
     }
-    @keyframes blobMorph {
-      0%,100% { transform: scaleX(1)    scaleY(1); }
-      25%      { transform: scaleX(1.09) scaleY(0.93); }
-      50%      { transform: scaleX(0.95) scaleY(1.08); }
-      75%      { transform: scaleX(1.06) scaleY(0.96); }
+    @keyframes blobBreathe {
+      0%   { transform: scaleX(1)    scaleY(1); }
+      14%  { transform: scaleX(1.04) scaleY(0.97); }
+      28%  { transform: scaleX(1.02) scaleY(1.04); }
+      42%  { transform: scaleX(0.97) scaleY(1.03); }
+      56%  { transform: scaleX(1.03) scaleY(0.97); }
+      70%  { transform: scaleX(0.98) scaleY(1.04); }
+      86%  { transform: scaleX(1.04) scaleY(0.98); }
+      100% { transform: scaleX(1)    scaleY(1); }
     }
     .blob-morph {
-      animation: blobMorph 8s ease-in-out infinite;
+      animation: blobBreathe 12s ease-in-out infinite;
       transform-origin: 200px 200px;
     }
 
@@ -958,15 +962,18 @@
     <div style="position:relative;">
       <!-- Layer 1: wavy blob -->
       <svg viewBox="0 0 400 400" fill="none" xmlns="http://www.w3.org/2000/svg" style="width:100%;display:block;">
-        <g class="blob-morph" fill="none" stroke="#6a6ef5" opacity="0.8">
-          <path stroke-width="1.15" d="M200,148 C238,132 270,150 274,184 C278,218 254,248 220,257 C186,266 152,248 138,218 C124,188 136,152 162,140 C188,128 182,160 200,148Z"/>
-          <path stroke-width="1.05" d="M200,122 C252,100 294,126 296,172 C298,218 266,256 222,268 C178,280 136,256 118,218 C100,180 118,130 150,114 C182,98 176,140 200,122Z"/>
-          <path stroke-width="0.95" d="M200,97 C266,68 318,102 318,160 C318,218 278,264 224,279 C170,294 120,264 98,218 C76,172 100,108 138,88 C176,68 170,120 200,97Z"/>
-          <path stroke-width="0.88" d="M200,73 C280,36 342,78 340,148 C338,218 290,272 226,290 C162,308 104,272 78,218 C52,164 82,86 126,62 C170,38 164,100 200,73Z"/>
-          <path stroke-width="0.8"  d="M200,50 C294,4 366,54 362,136 C358,218 302,280 228,301 C154,322 88,280 58,218 C28,156 64,64 114,36 C164,8 158,80 200,50Z"/>
-          <path stroke-width="0.72" d="M200,27 C308,-28 390,30 384,124 C378,218 314,288 230,312 C146,336 72,288 38,218 C4,148 46,42 102,10 C158,-22 152,60 200,27Z"/>
-          <path stroke-width="0.64" d="M200,5 C322,-60 414,6 406,112 C398,218 326,296 232,323 C138,350 56,296 18,218 C-20,140 28,20 90,-16 C152,-52 146,40 200,5Z"/>
-          <path stroke-width="0.56" d="M200,-17 C336,-92 438,-18 428,100 C418,218 338,304 234,334 C130,364 40,304 -2,218 C-44,132 10,-2 78,-42 C146,-82 140,20 200,-17Z"/>
+        <g class="blob-morph" fill="none" stroke="#6a6ef5" opacity="0.82">
+          <!-- concentric near-circles centered at 200,200 — radii 40→185 -->
+          <path stroke-width="1.2" d="M200,160 C222,160 240,178 240,200 C240,222 222,240 200,240 C178,240 160,222 160,200 C160,178 178,160 200,160Z"/>
+          <path stroke-width="1.1" d="M200,142 C233,142 258,167 258,200 C258,233 233,258 200,258 C167,258 142,233 142,200 C142,167 167,142 200,142Z"/>
+          <path stroke-width="1.0" d="M200,124 C244,124 276,156 276,200 C276,244 244,276 200,276 C156,276 124,244 124,200 C124,156 156,124 200,124Z"/>
+          <path stroke-width="0.92" d="M200,107 C255,107 293,145 293,200 C293,255 255,293 200,293 C145,293 107,255 107,200 C107,145 145,107 200,107Z"/>
+          <path stroke-width="0.84" d="M200,90 C266,90 310,134 310,200 C310,266 266,310 200,310 C134,310 90,266 90,200 C90,134 134,90 200,90Z"/>
+          <path stroke-width="0.76" d="M200,74 C277,74 326,123 326,200 C326,277 277,326 200,326 C123,326 74,277 74,200 C74,123 123,74 200,74Z"/>
+          <path stroke-width="0.68" d="M200,58 C288,58 342,112 342,200 C342,288 288,342 200,342 C112,342 58,288 58,200 C58,112 112,58 200,58Z"/>
+          <path stroke-width="0.60" d="M200,42 C299,42 358,101 358,200 C358,299 299,358 200,358 C101,358 42,299 42,200 C42,101 101,42 200,42Z"/>
+          <path stroke-width="0.52" d="M200,26 C310,26 374,90 374,200 C374,310 310,374 200,374 C90,374 26,310 26,200 C26,90 90,26 200,26Z"/>
+          <path stroke-width="0.44" d="M200,10 C321,10 390,79 390,200 C390,321 321,390 200,390 C79,390 10,321 10,200 C10,79 79,10 200,10Z"/>
         </g>
       </svg>
       <!-- Layer 2: text centered on blob -->
