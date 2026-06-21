@@ -41,7 +41,7 @@
     }
     @keyframes overlayFadeOut { to { opacity: 0; visibility: hidden; } }
 
-    /* Layer 1 — organic blob */
+    /* Layer 1 — tree ring blob */
     .ol-scene {
       position: relative;
       width: min(78vmin, 680px);
@@ -54,18 +54,6 @@
       position: absolute;
       inset: 0;
       width: 100%; height: 100%;
-    }
-    .ol-blob-group {
-      animation: olBlobWave 10s ease-in-out infinite;
-      transform-origin: 300px 300px;
-    }
-    @keyframes olBlobWave {
-      0%   { transform: rotate(0deg)   scaleX(1)    scaleY(1); }
-      20%  { transform: rotate(72deg)  scaleX(1.07) scaleY(0.95); }
-      40%  { transform: rotate(144deg) scaleX(0.96) scaleY(1.08); }
-      60%  { transform: rotate(216deg) scaleX(1.05) scaleY(0.94); }
-      80%  { transform: rotate(288deg) scaleX(0.97) scaleY(1.06); }
-      100% { transform: rotate(360deg) scaleX(1)    scaleY(1); }
     }
 
     /* Layer 2 — text on top of blob */
@@ -95,12 +83,10 @@
       display: inline-block;
       opacity: 0;
     }
-    /* top letters drop down */
     .ol-row-top span {
       transform: translateY(-18px);
       animation: olLetterDrop 0.35s cubic-bezier(.22,1,.36,1) forwards;
     }
-    /* bottom letters rise up */
     .ol-row-bot span {
       transform: translateY(18px);
       animation: olLetterRise 0.35s cubic-bezier(.22,1,.36,1) forwards;
@@ -193,51 +179,7 @@
       gap: 8px;
     }
 
-    /* ── BLOB ANIMATIONS ── */
-    @keyframes blobSpin {
-      from { transform: rotate(0deg); }
-      to   { transform: rotate(360deg); }
-    }
-    @keyframes blobPulse {
-      0%, 100% { transform: rotate(0deg) scale(1); }
-      33%       { transform: rotate(120deg) scale(1.04); }
-      66%       { transform: rotate(240deg) scale(0.97); }
-    }
-    @keyframes blobWave {
-      0%   { transform: rotate(0deg) scaleX(1) scaleY(1); }
-      25%  { transform: rotate(90deg) scaleX(1.06) scaleY(0.96); }
-      50%  { transform: rotate(180deg) scaleX(1) scaleY(1.05); }
-      75%  { transform: rotate(270deg) scaleX(0.95) scaleY(1.04); }
-      100% { transform: rotate(360deg) scaleX(1) scaleY(1); }
-    }
-    .blob-anim {
-      animation: blobWave 28s linear infinite;
-      transform-origin: 300px 300px;
-    }
-    .blob-anim-slow {
-      animation: blobPulse 36s ease-in-out infinite;
-      transform-origin: 300px 300px;
-    }
-    .blob-anim-mini {
-      animation: blobWave 22s linear infinite reverse;
-      transform-origin: 200px 160px;
-    }
-    @keyframes blobBreathe {
-      0%   { transform: scaleX(1)    scaleY(1); }
-      14%  { transform: scaleX(1.04) scaleY(0.97); }
-      28%  { transform: scaleX(1.02) scaleY(1.04); }
-      42%  { transform: scaleX(0.97) scaleY(1.03); }
-      56%  { transform: scaleX(1.03) scaleY(0.97); }
-      70%  { transform: scaleX(0.98) scaleY(1.04); }
-      86%  { transform: scaleX(1.04) scaleY(0.98); }
-      100% { transform: scaleX(1)    scaleY(1); }
-    }
-    .blob-morph {
-      animation: blobBreathe 12s ease-in-out infinite;
-      transform-origin: 200px 200px;
-    }
-
-    /* ── TOPOGRAPHIC BLOB SVG ── */
+    /* ── BLOB SVG ── */
     .blob-svg { overflow: visible; }
 
     /* ── HERO ── */
@@ -278,7 +220,6 @@
       font-weight: 700;
       line-height: 1.35;
     }
-    /* hero right decorations */
     .hero-deco {
       position: absolute;
       right: 0; top: 0; bottom: 0;
@@ -721,25 +662,10 @@
 <!-- PAGE LOAD OVERLAY -->
 <div class="overlay">
   <div class="ol-scene">
-
-    <!-- Layer 1: organic morphing blob -->
-    <svg class="ol-blob" viewBox="0 0 600 600" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <g class="ol-blob-group" stroke="#6a6ef5" fill="none">
-        <path stroke-width="1.2" opacity="0.90" d="M300,218 C356,200 400,238 406,292 C412,346 378,392 326,408 C274,424 218,404 192,364 C166,324 178,264 214,236 C250,208 264,232 300,218Z"/>
-        <path stroke-width="1.15" opacity="0.83" d="M300,186 C374,160 430,210 434,278 C438,346 396,402 332,421 C268,440 200,414 170,364 C140,314 158,240 198,205 C238,170 254,206 300,186Z"/>
-        <path stroke-width="1.1"  opacity="0.76" d="M300,155 C392,120 462,182 464,264 C466,346 416,410 342,432 C268,454 188,422 154,364 C120,306 144,218 188,176 C232,134 246,182 300,155Z"/>
-        <path stroke-width="1.05" opacity="0.69" d="M300,124 C410,80 492,154 492,250 C492,346 436,418 352,443 C268,468 176,430 138,364 C100,298 128,196 178,148 C228,100 240,160 300,124Z"/>
-        <path stroke-width="1.0"  opacity="0.62" d="M300,94 C428,40 524,126 522,236 C520,346 456,426 362,454 C268,482 164,438 122,364 C80,290 112,174 168,120 C224,66 232,138 300,94Z"/>
-        <path stroke-width="0.95" opacity="0.55" d="M300,64 C446,0 556,98 552,222 C548,346 476,434 372,465 C268,496 152,446 106,364 C60,282 96,152 158,92 C220,32 224,116 300,64Z"/>
-        <path stroke-width="0.9"  opacity="0.48" d="M300,35 C464,-40 588,70 582,208 C576,346 496,442 382,476 C268,510 140,454 90,364 C40,274 80,130 148,64 C216,-2 216,94 300,35Z"/>
-        <path stroke-width="0.85" opacity="0.41" d="M300,6 C482,-80 620,42 612,194 C604,346 516,450 392,487 C268,524 128,462 74,364 C20,266 64,108 138,36 C212,-36 208,72 300,6Z"/>
-        <path stroke-width="0.8"  opacity="0.34" d="M300,-22 C500,-120 652,14 642,180 C632,346 536,458 402,498 C268,538 116,470 58,364 C0,258 48,86 128,8 C208,-70 200,50 300,-22Z"/>
-        <path stroke-width="0.75" opacity="0.27" d="M300,-50 C518,-160 684,-14 672,166 C660,346 556,466 412,509 C268,552 104,478 42,364 C-20,250 32,64 118,-20 C204,-104 192,28 300,-50Z"/>
-        <path stroke-width="0.7"  opacity="0.20" d="M300,-78 C536,-200 716,-42 702,152 C688,346 576,474 422,520 C268,566 92,486 26,364 C-40,242 16,42 108,-48 C200,-138 184,6 300,-78Z"/>
-        <path stroke-width="0.65" opacity="0.13" d="M300,-106 C554,-240 748,-70 732,138 C716,346 596,482 432,531 C268,580 80,494 10,364 C-60,234 0,20 98,-76 C196,-172 176,-16 300,-106Z"/>
-      </g>
+    <!-- Layer 1: tree ring blob -->
+    <svg id="tr-intro" class="ol-blob" viewBox="0 0 600 600" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <g id="tr-intro-g" fill="none" stroke="#6a6ef5"></g>
     </svg>
-
     <!-- Layer 2: text centered on blob -->
     <div class="ol-text">
       <div class="ol-row-top">
@@ -749,7 +675,6 @@
         <span style="animation-delay:1.55s">I</span><span style="animation-delay:1.64s">D</span><span style="animation-delay:1.73s">E</span><span style="animation-delay:1.82s">A</span><span style="animation-delay:1.91s">L</span><span style="animation-delay:2.00s">I</span><span style="animation-delay:2.09s">S</span><span style="animation-delay:2.18s">T</span><span style="animation-delay:2.27s">Ó</span><span style="animation-delay:2.36s">W</span>
       </div>
     </div>
-
   </div>
 </div>
 
@@ -765,22 +690,10 @@
 
 <!-- HERO -->
 <section id="hero">
-  <!-- Topographic blob left -->
+  <!-- Tree ring blob left -->
   <div class="hero-blob">
-    <svg class="blob-svg" viewBox="0 0 600 600" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
-      <g class="blob-anim" fill="none" stroke="#6a6ef5">
-        <path stroke-width="1.1" opacity="0.85" d="M300,220 C355,205 395,240 400,290 C405,340 375,385 330,400 C285,415 235,400 210,365 C185,330 190,275 220,248 C250,221 265,230 300,220Z"/>
-        <path stroke-width="1.1" opacity="0.78" d="M300,190 C372,168 425,215 428,280 C431,345 395,400 338,418 C281,436 220,415 192,372 C164,329 174,263 208,231 C242,199 252,208 300,190Z"/>
-        <path stroke-width="1.0" opacity="0.71" d="M300,160 C388,130 455,190 455,270 C455,350 412,415 345,436 C278,457 205,430 172,378 C139,326 156,248 196,210 C236,172 240,185 300,160Z"/>
-        <path stroke-width="1.0" opacity="0.64" d="M300,132 C404,94 482,165 482,260 C482,355 430,430 352,454 C274,478 191,445 153,384 C115,323 138,234 184,190 C230,146 228,163 300,132Z"/>
-        <path stroke-width="0.95" opacity="0.57" d="M300,105 C420,58 510,140 508,250 C506,360 448,445 360,472 C272,499 177,460 134,390 C91,320 120,219 172,169 C224,119 215,142 300,105Z"/>
-        <path stroke-width="0.95" opacity="0.50" d="M300,80 C435,22 537,115 534,240 C531,365 466,460 367,490 C268,520 163,475 115,396 C67,317 102,204 160,148 C218,92 208,121 300,80Z"/>
-        <path stroke-width="0.9"  opacity="0.43" d="M300,56 C450,-14 564,90 560,230 C556,370 484,475 374,508 C264,541 149,490 96,402 C43,314 84,189 148,127 C212,65 201,100 300,56Z"/>
-        <path stroke-width="0.9"  opacity="0.36" d="M300,34 C464,-46 590,65 585,220 C580,375 501,490 382,526 C263,562 136,505 78,408 C20,311 66,174 136,106 C206,38 194,80 300,34Z"/>
-        <path stroke-width="0.85" opacity="0.29" d="M300,12 C478,-78 615,40 609,210 C603,380 518,505 390,544 C262,583 123,520 60,414 C-3,308 48,159 124,85 C200,11 187,60 300,12Z"/>
-        <path stroke-width="0.85" opacity="0.22" d="M300,-10 C492,-108 640,15 633,200 C626,385 535,520 398,562 C261,604 110,535 42,420 C-26,305 30,144 112,64 C194,-16 180,40 300,-10Z"/>
-        <path stroke-width="0.8"  opacity="0.15" d="M300,-32 C506,-138 665,-10 657,190 C649,390 552,535 406,580 C260,625 97,550 24,426 C-49,302 12,129 100,43 C188,-43 173,20 300,-32Z"/>
-      </g>
+    <svg id="tr-hero" class="blob-svg" viewBox="0 0 600 600" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
+      <g id="tr-hero-g" fill="none" stroke="#6a6ef5"></g>
     </svg>
   </div>
 
@@ -791,59 +704,42 @@
 
   <!-- Right-side hollow circle decorations -->
   <div class="hero-deco">
-    <!-- Cluster 1: upper area ~58-64% from left, 24-33% from top of hero -->
     <svg width="100%" height="100%" viewBox="0 0 680 800" preserveAspectRatio="xMidYMid meet" fill="none" xmlns="http://www.w3.org/2000/svg">
       <!-- Upper cluster: staggered 4-5-3 dot triangle -->
       <g stroke="#ff5f1b" stroke-width="1.5" fill="none">
-        <!-- row 1: 4 dots -->
         <circle cx="100" cy="190" r="3.5"/>
         <circle cx="116" cy="190" r="3.5"/>
         <circle cx="132" cy="190" r="3.5"/>
         <circle cx="148" cy="190" r="3.5"/>
-        <!-- row 2: 5 dots, offset -->
         <circle cx="92" cy="206" r="3.5"/>
         <circle cx="108" cy="206" r="3.5"/>
         <circle cx="124" cy="206" r="3.5"/>
         <circle cx="140" cy="206" r="3.5"/>
         <circle cx="156" cy="206" r="3.5"/>
-        <!-- row 3: 3 dots -->
         <circle cx="108" cy="222" r="3.5"/>
         <circle cx="124" cy="222" r="3.5"/>
         <circle cx="140" cy="222" r="3.5"/>
       </g>
-
-      <!-- Single large circle mid-right -->
       <circle cx="290" cy="290" r="9" stroke="#ff5f1b" stroke-width="2" fill="none"/>
-
-      <!-- Mid cluster: 3-3-3-2-1 triangle cluster -->
       <g stroke="#ff5f1b" stroke-width="1.5" fill="none">
-        <!-- row 1 -->
         <circle cx="240" cy="375" r="3.5"/>
         <circle cx="256" cy="375" r="3.5"/>
         <circle cx="272" cy="375" r="3.5"/>
-        <!-- row 2 -->
         <circle cx="248" cy="391" r="3.5"/>
         <circle cx="264" cy="391" r="3.5"/>
         <circle cx="280" cy="391" r="3.5"/>
-        <!-- row 3 -->
         <circle cx="256" cy="407" r="3.5"/>
         <circle cx="272" cy="407" r="3.5"/>
         <circle cx="288" cy="407" r="3.5"/>
-        <!-- row 4 -->
         <circle cx="264" cy="423" r="3.5"/>
         <circle cx="280" cy="423" r="3.5"/>
-        <!-- row 5 -->
         <circle cx="272" cy="439" r="3.5"/>
       </g>
-
-      <!-- 3 stacked small circles lower-left -->
       <g stroke="#ff5f1b" stroke-width="1.5" fill="none">
         <circle cx="90" cy="580" r="3.5"/>
         <circle cx="90" cy="596" r="3.5"/>
         <circle cx="90" cy="612" r="3.5"/>
       </g>
-
-      <!-- Lone small circle even lower -->
       <circle cx="90" cy="670" r="3.5" stroke="#ff5f1b" stroke-width="1.5" fill="none"/>
     </svg>
   </div>
@@ -866,21 +762,10 @@
       </p>
     </div>
   </div>
-  <!-- blob right -->
+  <!-- tree ring blob right -->
   <div style="position:absolute;right:0%;top:5%;bottom:5%;width:48%;pointer-events:none;z-index:0;">
-    <svg viewBox="0 0 600 600" preserveAspectRatio="xMidYMid meet" fill="none" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%;">
-      <g class="blob-anim-slow" fill="none" stroke="#6a6ef5">
-        <path stroke-width="1.1" opacity="0.85" d="M300,205 C358,188 402,228 408,285 C414,342 380,392 328,408 C276,424 220,405 194,366 C168,327 178,267 212,238 C246,209 262,218 300,205Z"/>
-        <path stroke-width="1.05" opacity="0.77" d="M300,175 C376,150 432,202 436,272 C440,342 400,400 336,419 C272,438 205,414 174,367 C143,320 158,248 196,212 C234,176 248,196 300,175Z"/>
-        <path stroke-width="1.0" opacity="0.69" d="M300,146 C393,113 462,177 464,260 C466,343 419,408 344,430 C269,452 190,423 154,368 C118,313 138,229 180,187 C222,145 236,174 300,146Z"/>
-        <path stroke-width="0.95" opacity="0.61" d="M300,118 C410,76 492,152 492,248 C492,344 438,416 352,441 C266,466 176,432 135,369 C94,306 118,210 164,162 C210,114 224,152 300,118Z"/>
-        <path stroke-width="0.9" opacity="0.53" d="M300,91 C426,39 520,127 520,236 C520,345 456,424 360,452 C264,480 161,441 115,370 C69,299 98,191 148,137 C198,83 212,130 300,91Z"/>
-        <path stroke-width="0.9" opacity="0.45" d="M300,65 C442,3 548,102 547,224 C546,346 474,432 368,463 C262,494 147,450 96,371 C45,292 78,172 132,112 C186,52 200,108 300,65Z"/>
-        <path stroke-width="0.85" opacity="0.37" d="M300,40 C458,-32 575,77 573,212 C571,347 492,440 376,474 C260,508 133,459 77,372 C21,285 58,153 116,87 C174,21 188,86 300,40Z"/>
-        <path stroke-width="0.8" opacity="0.29" d="M300,15 C474,-67 602,52 599,200 C596,348 510,448 384,485 C258,522 119,468 58,373 C-3,278 38,134 100,62 C162,-10 176,64 300,15Z"/>
-        <path stroke-width="0.75" opacity="0.21" d="M300,-10 C490,-102 629,27 625,188 C621,349 528,456 392,496 C256,536 105,477 39,374 C-27,271 18,115 84,37 C150,-41 164,42 300,-10Z"/>
-        <path stroke-width="0.7" opacity="0.14" d="M300,-34 C506,-137 655,2 651,176 C647,350 546,464 400,507 C254,550 91,486 20,375 C-51,264 -2,96 68,12 C138,-72 152,20 300,-34Z"/>
-      </g>
+    <svg id="tr-onas" viewBox="0 0 600 600" preserveAspectRatio="xMidYMid meet" fill="none" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%;">
+      <g id="tr-onas-g" fill="none" stroke="#6a6ef5"></g>
     </svg>
   </div>
   <!-- dots upper right -->
@@ -894,7 +779,6 @@
       </g>
     </svg>
   </div>
-  <!-- single orange circle mid-left -->
   <div style="position:absolute;left:4%;top:62%;pointer-events:none;z-index:2;">
     <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
       <circle cx="11" cy="11" r="8" stroke="#ff5f1b" stroke-width="2" fill="none"/>
@@ -958,59 +842,12 @@
   <h2 style="font-size:clamp(2rem,3.5vw,2.8rem);font-weight:800;font-style:italic;color:var(--orange);margin-bottom:3rem;padding-left:3%;">Liczby, które o nas mówią</h2>
   <div style="display:grid;grid-template-columns:36% 1fr;gap:0 5%;align-items:center;padding-left:3%;">
 
-    <!-- LEFT: blob layer 1 + text layer 2 -->
+    <!-- LEFT: tree ring blob + text overlay -->
     <div style="position:relative;">
-      <!-- Layer 1: wavy blob -->
-      <svg id="lb-svg" viewBox="0 0 400 400" fill="none" xmlns="http://www.w3.org/2000/svg" style="width:100%;display:block;">
-        <g fill="none" stroke="#6a6ef5">
-          <path class="lb-p" stroke-width="1.2" opacity="0.88"/>
-          <path class="lb-p" stroke-width="1.1" opacity="0.80"/>
-          <path class="lb-p" stroke-width="1.0" opacity="0.72"/>
-          <path class="lb-p" stroke-width="0.92" opacity="0.64"/>
-          <path class="lb-p" stroke-width="0.84" opacity="0.56"/>
-          <path class="lb-p" stroke-width="0.76" opacity="0.48"/>
-          <path class="lb-p" stroke-width="0.68" opacity="0.40"/>
-          <path class="lb-p" stroke-width="0.60" opacity="0.32"/>
-          <path class="lb-p" stroke-width="0.52" opacity="0.24"/>
-          <path class="lb-p" stroke-width="0.44" opacity="0.16"/>
-        </g>
+      <svg id="tr-liczby" viewBox="0 0 400 400" fill="none" xmlns="http://www.w3.org/2000/svg" style="width:100%;display:block;">
+        <g id="tr-liczby-g" fill="none" stroke="#6a6ef5"></g>
       </svg>
-      <script>
-      (function(){
-        var svg = document.getElementById('lb-svg');
-        var paths = svg.querySelectorAll('.lb-p');
-        var rings = [38,54,70,84,98,112,124,136,148,160];
-        var cx = 200, cy = 200, N = 14;
-        function pt(angle, R, t){
-          var d = R*0.11*Math.sin(2*angle + t*0.65)
-                + R*0.07*Math.sin(3*angle - t*0.45)
-                + R*0.04*Math.sin(5*angle + t*0.95)
-                + R*0.025*Math.sin(7*angle - t*0.3);
-          var r = R + d;
-          return [cx + r*Math.cos(angle), cy + r*Math.sin(angle)];
-        }
-        function makePath(R, t){
-          var pts = [];
-          for(var i=0;i<N;i++) pts.push(pt(i/N*Math.PI*2, R, t));
-          var d = 'M '+pts[0][0].toFixed(2)+','+pts[0][1].toFixed(2);
-          for(var i=0;i<N;i++){
-            var p0=pts[(i+N-1)%N], p1=pts[i], p2=pts[(i+1)%N], p3=pts[(i+2)%N];
-            var c1=[p1[0]+(p2[0]-p0[0])/6, p1[1]+(p2[1]-p0[1])/6];
-            var c2=[p2[0]-(p3[0]-p1[0])/6, p2[1]-(p3[1]-p1[1])/6];
-            d+=' C '+c1[0].toFixed(2)+','+c1[1].toFixed(2)+' '+c2[0].toFixed(2)+','+c2[1].toFixed(2)+' '+p2[0].toFixed(2)+','+p2[1].toFixed(2);
-          }
-          return d+' Z';
-        }
-        var t=0;
-        function frame(){
-          t+=0.007;
-          paths.forEach(function(p,i){ p.setAttribute('d', makePath(rings[i], t)); });
-          requestAnimationFrame(frame);
-        }
-        requestAnimationFrame(frame);
-      })();
-      </script>
-      <!-- Layer 2: text centered on blob -->
+      <!-- text centered on blob -->
       <div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:0.1rem;">
         <div style="font-size:clamp(3.5rem,9vw,6.5rem);font-weight:800;color:var(--orange);line-height:1;">2657</div>
         <div style="font-size:clamp(0.85rem,1.4vw,1.1rem);font-weight:700;color:var(--orange);letter-spacing:0.05em;text-align:center;">wspartych osób starszych</div>
@@ -1095,18 +932,10 @@
     <li><strong>rozliczamy</strong>&nbsp;dotacje</li>
     <li><strong>projektujemy</strong>&nbsp;usługi społeczne</li>
   </ul>
-  <!-- blob right, very faint -->
+  <!-- tree ring blob right, very faint -->
   <div style="position:absolute;right:0%;top:0%;bottom:0%;width:48%;opacity:0.18;pointer-events:none;z-index:0;">
-    <svg viewBox="0 0 600 600" preserveAspectRatio="xMidYMid meet" fill="none" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%;">
-      <g class="blob-anim" fill="none" stroke="#6a6ef5">
-        <path stroke-width="1.3" opacity="0.9" d="M300,215 C350,200 390,232 396,278 C402,324 372,368 328,382 C284,396 236,378 214,342 C192,306 200,258 228,232 C256,206 268,226 300,215Z"/>
-        <path stroke-width="1.2" opacity="0.8" d="M300,185 C368,162 420,206 424,265 C428,324 392,376 338,393 C284,410 224,388 198,344 C172,300 184,240 216,208 C248,176 260,202 300,185Z"/>
-        <path stroke-width="1.1" opacity="0.7" d="M300,156 C386,124 450,180 452,252 C454,324 412,384 348,404 C284,424 212,398 182,346 C152,294 168,222 204,184 C240,146 252,178 300,156Z"/>
-        <path stroke-width="1.0" opacity="0.6" d="M300,128 C403,86 480,154 480,240 C480,326 432,392 358,415 C284,438 200,408 166,348 C132,288 152,204 192,160 C232,116 244,154 300,128Z"/>
-        <path stroke-width="0.9" opacity="0.5" d="M300,100 C420,48 510,128 508,228 C506,328 452,400 368,426 C284,452 188,418 150,350 C112,282 136,186 180,136 C224,86 236,130 300,100Z"/>
-        <path stroke-width="0.85" opacity="0.4" d="M300,74 C436,10 540,102 536,216 C532,330 472,408 378,437 C284,466 176,428 134,352 C92,276 120,168 168,112 C216,56 228,106 300,74Z"/>
-        <path stroke-width="0.8" opacity="0.3" d="M300,48 C452,-28 570,76 564,204 C558,332 492,416 388,448 C284,480 164,438 118,354 C72,270 104,150 156,88 C208,26 220,82 300,48Z"/>
-      </g>
+    <svg id="tr-oferta" viewBox="0 0 600 600" preserveAspectRatio="xMidYMid meet" fill="none" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%;">
+      <g id="tr-oferta-g" fill="none" stroke="#6a6ef5"></g>
     </svg>
   </div>
   <!-- single orange circle -->
@@ -1143,7 +972,6 @@
   <h2 style="font-size:clamp(1.6rem,3vw,2.4rem);font-weight:800;color:var(--blue);padding:0 5%;margin-bottom:4rem;">Zaufali nam</h2>
   <div style="overflow:hidden;">
     <div class="testimonials-track">
-      <!-- set 1 -->
       <div class="testimonial">
         <div class="testimonial-quote-mark"><span>»</span></div>
         <p>Jestem wdzięczna za wszystko, co Pani dla mnie zrobiła i robi.</p>
@@ -1294,7 +1122,6 @@
 </footer>
 
 <style>
-  /* Form field styles need to apply inside the section */
   #formularz input, #formularz textarea {
     width: 100%;
     background: transparent;
@@ -1320,6 +1147,157 @@
     resize: vertical;
   }
 </style>
+
+<script>
+(function () {
+  var NS = 'http://www.w3.org/2000/svg';
+  var PI2 = Math.PI * 2;
+
+  /*
+   * initRing — build and animate one tree-ring cluster.
+   * Each ring uses 4 sine waves at different frequencies and speeds,
+   * plus a per-ring phase offset so rings sit at different points in
+   * their cycle — creating the rippling organic tree-ring character.
+   */
+  function initRing(cfg) {
+    var g = document.getElementById(cfg.gId);
+    if (!g) return;
+
+    var rings = cfg.rings;
+    var n = rings.length;
+    var N = cfg.N || 20;           // sample points around the circle
+    var cx = cfg.cx, cy = cfg.cy;
+    var waves = cfg.waves;
+    var ringPhase = cfg.ringPhase !== undefined ? cfg.ringPhase : 0.42;
+    var speed = cfg.speed || 0.006;
+
+    // create path elements, styled thick→thin / opaque→faint outward
+    var paths = [];
+    for (var i = 0; i < n; i++) {
+      var p = document.createElementNS(NS, 'path');
+      var sw = (1.3 - i * 0.75 / Math.max(n - 1, 1)).toFixed(2);
+      var op = (0.90 - i * 0.78 / Math.max(n - 1, 1)).toFixed(2);
+      p.setAttribute('stroke-width', sw);
+      p.setAttribute('opacity', op);
+      g.appendChild(p);
+      paths.push(p);
+    }
+
+    function radialPt(angle, R, t, phOff) {
+      var d = 0;
+      for (var w = 0; w < waves.length; w++) {
+        d += R * waves[w].amp * Math.sin(waves[w].freq * angle + t * waves[w].spd + phOff);
+      }
+      var r = R + d;
+      return [cx + r * Math.cos(angle), cy + r * Math.sin(angle)];
+    }
+
+    function makePath(R, t, phOff) {
+      var pts = [];
+      for (var i = 0; i < N; i++) pts.push(radialPt(i / N * PI2, R, t, phOff));
+      var d = 'M ' + pts[0][0].toFixed(2) + ',' + pts[0][1].toFixed(2);
+      for (var i = 0; i < N; i++) {
+        var p0 = pts[(i + N - 1) % N], p1 = pts[i],
+            p2 = pts[(i + 1) % N],     p3 = pts[(i + 2) % N];
+        var c1x = p1[0] + (p2[0] - p0[0]) / 6, c1y = p1[1] + (p2[1] - p0[1]) / 6;
+        var c2x = p2[0] - (p3[0] - p1[0]) / 6, c2y = p2[1] - (p3[1] - p1[1]) / 6;
+        d += ' C ' + c1x.toFixed(2) + ',' + c1y.toFixed(2) + ' '
+                   + c2x.toFixed(2) + ',' + c2y.toFixed(2) + ' '
+                   + p2[0].toFixed(2) + ',' + p2[1].toFixed(2);
+      }
+      return d + ' Z';
+    }
+
+    var t = cfg.t0 || 0;
+    function frame() {
+      t += speed;
+      for (var i = 0; i < n; i++) {
+        paths[i].setAttribute('d', makePath(rings[i], t, i * ringPhase));
+      }
+      requestAnimationFrame(frame);
+    }
+    requestAnimationFrame(frame);
+  }
+
+  /* ── INTRO OVERLAY ──
+     22 rings | dreamy, flows evenly | moderate irregularity */
+  initRing({
+    gId: 'tr-intro-g',
+    cx: 300, cy: 300, N: 22,
+    rings: [42,51,60,69,78,87,96,105,114,123,132,141,150,159,168,177,186,195,204,213,222,231],
+    waves: [
+      {amp: 0.090, freq: 2, spd:  0.50},
+      {amp: 0.055, freq: 3, spd: -0.37},
+      {amp: 0.032, freq: 5, spd:  0.82},
+      {amp: 0.018, freq: 7, spd: -0.21}
+    ],
+    speed: 0.006, ringPhase: 0.38, t0: 0
+  });
+
+  /* ── HERO LEFT ──
+     20 rings | wide spread, more pronounced bumps | asymmetric character */
+  initRing({
+    gId: 'tr-hero-g',
+    cx: 285, cy: 308, N: 22,
+    rings: [52,65,78,91,104,117,130,143,156,169,182,195,208,221,234,247,260,273,286,299],
+    waves: [
+      {amp: 0.130, freq: 2, spd:  0.42},
+      {amp: 0.082, freq: 3, spd: -0.56},
+      {amp: 0.046, freq: 5, spd:  0.91},
+      {amp: 0.027, freq: 7, spd: -0.17},
+      {amp: 0.014, freq: 11, spd: 0.63}
+    ],
+    speed: 0.0055, ringPhase: 0.47, t0: 1.4
+  });
+
+  /* ── O NAS RIGHT ──
+     18 rings | rounder, calmer, gentle swell | fewest bumps */
+  initRing({
+    gId: 'tr-onas-g',
+    cx: 292, cy: 295, N: 20,
+    rings: [48,61,74,87,100,113,126,139,152,165,178,191,204,217,230,243,256,269],
+    waves: [
+      {amp: 0.072, freq: 2, spd:  0.61},
+      {amp: 0.044, freq: 3, spd: -0.41},
+      {amp: 0.024, freq: 5, spd:  0.74},
+      {amp: 0.013, freq: 7, spd: -0.29}
+    ],
+    speed: 0.005, ringPhase: 0.52, t0: 2.9
+  });
+
+  /* ── LICZBY LEFT ──
+     14 rings | compact, lively, extra high-freq ripple */
+  initRing({
+    gId: 'tr-liczby-g',
+    cx: 200, cy: 200, N: 20,
+    rings: [33,44,55,66,77,88,99,110,121,132,143,154,165,174],
+    waves: [
+      {amp: 0.110, freq: 2, spd:  0.65},
+      {amp: 0.070, freq: 3, spd: -0.45},
+      {amp: 0.040, freq: 5, spd:  0.95},
+      {amp: 0.025, freq: 7, spd: -0.30},
+      {amp: 0.012, freq: 9, spd:  0.55}
+    ],
+    speed: 0.007, ringPhase: 0.40, t0: 0
+  });
+
+  /* ── OFERTA RIGHT ──
+     15 rings | sparse, very gentle | background whisper */
+  initRing({
+    gId: 'tr-oferta-g',
+    cx: 300, cy: 300, N: 18,
+    rings: [58,74,90,106,122,138,154,170,186,202,218,234,250,266,282],
+    waves: [
+      {amp: 0.065, freq: 2, spd:  0.31},
+      {amp: 0.040, freq: 3, spd: -0.24},
+      {amp: 0.022, freq: 5, spd:  0.58},
+      {amp: 0.012, freq: 7, spd: -0.19}
+    ],
+    speed: 0.004, ringPhase: 0.56, t0: 4.7
+  });
+
+})();
+</script>
 
 </body>
 </html>
